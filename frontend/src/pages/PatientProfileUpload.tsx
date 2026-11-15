@@ -121,7 +121,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
-            <UploadCloud className="w-6 h-6 mr-2.5 text-teal-400" />
+            <UploadCloud className="w-6 h-6 mr-2.5 text-[#79AC78]" />
             Patient Profile & Molecular Sample Ingestion
           </h2>
           <p className="text-xs text-slate-400 mt-1">
@@ -145,16 +145,16 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
         {/* Left Form: Profile Creation & Upload (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-5">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-teal-400 flex items-center">
-              <PlusCircle className="w-4 h-4 mr-2" /> New Sample Profile Registration
+            <h3 className="text-sm font-bold uppercase tracking-wider text-[#B0D9B1] flex items-center">
+              <PlusCircle className="w-4 h-4 mr-2 text-[#79AC78]" /> New Sample Profile Registration
             </h3>
 
             {successMessage && (
-              <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs flex items-center justify-between">
+              <div className="p-3 bg-[#618264]/20 border border-[#79AC78]/40 text-[#D0E7D2] rounded-lg text-xs flex items-center justify-between">
                 <span>{successMessage}</span>
                 <button 
                   onClick={() => onNavigate('molecular')}
-                  className="font-semibold text-emerald-400 hover:underline flex items-center"
+                  className="font-semibold text-[#B0D9B1] hover:underline flex items-center"
                 >
                   View Profile <ArrowRight className="w-3 h-3 ml-1" />
                 </button>
@@ -180,7 +180,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="e.g. PDC-LUNG-088"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                   />
                 </div>
 
@@ -193,7 +193,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="Auto-generated if empty"
                     value={sampleId}
                     onChange={(e) => setSampleId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                   />
                 </div>
               </div>
@@ -216,7 +216,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                       onClick={() => setSampleType(st)}
                       className={`text-left p-2.5 rounded-lg border text-xs transition-all ${
                         sampleType === st
-                          ? 'bg-teal-500/10 border-teal-500 text-teal-300 font-semibold'
+                          ? 'bg-[#618264]/25 border-[#79AC78] text-[#D0E7D2] font-semibold'
                           : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
                       }`}
                     >
@@ -234,7 +234,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   <select
                     value={tcgaDesc}
                     onChange={(e) => setTcgaDesc(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                   >
                     {tcgaOptions.map(t => (
                       <option key={t} value={t}>{t}</option>
@@ -251,7 +251,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="e.g. Non-Small Cell Lung"
                     value={cancerType}
                     onChange={(e) => setCancerType(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                   />
                 </div>
 
@@ -264,7 +264,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="e.g. EGFR L858R"
                     value={cancerSubtype}
                     onChange={(e) => setCancerSubtype(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                   />
                 </div>
               </div>
@@ -278,7 +278,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   placeholder="e.g. Isolated from treatment-naive biopsy, passage 3, confirmed p53 deficient..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                 />
               </div>
 
@@ -287,7 +287,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 <label className="block text-xs font-medium text-slate-300 mb-1">
                   Molecular Expression File (CSV / TSV format)
                 </label>
-                <div className="border-2 border-dashed border-slate-800 hover:border-teal-500/50 rounded-xl p-5 text-center bg-slate-950/40 transition-colors">
+                <div className="border-2 border-dashed border-slate-800 hover:border-[#79AC78]/50 rounded-xl p-5 text-center bg-slate-950/40 transition-colors">
                   <input
                     type="file"
                     id="expression-file-input"
@@ -299,7 +299,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     htmlFor="expression-file-input"
                     className="cursor-pointer flex flex-col items-center space-y-2"
                   >
-                    <FileSpreadsheet className="w-8 h-8 text-teal-400/80" />
+                    <FileSpreadsheet className="w-8 h-8 text-[#79AC78]" />
                     <span className="text-xs font-medium text-slate-200">
                       {isUploading ? "Validating & Extracting Genes..." : "Drag & drop or click to upload expression file"}
                     </span>
@@ -310,8 +310,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 </div>
 
                 {uploadedData && (
-                  <div className="mt-3 p-3 bg-teal-500/10 border border-teal-500/20 rounded-lg text-xs space-y-1.5">
-                    <div className="flex items-center justify-between text-teal-300 font-semibold">
+                  <div className="mt-3 p-3 bg-[#618264]/20 border border-[#79AC78]/30 rounded-lg text-xs space-y-1.5">
+                    <div className="flex items-center justify-between text-[#D0E7D2] font-semibold">
                       <span>✓ File Validated Successfully</span>
                       <span>{uploadedData.valid_genes_extracted} Genes Extracted</span>
                     </div>
@@ -326,7 +326,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl bg-[#79AC78] hover:bg-[#618264] text-slate-950 font-bold text-xs transition-all shadow-md shadow-[#618264]/25 active:scale-95 disabled:opacity-50"
                 >
                   {isSubmitting ? "Saving Profile..." : "Create & Activate Profile"}
                 </button>
@@ -335,11 +335,11 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Preloaded Reference Library (5 cols) */}
+        {/* Right Column: Preloaded Reference Library */}
         <div className="lg:col-span-5 space-y-4">
           <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
-              <Layers className="w-4 h-4 mr-2 text-teal-400" />
+              <Layers className="w-4 h-4 mr-2 text-[#79AC78]" />
               Preloaded Reference Profiles
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
@@ -355,7 +355,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     onClick={() => onSampleSelect(s.sample_id)}
                     className={`p-3.5 rounded-xl border text-xs cursor-pointer transition-all ${
                       isSelected
-                        ? 'bg-teal-500/10 border-teal-500 shadow-md shadow-teal-500/10'
+                        ? 'bg-[#618264]/25 border-[#79AC78] shadow-md shadow-[#618264]/20'
                         : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
                     }`}
                   >
@@ -364,7 +364,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                       <SampleTypeBadge type={s.sample_type} />
                     </div>
                     <div className="flex items-center space-x-2 text-slate-400 text-[11px] font-mono">
-                      <span className="text-teal-400 font-semibold">{s.tcga_desc}</span>
+                      <span className="text-[#B0D9B1] font-semibold">{s.tcga_desc}</span>
                       <span>•</span>
                       <span>{s.cancer_type}</span>
                     </div>

@@ -65,14 +65,14 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
   }, [sampleId]);
 
   const tissueColors: Record<string, string> = {
-    BRCA: '#ec4899',
-    LUAD: '#3b82f6',
-    COREAD: '#f97316',
+    BRCA: '#79AC78',
+    LUAD: '#B0D9B1',
+    COREAD: '#D0E7D2',
     SKCM: '#eab308',
     GBM: '#a855f7',
-    PAAD: '#06b6d4',
-    OV: '#14b8a6',
-    LAML: '#ef4444',
+    PAAD: '#618264',
+    OV: '#38bdf8',
+    LAML: '#f43f5e',
     PRAD: '#8b5cf6',
     KIRC: '#10b981',
     UNKNOWN: '#64748b'
@@ -85,9 +85,9 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
   }, [pcaData, selectedTissueFilter]);
 
   const getHeatmapColor = (score: number) => {
-    if (score < 2.0) return 'bg-emerald-500/80 text-slate-950 font-bold';
-    if (score < 3.2) return 'bg-teal-500/50 text-white';
-    if (score < 4.5) return 'bg-amber-500/50 text-white';
+    if (score < 2.0) return 'bg-[#79AC78] text-slate-950 font-bold';
+    if (score < 3.2) return 'bg-[#618264]/40 text-[#D0E7D2]';
+    if (score < 4.5) return 'bg-amber-500/40 text-white';
     return 'bg-rose-500/60 text-white font-bold';
   };
 
@@ -97,7 +97,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
-            <BarChart3 className="w-6 h-6 mr-2.5 text-cyan-400" />
+            <BarChart3 className="w-6 h-6 mr-2.5 text-[#79AC78]" />
             Visual Analytics: PCA Landscape, Cross-Tissue Heatmap & HMM
           </h2>
           <p className="text-xs text-slate-400 mt-1">
@@ -111,7 +111,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
             onClick={() => setActiveTab('pca')}
             className={`px-3.5 py-1.5 rounded-lg font-medium transition-all ${
               activeTab === 'pca'
-                ? 'bg-teal-500 text-slate-950 font-semibold shadow'
+                ? 'bg-[#79AC78] text-slate-950 font-bold shadow'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -121,7 +121,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
             onClick={() => setActiveTab('heatmap')}
             className={`px-3.5 py-1.5 rounded-lg font-medium transition-all ${
               activeTab === 'heatmap'
-                ? 'bg-teal-500 text-slate-950 font-semibold shadow'
+                ? 'bg-[#79AC78] text-slate-950 font-bold shadow'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -131,7 +131,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
             onClick={() => setActiveTab('hmm')}
             className={`px-3.5 py-1.5 rounded-lg font-medium transition-all ${
               activeTab === 'hmm'
-                ? 'bg-teal-500 text-slate-950 font-semibold shadow'
+                ? 'bg-[#79AC78] text-slate-950 font-bold shadow'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -147,7 +147,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
               <div className="text-xs text-slate-400">PC1 Explained Variance</div>
-              <div className="text-2xl font-extrabold text-teal-300 font-mono mt-1">
+              <div className="text-2xl font-extrabold text-[#D0E7D2] font-mono mt-1">
                 {pcaData ? (pcaData.pc1_variance * 100).toFixed(2) : "38.45"}%
               </div>
               <div className="text-[11px] text-slate-500 mt-1">Captures primary pan-drug sensitivity gradient</div>
@@ -155,7 +155,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
 
             <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
               <div className="text-xs text-slate-400">PC2 Explained Variance</div>
-              <div className="text-2xl font-extrabold text-cyan-300 font-mono mt-1">
+              <div className="text-2xl font-extrabold text-[#B0D9B1] font-mono mt-1">
                 {pcaData ? (pcaData.pc2_variance * 100).toFixed(2) : "4.40"}%
               </div>
               <div className="text-[11px] text-slate-500 mt-1">Captures pathway-specific selectivity</div>
@@ -188,7 +188,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                   <select
                     value={selectedTissueFilter}
                     onChange={(e) => setSelectedTissueFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-teal-500"
+                    className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#79AC78]"
                   >
                     <option value="ALL">All Tissues</option>
                     {pcaData?.tissues.map(t => (
@@ -226,7 +226,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                         return (
                           <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs space-y-1 shadow-lg font-mono">
                             <div className="font-bold text-white font-sans">{data.name}</div>
-                            <div className="text-teal-400">Tissue: {data.tcga_desc}</div>
+                            <div className="text-[#B0D9B1]">Tissue: {data.tcga_desc}</div>
                             <div className="text-slate-400">ID: {data.sample_id}</div>
                             <div className="text-slate-300">PC1: {data.pc1} | PC2: {data.pc2}</div>
                           </div>
@@ -237,7 +237,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                       {filteredPcaSamples.map((entry, index) => (
                         <Cell 
                           key={`cell-${index}`} 
-                          fill={tissueColors[entry.tcga_desc] || '#0d9488'} 
+                          fill={tissueColors[entry.tcga_desc] || '#79AC78'} 
                           fillOpacity={0.65}
                         />
                       ))}
@@ -247,7 +247,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                       <Scatter 
                         name="Active Sample" 
                         data={[pcaData.current_sample_projection]} 
-                        fill="#38bdf8" 
+                        fill="#D0E7D2" 
                         shape="cross"
                       />
                     )}
@@ -283,7 +283,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                         <span className="font-semibold text-white block truncate">{d.drug_name}</span>
                         <span className="text-[10px] text-slate-500 truncate block">{d.pathway}</span>
                       </div>
-                      <span className="font-mono font-bold text-teal-400 text-[11px]">
+                      <span className="font-mono font-bold text-[#79AC78] text-[11px]">
                         {d.loading.toFixed(3)}
                       </span>
                     </div>
@@ -306,7 +306,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                         <span className="font-semibold text-white block truncate">{d.drug_name}</span>
                         <span className="text-[10px] text-slate-500 truncate block">{d.pathway}</span>
                       </div>
-                      <span className="font-mono font-bold text-cyan-400 text-[11px]">
+                      <span className="font-mono font-bold text-[#B0D9B1] text-[11px]">
                         {d.loading.toFixed(3)}
                       </span>
                     </div>
@@ -324,7 +324,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
             <div>
               <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center">
-                <Grid className="w-4 h-4 mr-2 text-teal-400" />
+                <Grid className="w-4 h-4 mr-2 text-[#79AC78]" />
                 Cross-Tissue Chemotherapy Sensitivity Heatmap
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -332,8 +332,8 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
               </p>
             </div>
             <div className="flex items-center space-x-2 text-[10px]">
-              <span className="px-2 py-0.5 rounded bg-emerald-500/80 text-slate-950 font-bold">Sensitive (&lt; 2.0)</span>
-              <span className="px-2 py-0.5 rounded bg-teal-500/50 text-white">Intermediate</span>
+              <span className="px-2 py-0.5 rounded bg-[#79AC78] text-slate-950 font-bold">Sensitive (&lt; 2.0)</span>
+              <span className="px-2 py-0.5 rounded bg-[#618264]/40 text-[#D0E7D2]">Intermediate</span>
               <span className="px-2 py-0.5 rounded bg-rose-500/60 text-white font-bold">Resistant (&gt; 4.5)</span>
             </div>
           </div>
@@ -417,7 +417,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                           <td 
                             key={j} 
                             className={`p-3 font-bold ${
-                              prob > 0.8 ? 'bg-teal-500/20 text-teal-300' : 'text-slate-300'
+                              prob > 0.8 ? 'bg-[#618264]/30 text-[#D0E7D2]' : 'text-slate-300'
                             }`}
                           >
                             {prob.toFixed(4)}
@@ -444,8 +444,8 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                   <thead className="bg-slate-950 text-slate-400">
                     <tr>
                       <th className="p-3 text-left font-sans">Hidden State</th>
-                      <th className="p-3 text-emerald-400">Lower ln(IC50)</th>
-                      <th className="p-3 text-cyan-400">Middle Category</th>
+                      <th className="p-3 text-[#B0D9B1]">Lower ln(IC50)</th>
+                      <th className="p-3 text-[#D0E7D2]">Middle Category</th>
                       <th className="p-3 text-rose-400">Higher ln(IC50)</th>
                     </tr>
                   </thead>
@@ -459,7 +459,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                           <td 
                             key={j} 
                             className={`p-3 font-bold ${
-                              prob > 0.45 ? 'bg-cyan-500/15 text-cyan-300' : 'text-slate-300'
+                              prob > 0.45 ? 'bg-[#618264]/30 text-[#D0E7D2]' : 'text-slate-300'
                             }`}
                           >
                             {prob.toFixed(4)}

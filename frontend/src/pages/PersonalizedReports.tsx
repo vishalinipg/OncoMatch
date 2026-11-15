@@ -68,7 +68,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
-            <FileText className="w-6 h-6 mr-2.5 text-indigo-400" />
+            <FileText className="w-6 h-6 mr-2.5 text-brand-400" />
             Personalized Oncology Report Generation & Export
           </h2>
           <p className="text-xs text-slate-400 mt-1">
@@ -100,7 +100,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
           <button
             onClick={handleGenerateReport}
             disabled={isGenerating || !activeSample}
-            className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95 disabled:opacity-50 shrink-0"
+            className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-brand-400 hover:bg-brand-300 text-slate-950 font-bold text-xs transition-all shadow-md shadow-brand-400/20 active:scale-95 disabled:opacity-50 shrink-0"
           >
             <FileText className="w-4 h-4" />
             <span>{isGenerating ? "Compiling PDF..." : "Generate Vector PDF & CSV"}</span>
@@ -116,7 +116,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
                 <SampleTypeBadge type={activeSample.sample_type} />
               </div>
               <div className="text-slate-400 text-[11px]">
-                {activeSample.cancer_type} • Tissue Origin: <span className="text-teal-400 font-mono font-semibold">{activeSample.tcga_desc}</span>
+                {activeSample.cancer_type} • Tissue Origin: <span className="text-brand-300 font-mono font-semibold">{activeSample.tcga_desc}</span>
               </div>
             </div>
 
@@ -128,8 +128,8 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
         )}
 
         {successNotice && (
-          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs flex items-center space-x-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <div className="p-3 bg-brand-500/15 border border-brand-400/30 text-brand-200 rounded-lg text-xs flex items-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 text-brand-400" />
             <span>{successNotice}</span>
           </div>
         )}
@@ -147,7 +147,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center">
-              <Clock className="w-4 h-4 mr-2 text-indigo-400" />
+              <Clock className="w-4 h-4 mr-2 text-brand-400" />
               Report History & Reproducibility Archive
             </h3>
             <span className="text-xs text-slate-400">
@@ -172,13 +172,13 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
               <tbody className="divide-y divide-slate-800/60 font-mono text-[11px]">
                 {history.map((rep) => (
                   <tr key={rep.report_id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 font-bold text-teal-400">{rep.report_id}</td>
+                    <td className="py-3 px-4 font-bold text-brand-400">{rep.report_id}</td>
                     <td className="py-3 px-4 font-sans">
                       <div className="font-semibold text-white">{rep.sample_name}</div>
                       <div className="text-[10px] text-slate-500 font-mono">{rep.sample_id}</div>
                     </td>
                     <td className="py-3 px-4 text-slate-300">{rep.tissue}</td>
-                    <td className="py-3 px-4 text-emerald-400 font-sans font-semibold">
+                    <td className="py-3 px-4 text-brand-300 font-sans font-semibold">
                       {rep.top_sensitive_drug}
                     </td>
                     <td className="py-3 px-4 text-slate-400">{rep.timestamp}</td>
@@ -187,7 +187,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
                         <a
                           href={api.getDownloadUrl(rep.pdf_file)}
                           download={rep.pdf_file}
-                          className="flex items-center space-x-1 px-2.5 py-1 rounded bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[11px] font-semibold transition-colors"
+                          className="flex items-center space-x-1 px-2.5 py-1 rounded bg-brand-500/20 hover:bg-brand-500/30 text-brand-200 border border-brand-400/30 text-[11px] font-semibold transition-colors"
                         >
                           <Download className="w-3 h-3" />
                           <span>PDF</span>
@@ -195,7 +195,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
                         <a
                           href={api.getDownloadUrl(rep.csv_file)}
                           download={rep.csv_file}
-                          className="flex items-center space-x-1 px-2.5 py-1 rounded bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[11px] font-semibold transition-colors"
+                          className="flex items-center space-x-1 px-2.5 py-1 rounded bg-brand-500/15 hover:bg-brand-500/25 text-brand-200 border border-brand-400/30 text-[11px] font-semibold transition-colors"
                         >
                           <FileSpreadsheet className="w-3 h-3" />
                           <span>CSV</span>

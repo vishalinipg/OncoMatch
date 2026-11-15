@@ -27,8 +27,8 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
 
   if (t.includes('established')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#618264]/25 text-[#D0E7D2] border border-[#79AC78]/40">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#79AC78] mr-1.5"></span>
         Established Cell Line
       </span>
     );

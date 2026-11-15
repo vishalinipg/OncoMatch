@@ -9,8 +9,8 @@ export const SensitivityBadge: React.FC<SensitivityBadgeProps> = ({ category }) 
 
   if (cat === 'sensitive') {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-[#79AC78]/25 text-[#D0E7D2] border border-[#79AC78]/40">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#B0D9B1] mr-1.5"></span>
         Sensitive
       </span>
     );
@@ -18,8 +18,8 @@ export const SensitivityBadge: React.FC<SensitivityBadgeProps> = ({ category }) 
 
   if (cat === 'intermediate') {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-[#618264]/30 text-[#D0E7D2] border border-[#618264]/50">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#79AC78] mr-1.5"></span>
         Intermediate
       </span>
     );

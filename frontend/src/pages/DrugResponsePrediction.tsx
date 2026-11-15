@@ -129,7 +129,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
-            <Pill className="w-6 h-6 mr-2.5 text-emerald-400" />
+            <Pill className="w-6 h-6 mr-2.5 text-[#79AC78]" />
             Chemotherapy Drug Response Prediction & Sensitivity Ranking
           </h2>
           <p className="text-xs text-slate-400 mt-1">
@@ -141,20 +141,20 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
           onClick={() => setShowModelCard(!showModelCard)}
           className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors"
         >
-          <Info className="w-3.5 h-3.5 text-teal-400" />
+          <Info className="w-3.5 h-3.5 text-[#79AC78]" />
           <span>{showModelCard ? "Hide Model Card" : "Model Card & Metrics"}</span>
         </button>
       </div>
 
       {/* Model Card Modal */}
       {showModelCard && modelInfo && (
-        <div className="p-6 rounded-2xl bg-slate-900 border border-teal-500/30 text-xs space-y-4 shadow-xl">
+        <div className="p-6 rounded-2xl bg-slate-900 border border-[#79AC78]/40 text-xs space-y-4 shadow-xl">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center space-x-2">
-              <ShieldCheck className="w-5 h-5 text-teal-400" />
+              <ShieldCheck className="w-5 h-5 text-[#79AC78]" />
               <span className="text-sm font-bold text-white">{modelInfo.model_card.name}</span>
             </div>
-            <span className="text-[11px] font-mono text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded">
+            <span className="text-[11px] font-mono text-[#D0E7D2] bg-[#618264]/30 px-2 py-0.5 rounded border border-[#79AC78]/30">
               Cell-Line Grouped 80:20 Split
             </span>
           </div>
@@ -162,13 +162,13 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
             <div className="p-3 bg-slate-950 rounded-lg">
               <div className="text-slate-500 text-[10px]">INDEPENDENT TEST MAE</div>
-              <div className="text-base font-bold text-emerald-300 mt-1">
+              <div className="text-base font-bold text-[#D0E7D2] mt-1">
                 {modelInfo.metrics.tuned_histgb_holdout.MAE} <span className="text-xs text-slate-400 font-sans">(baseline {modelInfo.metrics.mean_baseline_test_MAE})</span>
               </div>
             </div>
             <div className="p-3 bg-slate-950 rounded-lg">
               <div className="text-slate-500 text-[10px]">TEST EXPLAINED VARIANCE (R²)</div>
-              <div className="text-base font-bold text-teal-300 mt-1">
+              <div className="text-base font-bold text-[#B0D9B1] mt-1">
                 {modelInfo.metrics.tuned_histgb_holdout.R2} <span className="text-xs text-slate-400 font-sans">(75.9%)</span>
               </div>
             </div>
@@ -195,10 +195,10 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
           <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center">
-                <Sliders className="w-4 h-4 mr-2 text-teal-400" />
+                <Sliders className="w-4 h-4 mr-2 text-[#79AC78]" />
                 Select Chemotherapy Drug
               </h3>
-              <span className="text-xs font-mono text-teal-400">
+              <span className="text-xs font-mono text-[#B0D9B1]">
                 {drugs.length} Compounds
               </span>
             </div>
@@ -211,7 +211,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 setSelectedDrugId(did);
                 runSinglePrediction(did, tissue);
               }}
-              className="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-teal-500 font-medium"
+              className="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-[#79AC78] font-medium"
             >
               {drugs.map(d => (
                 <option key={d.DRUG_ID} value={d.DRUG_ID}>
@@ -225,7 +225,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               <button
                 onClick={() => runBatchPrediction()}
                 disabled={isBatchRunning}
-                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-teal-500/20 active:scale-95 disabled:opacity-50"
+                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-[#79AC78] to-[#618264] hover:from-[#618264] hover:to-[#506e53] text-slate-950 font-bold text-xs transition-all shadow-lg shadow-[#618264]/25 active:scale-95 disabled:opacity-50"
               >
                 <Zap className="w-4 h-4" />
                 <span>{isBatchRunning ? "Predicting Across 295 Drugs..." : "Rank All 295 Drugs for This Profile"}</span>
@@ -235,7 +235,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
 
           {/* Single Prediction Output Card */}
           {singleResult && (
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950/30 border border-teal-500/30 space-y-4">
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-[#618264]/20 border border-[#79AC78]/40 space-y-4">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div>
                   <span className="text-base font-bold text-white">{singleResult.drug_name}</span>
@@ -250,7 +250,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800">
                   <div className="text-[10px] text-slate-400 uppercase tracking-wider">Predicted ln(IC50)</div>
-                  <div className="text-2xl font-extrabold text-teal-300 font-mono mt-1">
+                  <div className="text-2xl font-extrabold text-[#D0E7D2] font-mono mt-1">
                     {singleResult.predicted_ln_ic50}
                   </div>
                   <div className="text-[10px] text-slate-500 mt-1">
@@ -276,7 +276,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Signaling Pathway:</span>
-                  <span className="text-teal-400 font-medium">{singleResult.pathway_name}</span>
+                  <span className="text-[#B0D9B1] font-medium">{singleResult.pathway_name}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Screening Range:</span>
@@ -297,7 +297,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center">
-                  <TrendingDown className="w-4 h-4 mr-2 text-emerald-400" />
+                  <TrendingDown className="w-4 h-4 mr-2 text-[#79AC78]" />
                   Drug Sensitivity Ranking for {tissue}
                 </h3>
                 <span className="text-xs text-slate-400">
@@ -308,7 +308,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               {batchResults.length > 0 && (
                 <button
                   onClick={() => onNavigate('reports')}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border border-teal-500/30 text-xs font-semibold transition-colors"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#618264]/20 hover:bg-[#618264]/30 text-[#D0E7D2] border border-[#79AC78]/40 text-xs font-semibold transition-colors"
                 >
                   <span>Export Report</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -327,14 +327,14 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                       placeholder="Filter by drug, target or pathway..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-500"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#79AC78]"
                     />
                   </div>
 
                   <select
                     value={pathwayFilter}
                     onChange={(e) => setPathwayFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-teal-500 max-w-[150px] truncate"
+                    className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-[#79AC78] max-w-[150px] truncate"
                   >
                     <option value="ALL">All Pathways</option>
                     {pathways.map(p => (
@@ -345,7 +345,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                   <select
                     value={sensitivityFilter}
                     onChange={(e) => setSensitivityFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-teal-500"
+                    className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-[#79AC78]"
                   >
                     <option value="ALL">All Sensitivity</option>
                     <option value="Sensitive">Sensitive</option>
@@ -379,20 +379,20 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                             }}
                             className={`cursor-pointer transition-colors ${
                               isCurrent 
-                                ? 'bg-teal-500/15 text-white font-bold' 
+                                ? 'bg-[#618264]/25 text-white font-bold' 
                                 : 'hover:bg-slate-800/40 text-slate-300'
                             }`}
                           >
-                            <td className="py-2 px-3 text-center font-bold text-teal-400">
+                            <td className="py-2 px-3 text-center font-bold text-[#79AC78]">
                               #{item.rank}
                             </td>
                             <td className="py-2 px-3 font-sans font-semibold text-white">
                               {item.drug_name}
                             </td>
                             <td className="py-2 px-3 font-sans text-slate-400 text-[11px] truncate max-w-[180px]">
-                              {item.putative_target} • <span className="text-teal-400/90">{item.pathway_name}</span>
+                              {item.putative_target} • <span className="text-[#B0D9B1]">{item.pathway_name}</span>
                             </td>
-                            <td className="py-2 px-3 text-right font-bold text-teal-300">
+                            <td className="py-2 px-3 text-right font-bold text-[#D0E7D2]">
                               {item.predicted_ln_ic50.toFixed(3)}
                             </td>
                             <td className="py-2 px-3 text-right text-slate-300">

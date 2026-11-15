@@ -89,14 +89,12 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
     return rows;
   }, [sampleDetail, l1000Genes]);
 
-  // Unique pathways for filter
   const pathways = useMemo(() => {
     const pSet = new Set<string>();
     l1000Genes.forEach(g => pSet.add(g.pathway));
     return ['ALL', ...Array.from(pSet).sort()];
   }, [l1000Genes]);
 
-  // Filtered and sorted rows
   const filteredRows = useMemo(() => {
     let list = [...geneRows];
 
@@ -124,7 +122,6 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
     return list;
   }, [geneRows, searchTerm, pathwayFilter, sortBy]);
 
-  // Distribution bins for chart
   const distributionData = useMemo(() => {
     if (!sampleDetail?.expression) return [];
     const vals = Object.values(sampleDetail.expression);
@@ -164,7 +161,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
-            <Dna className="w-6 h-6 mr-2.5 text-teal-400" />
+            <Dna className="w-6 h-6 mr-2.5 text-[#79AC78]" />
             Molecular Profile & L1000 Expression Architecture
           </h2>
           <p className="text-xs text-slate-400 mt-1">
@@ -174,7 +171,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
 
         <button
           onClick={() => onNavigate('prediction')}
-          className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95 shrink-0"
+          className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#79AC78] hover:bg-[#618264] text-slate-950 font-bold text-xs transition-all shadow-md shadow-[#618264]/25 active:scale-95 shrink-0"
         >
           <span>Proceed to Prediction</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -183,9 +180,9 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
 
       {/* Transcriptomic Scope Notice */}
       <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-start space-x-3">
-        <AlertCircle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+        <AlertCircle className="w-4 h-4 text-[#B0D9B1] shrink-0 mt-0.5" />
         <div className="text-slate-300 leading-relaxed">
-          <span className="font-semibold text-white">Transcriptomic Scope Notice:</span> Displays <span className="text-cyan-300 font-medium">mRNA transcript abundance (log2 expression)</span> for the 978 LINCS L1000 landmark genes. It does <span className="font-semibold text-white">not</span> report genomic variant calls, point mutations (e.g. SNVs), or copy number amplifications (CNVs) unless annotated in the sample descriptor.
+          <span className="font-semibold text-white">Transcriptomic Scope Notice:</span> Displays <span className="text-[#D0E7D2] font-medium">mRNA transcript abundance (log2 expression)</span> for the 978 LINCS L1000 landmark genes. It does <span className="font-semibold text-white">not</span> report genomic variant calls, point mutations (e.g. SNVs), or copy number amplifications (CNVs) unless annotated in the sample descriptor.
         </div>
       </div>
 
@@ -194,7 +191,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
           <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
             <div className="text-[11px] text-slate-400">Landmark Coverage</div>
-            <div className="text-xl font-bold text-teal-300 font-mono mt-1">
+            <div className="text-xl font-bold text-[#D0E7D2] font-mono mt-1">
               {sampleDetail.quality.l1000_landmark_matched} / 978
             </div>
             <div className="text-[10px] text-slate-500 mt-0.5">{sampleDetail.quality.l1000_coverage_percent}% coverage</div>
@@ -245,7 +242,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
       <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
-            <BarChart2 className="w-4 h-4 mr-2 text-teal-400" />
+            <BarChart2 className="w-4 h-4 mr-2 text-[#79AC78]" />
             L1000 Expression Density Histogram
           </h3>
           <span className="text-xs text-slate-500 font-mono">Binned Log2 Frequencies</span>
@@ -260,9 +257,9 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                 contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
                 formatter={(val: any) => [`${val} genes`, 'Frequency']}
               />
-              <Bar dataKey="count" fill="#14b8a6" radius={[4, 4, 0, 0]}>
+              <Bar dataKey="count" fill="#79AC78" radius={[4, 4, 0, 0]}>
                 {distributionData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={index > 7 ? '#f59e0b' : '#0d9488'} />
+                  <Cell key={`cell-${index}`} fill={index > 7 ? '#B0D9B1' : '#618264'} />
                 ))}
               </Bar>
             </BarChart>
@@ -270,7 +267,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
         </div>
         <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/60">
           <span>Normal biological baseline typically centers between 6.0 and 8.5 log2 intensity.</span>
-          <span className="text-amber-400 font-medium">Orange bins indicate hyper-expressed oncogenic outliers.</span>
+          <span className="text-[#B0D9B1] font-medium">Lighter green bars indicate hyper-expressed oncogenic outliers.</span>
         </div>
       </div>
 
@@ -295,7 +292,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                 placeholder="Search gene or pathway..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 w-48 sm:w-56"
+                className="bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#79AC78] w-48 sm:w-56"
               />
             </div>
 
@@ -303,7 +300,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             <select
               value={pathwayFilter}
               onChange={(e) => setPathwayFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-teal-500 max-w-[180px] truncate"
+              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-[#79AC78] max-w-[180px] truncate"
             >
               <option value="ALL">All Pathways</option>
               {pathways.filter(p => p !== 'ALL').map(p => (
@@ -315,7 +312,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             <select
               value={sortBy}
               onChange={(e: any) => setSortBy(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-teal-500"
+              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-[#79AC78]"
             >
               <option value="expr-desc">Highest Expression</option>
               <option value="expr-asc">Lowest Expression</option>
@@ -350,11 +347,11 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                   </td>
                   <td className="py-2.5 px-4 text-slate-400">{row.entrez_id}</td>
                   <td className="py-2.5 px-4 text-slate-300 font-sans truncate max-w-xs">{row.pathway}</td>
-                  <td className="py-2.5 px-4 text-right font-bold text-teal-300">
+                  <td className="py-2.5 px-4 text-right font-bold text-[#D0E7D2]">
                     {row.expression !== null ? row.expression.toFixed(3) : 'Imputed 7.000'}
                   </td>
                   <td className={`py-2.5 px-4 text-right font-semibold ${
-                    row.zScore > 2 ? 'text-amber-400' : row.zScore < -2 ? 'text-cyan-400' : 'text-slate-400'
+                    row.zScore > 2 ? 'text-amber-400' : row.zScore < -2 ? 'text-[#B0D9B1]' : 'text-slate-400'
                   }`}>
                     {row.zScore > 0 ? `+${row.zScore}` : row.zScore}
                   </td>
@@ -364,7 +361,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                         Outlier
                       </span>
                     ) : (
-                      <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded font-sans">
+                      <span className="text-[10px] bg-[#618264]/25 text-[#D0E7D2] border border-[#79AC78]/40 px-1.5 py-0.5 rounded font-sans">
                         Norm
                       </span>
                     )}

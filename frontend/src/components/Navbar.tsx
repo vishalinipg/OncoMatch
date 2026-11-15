@@ -22,9 +22,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPageTitle, activeSample }
         {activeSample && (
           <div className="hidden lg:flex items-center space-x-2 pl-3 border-l border-slate-800 text-xs">
             <span className="text-slate-500">Active:</span>
-            <span className="font-semibold text-teal-300 font-mono">{activeSample.name}</span>
+            <span className="font-semibold text-[#D0E7D2] font-mono">{activeSample.name}</span>
             <span className="text-slate-600">•</span>
-            <span className="text-teal-400 font-mono font-medium">{activeSample.tcga_desc}</span>
+            <span className="text-[#B0D9B1] font-mono font-medium">{activeSample.tcga_desc}</span>
             <SampleTypeBadge type={activeSample.sample_type} />
           </div>
         )}
@@ -32,10 +32,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPageTitle, activeSample }
 
       <div className="flex items-center space-x-3 shrink-0">
         <div className="hidden sm:flex items-center space-x-2 text-xs text-slate-400 bg-slate-950/60 border border-slate-800 px-3 py-1.5 rounded-lg font-mono">
-          <Database className="w-3.5 h-3.5 text-teal-400" />
+          <Database className="w-3.5 h-3.5 text-[#79AC78]" />
           <span>242,036 Curves</span>
           <span className="text-slate-700">|</span>
-          <Cpu className="w-3.5 h-3.5 text-emerald-400" />
+          <Cpu className="w-3.5 h-3.5 text-[#B0D9B1]" />
           <span>HistGB (MAE 1.027)</span>
         </div>
 
