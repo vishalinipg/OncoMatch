@@ -35,12 +35,12 @@ export const App: React.FC = () => {
 
   const getPageTitle = (page: string) => {
     switch (page) {
-      case 'dashboard': return 'Page 1 — Dashboard Overview';
-      case 'upload': return 'Page 2 — Patient Profile & Sample Upload';
-      case 'molecular': return 'Page 3 — Molecular Profile & L1000 Expression';
-      case 'prediction': return 'Page 4 — Chemotherapy Drug Response Prediction';
-      case 'analytics': return 'Page 5 — Visual Analytics (PCA & HMM)';
-      case 'reports': return 'Page 6 — Personalized Report Generation';
+      case 'dashboard': return 'Dashboard Overview';
+      case 'upload': return 'Patient Profile & Sample Upload';
+      case 'molecular': return 'Molecular Profile & L1000 Expression';
+      case 'prediction': return 'Chemotherapy Drug Response Prediction';
+      case 'analytics': return 'Visual Analytics (PCA & HMM)';
+      case 'reports': return 'Personalized Report Generation';
       default: return 'OncoMatch Platform';
     }
   };
@@ -48,7 +48,7 @@ export const App: React.FC = () => {
   const activeSample = samples.find(s => s.sample_id === selectedSampleId);
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800 font-sans">
+    <div className="flex min-h-screen bg-slate-100 text-slate-800 font-sans">
       {/* Sidebar */}
       <Sidebar
         currentPage={currentPage}

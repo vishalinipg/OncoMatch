@@ -129,12 +129,13 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
     return true;
   });
 
-  // Format concentration cleanly
-  const formatConc = (val: number | undefined) => {
-    if (val === undefined || val === null || isNaN(val)) return '0.0000';
-    if (val < 0.01) return val.toFixed(4);
-    if (val < 1.0) return val.toFixed(3);
-    return val.toFixed(2);
+  // Format concentration cleanly with appropriate units (µM or nM)
+  const formatConc = (val: number | undefined, includeUnit = true) => {
+    if (val === undefined || val === null || isNaN(val)) return includeUnit ? '0.0000 µM' : '0.0000';
+    if (val < 0.001) return includeUnit ? `${(val * 1000).toFixed(1)} nM` : `${(val * 1000).toFixed(1)}`;
+    if (val < 0.01) return includeUnit ? `${val.toFixed(4)} µM` : val.toFixed(4);
+    if (val < 1.0) return includeUnit ? `${val.toFixed(3)} µM` : val.toFixed(3);
+    return includeUnit ? `${val.toFixed(2)} µM` : val.toFixed(2);
   };
 
   // Generate 4-parameter logistic sigmoidal dose-response curve
@@ -302,29 +303,29 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 </div>
 
                 <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-                  <div className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Estimated IC50 (µM)</div>
+                  <div className="text-[10px] text-slate-600 font-semibold uppercase tracking-wider">Estimated IC50</div>
                   <div className="text-2xl font-extrabold text-slate-900 font-mono mt-1">
-                    {singleResult.predicted_ic50_uM} µM
+                    {formatConc(singleResult.predicted_ic50_uM)}
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-1">
-                    Range: [{formatConc(singleResult.ic50_band_80pct_uM[0])} - {formatConc(singleResult.ic50_band_80pct_uM[1])} µM]
+                  <div className="text-[10px] text-slate-600 mt-1 font-mono">
+                    80% Range: [{formatConc(singleResult.ic50_band_80pct_uM[0])} - {formatConc(singleResult.ic50_band_80pct_uM[1])}]
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1.5 text-xs text-slate-700 pt-2 border-t border-slate-200/80">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Putative Target:</span>
+                  <span className="text-slate-600">Putative Target:</span>
                   <span className="font-bold text-slate-900">{singleResult.putative_target}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Signaling Pathway:</span>
-                  <span className="text-teal-700 font-semibold">{singleResult.pathway_name}</span>
+                  <span className="text-slate-600">Signaling Pathway:</span>
+                  <span className="text-teal-800 font-semibold">{singleResult.pathway_name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Screening Range:</span>
-                  <span className="font-mono text-slate-700 font-semibold">
-                    {formatConc(singleResult.min_conc_uM)} µM - {formatConc(singleResult.max_conc_uM)} µM
+                  <span className="text-slate-600">Screening Range:</span>
+                  <span className="font-mono text-slate-800 font-semibold">
+                    {formatConc(singleResult.min_conc_uM)} to {formatConc(singleResult.max_conc_uM)}
                   </span>
                 </div>
               </div>
@@ -341,16 +342,17 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                   </span>
                 </div>
 
-                <div className="h-40 w-full bg-white p-2 rounded-xl border border-slate-200">
+                <div className="h-44 w-full bg-white p-2 rounded-xl border border-slate-200">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={doseResponseCurveData} margin={{ top: 10, right: 15, left: -25, bottom: 5 }}>
+                    <LineChart data={doseResponseCurveData} margin={{ top: 10, right: 15, left: -20, bottom: 15 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis 
                         dataKey="conc" 
                         stroke="#94a3b8" 
                         fontSize={9} 
-                        tickFormatter={(v) => formatConc(v)}
+                        tickFormatter={(v) => formatConc(v, false)}
                         tickLine={false}
+                        label={{ value: 'Log Concentration (µM)', position: 'insideBottom', offset: -10, fontSize: 9, fill: '#475569' }}
                       />
                       <YAxis 
                         domain={[0, 100]} 
@@ -358,13 +360,14 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                         stroke="#94a3b8" 
                         fontSize={9} 
                         tickLine={false}
+                        label={{ value: '% Viability', angle: -90, position: 'insideLeft', offset: 15, fontSize: 9, fill: '#475569' }}
                       />
                       <Tooltip 
                         contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', fontSize: '11px', color: '#0f172a' }}
                         formatter={(val: any) => [`${val}%`, 'Cell Viability']}
                         labelFormatter={(lbl: any) => `Conc: ${lbl} µM`}
                       />
-                      <ReferenceLine y={50} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: '50% Viability', fill: '#d97706', fontSize: 9, position: 'insideTopLeft' }} />
+                      <ReferenceLine y={50} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: '50% Kill', fill: '#d97706', fontSize: 9, position: 'insideTopLeft' }} />
                       <Line 
                         type="monotone" 
                         dataKey="viability" 
@@ -375,9 +378,9 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-slate-500 px-1">
-                  <span>Conc Range: {formatConc(singleResult.min_conc_uM)} - {formatConc(singleResult.max_conc_uM)} µM</span>
-                  <span className="text-teal-700 font-semibold font-mono">Inflection point: 50% kill</span>
+                <div className="flex items-center justify-between text-[10px] text-slate-600 px-1 font-mono">
+                  <span>Range: {formatConc(singleResult.min_conc_uM)} to {formatConc(singleResult.max_conc_uM)}</span>
+                  <span className="text-teal-800 font-semibold font-sans">Hill inflection: 50% kill @ IC50</span>
                 </div>
               </div>
 

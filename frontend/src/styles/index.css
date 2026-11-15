@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-800;
+    @apply bg-slate-100 text-slate-800 antialiased;
   }
 }
 
@@ -14,12 +14,12 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(241, 245, 249, 0.8);
+  background: rgba(226, 232, 240, 0.6);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(203, 213, 225, 0.8);
+  background: rgba(148, 163, 184, 0.7);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(13, 148, 136, 0.7);
+  background: rgba(13, 148, 136, 0.8);
 }
