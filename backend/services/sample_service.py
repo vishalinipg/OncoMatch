@@ -25,153 +25,157 @@ class SampleService:
             return
 
         self.ml_service = MLService()
-        self.samples: Dict[str, Dict[str, Any]] = {}
-        self._load_demo_samples()
+        self.profiles: Dict[str, Dict[str, Any]] = {}
+        self._load_reference_profiles()
         self._initialized = True
 
-    def _load_demo_samples(self):
-        artifacts_path = self.ml_service.artifacts_path
-        demo_file = artifacts_path / "demo_samples.json"
-        if demo_file.exists():
-            with open(demo_file, "r", encoding="utf-8") as f:
-                demo_data = json.load(f)
-            for key, sample in demo_data.items():
-                sid = sample["sample_id"]
-                # Calculate quality metrics
-                self.samples[sid] = self._enrich_sample_metadata(sample)
-            logger.info(f"Loaded {len(self.samples)} demo samples.")
+    def _load_reference_profiles(self):
+        """
+        Load key reference profiles from the 969 GDSC2 cell lines as default analysis setups.
+        """
+        cell_lines = self.ml_service.get_cell_lines()
+        probe_data = self.ml_service.get_probe_assays()
+        fps = probe_data.get("cell_line_fingerprints", {})
 
-    def _enrich_sample_metadata(self, sample: Dict[str, Any]) -> Dict[str, Any]:
-        expr = sample.get("expression", {})
-        l1000_ref = self.ml_service.l1000_symbols
-        total_l1000 = len(l1000_ref) if l1000_ref else 978
+        # Default high-impact reference cancer lines across distinct tissues
+        ref_keys = [
+            ("MCF7", "BRCA", 905946, "MCF7 Breast Adenocarcinoma", "ER+/PR+ luminal breast adenocarcinoma"),
+            ("A549", "LUAD", 905949, "A549 Lung Carcinoma", "KRAS G12S mutant non-small cell lung carcinoma"),
+            ("K-562", "LCML", 905940, "K-562 Chronic Myelogenous Leukemia", "BCR-ABL1 fusion positive leukemia"),
+            ("HCT-116", "COREAD", 905936, "HCT-116 Colorectal Carcinoma", "KRAS G13D mutant colorectal carcinoma"),
+            ("A375", "SKCM", 906793, "A375 Malignant Melanoma", "BRAF V600E mutant metastatic melanoma"),
+            ("MDA-MB-231", "BRCA", 905960, "MDA-MB-231 Triple-Negative Breast", "Triple-negative basal breast adenocarcinoma")
+        ]
 
-        matched_genes = [g for g in expr.keys() if g in l1000_ref]
-        values = [float(v) for v in expr.values() if np.isfinite(v)]
+        for name, tissue, cosmic_id, display_name, desc in ref_keys:
+            # Find matching line
+            matched = next((cl for cl in cell_lines if cl.get("cosmic_id") == cosmic_id or cl.get("name") == name), None)
+            fingerprint = fps.get(str(cosmic_id), {})
+            
+            profile_id = f"CL-{name}"
+            self.profiles[profile_id] = {
+                "sample_id": profile_id,
+                "name": display_name,
+                "cell_line_name": name,
+                "cosmic_id": cosmic_id,
+                "sample_type": "Established cancer cell line",
+                "tcga_desc": tissue,
+                "cancer_type": f"{tissue} Carcinoma",
+                "description": desc,
+                "is_reference": True,
+                "tested_drugs": matched.get("tested_drugs", 295) if matched else 295,
+                "baseline_ln_ic50": matched.get("median_ln_ic50", 3.25) if matched else 3.25,
+                "probe_fingerprint": fingerprint,
+                "probe_assay_count": len(fingerprint),
+                "warnings": []
+            }
         
-        arr = np.array(values) if values else np.array([0.0])
-        mean_val = float(np.mean(arr))
-        std_val = float(np.std(arr)) if len(arr) > 1 else 1.0
-        
-        # Outlier count (|z| > 3)
-        outliers = int(np.sum(np.abs((arr - mean_val) / (std_val if std_val > 0 else 1.0)) > 3))
-
-        stype = sample.get("sample_type", "Established cancer cell line")
-        warnings = []
-        if "patient-derived" in stype.lower() and "organoid" in stype.lower():
-            warnings.append("Patient-derived organoid model: 3D drug diffusion, matrix interactions, and microenvironment differ from 2D GDSC2 monolayers. Treat predictions as exploratory.")
-        elif "patient-derived" in stype.lower():
-            warnings.append("Patient-derived cell line: Model generalization from established cell lines has not been clinically validated. Results are for research exploration only.")
-        elif stype.lower() == "other molecular profile":
-            warnings.append("Exploratory profile mode: Non-standard sample type. Strict feature mapping applied.")
-
-        coverage_pct = round((len(matched_genes) / total_l1000) * 100, 1) if total_l1000 else 100.0
-
-        sample_record = dict(sample)
-        sample_record["quality"] = {
-            "total_genes_measured": len(expr),
-            "l1000_landmark_matched": len(matched_genes),
-            "l1000_coverage_percent": coverage_pct,
-            "mean_expression": round(mean_val, 3),
-            "std_expression": round(std_val, 3),
-            "min_expression": round(float(np.min(arr)), 3) if len(arr) else 0.0,
-            "max_expression": round(float(np.max(arr)), 3) if len(arr) else 0.0,
-            "outlier_count": outliers,
-            "missing_l1000_count": max(0, total_l1000 - len(matched_genes))
-        }
-        sample_record["warnings"] = warnings
-        return sample_record
+        logger.info(f"Initialized {len(self.profiles)} reference cell line profiles.")
 
     def list_samples(self) -> List[Dict[str, Any]]:
-        # Return samples without the heavy full expression dict for fast list rendering
-        out = []
-        for s in self.samples.values():
-            item = {k: v for k, v in s.items() if k != "expression"}
-            item["gene_count"] = len(s.get("expression", {}))
-            out.append(item)
-        return out
+        return list(self.profiles.values())
 
     def get_sample(self, sample_id: str) -> Optional[Dict[str, Any]]:
-        return self.samples.get(sample_id)
-
-    def parse_and_validate_file(self, content_str: str, filename: str) -> Dict[str, Any]:
-        """
-        Parses CSV or TSV molecular expression file.
-        Accepts formats:
-        - Two columns: Gene, Expression (or Symbol, Value)
-        - Matrix format: Gene / Symbol as index or first column
-        """
-        delimiter = "\t" if filename.lower().endswith((".tsv", ".tab")) or "\t" in content_str[:500] else ","
-        df = pd.read_csv(io.StringIO(content_str), sep=delimiter)
-
-        if df.shape[1] < 2:
-            raise ValueError("Uploaded file must have at least two columns (Gene Symbol and Expression Value).")
-
-        # Try to locate gene symbol column
-        col0 = df.columns[0]
-        col1 = df.columns[1]
-
-        # Check if first column has strings like TP53
-        gene_col = col0
-        val_col = col1
-
-        for c in df.columns:
-            if any(k in str(c).lower() for k in ["gene", "symbol", "feature", "id"]):
-                gene_col = c
+        # Match by exact sample_id or cell_line_name or cosmic_id
+        if sample_id in self.profiles:
+            return self.profiles[sample_id]
+        
+        # Check if matching a COSMIC ID or cell line name from the 969 catalog
+        cell_lines = self.ml_service.get_cell_lines()
+        clean_id = str(sample_id).strip().upper()
+        
+        matched = None
+        for cl in cell_lines:
+            if str(cl.get("cosmic_id")) == clean_id or cl.get("name", "").upper() == clean_id:
+                matched = cl
                 break
         
-        numeric_cols = [c for c in df.columns if c != gene_col and pd.to_numeric(df[c], errors="coerce").notna().sum() > len(df) * 0.5]
-        if not numeric_cols:
-            raise ValueError("Could not find a valid numeric expression column in uploaded file.")
-        val_col = numeric_cols[0]
+        if matched:
+            probe_data = self.ml_service.get_probe_assays()
+            cid = str(matched["cosmic_id"])
+            fingerprint = probe_data.get("cell_line_fingerprints", {}).get(cid, {})
+            
+            created_profile = {
+                "sample_id": f"COSMIC-{cid}",
+                "name": f"{matched['name']} (COSMIC {cid})",
+                "cell_line_name": matched["name"],
+                "cosmic_id": matched["cosmic_id"],
+                "sample_type": "Established cancer cell line",
+                "tcga_desc": matched.get("tcga_desc", "UNKNOWN"),
+                "cancer_type": f"{matched.get('tcga_desc', 'Cancer')} Lineage",
+                "description": f"GDSC2 screened cell line {matched['name']}. {matched.get('tested_drugs', 0)} drugs evaluated.",
+                "is_reference": False,
+                "tested_drugs": matched.get("tested_drugs", 0),
+                "baseline_ln_ic50": matched.get("median_ln_ic50", 3.25),
+                "probe_fingerprint": fingerprint,
+                "probe_assay_count": len(fingerprint),
+                "warnings": []
+            }
+            self.profiles[created_profile["sample_id"]] = created_profile
+            return created_profile
 
-        expr_dict = {}
-        for _, row in df.iterrows():
-            sym = str(row[gene_col]).strip().upper()
-            val = pd.to_numeric(row[val_col], errors="coerce")
-            if sym and pd.notna(val) and np.isfinite(val):
-                expr_dict[sym] = round(float(val), 4)
-
-        if not expr_dict:
-            raise ValueError("No valid numeric expression values could be extracted.")
-
-        l1000_ref = self.ml_service.l1000_symbols
-        total_l1000 = len(l1000_ref) if l1000_ref else 978
-        matched = [g for g in expr_dict.keys() if g in l1000_ref]
-
-        return {
-            "total_rows_parsed": len(df),
-            "valid_genes_extracted": len(expr_dict),
-            "l1000_matched": len(matched),
-            "l1000_coverage_percent": round((len(matched) / total_l1000) * 100, 1),
-            "sample_genes_preview": list(expr_dict.items())[:10],
-            "expression_dict": expr_dict
-        }
+        return None
 
     def create_sample(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        sid = data.get("sample_id", "").strip() or f"SAMPLE-{uuid.uuid4().hex[:8].upper()}"
-        if sid in self.samples:
-            # Append suffix if duplicate
-            sid = f"{sid}-{uuid.uuid4().hex[:4].upper()}"
+        """
+        Create a new analysis profile (cell line or custom patient-derived model).
+        """
+        name = data.get("name") or data.get("cell_line_name") or f"Analysis-{uuid.uuid4().hex[:6].upper()}"
+        tissue = data.get("tcga_desc", "UNKNOWN").upper()
+        if tissue not in self.ml_service.tissues:
+            tissue = "UNKNOWN"
 
-        raw_sample = {
-            "sample_id": sid,
-            "name": data.get("name", sid),
-            "sample_type": data.get("sample_type", "Established cancer cell line"),
-            "cancer_type": data.get("cancer_type", "Unknown Cancer"),
-            "cancer_subtype": data.get("cancer_subtype", "Unspecified"),
-            "tcga_desc": data.get("tcga_desc", "PANCAN"),
-            "description": data.get("description", ""),
-            "research_project_id": data.get("research_project_id", "PROJ-ONCO-01"),
-            "expression": data.get("expression", {})
+        sample_type = data.get("sample_type", "Established cancer cell line")
+        cosmic_id = data.get("cosmic_id")
+        
+        # Check if cosmic_id matches an existing line to link probe assays
+        fingerprint = {}
+        tested_drugs = 0
+        baseline_ln = 3.255
+        
+        if cosmic_id:
+            probe_data = self.ml_service.get_probe_assays()
+            fingerprint = probe_data.get("cell_line_fingerprints", {}).get(str(cosmic_id), {})
+            matched = next((cl for cl in self.ml_service.get_cell_lines() if cl.get("cosmic_id") == int(cosmic_id)), None)
+            if matched:
+                tested_drugs = matched.get("tested_drugs", 0)
+                baseline_ln = matched.get("median_ln_ic50", 3.255)
+
+        warnings = []
+        if "patient-derived" in sample_type.lower() and "organoid" in sample_type.lower():
+            warnings.append("Patient-derived organoid model: 3D drug diffusion and extracellular matrix differ from GDSC2 2D monolayer screens. Interpret predicted sensitivities as exploratory.")
+        elif "patient-derived" in sample_type.lower():
+            warnings.append("Patient-derived primary model: In-vitro cell-line predictions have not been clinically validated for direct patient dosing decisions.")
+
+        profile_id = data.get("sample_id") or f"ANALYSIS-{uuid.uuid4().hex[:8].upper()}"
+        
+        profile = {
+            "sample_id": profile_id,
+            "name": name,
+            "cell_line_name": data.get("cell_line_name") or name,
+            "cosmic_id": cosmic_id,
+            "sample_type": sample_type,
+            "tcga_desc": tissue,
+            "cancer_type": data.get("cancer_type") or f"{tissue} Cancer",
+            "cancer_subtype": data.get("cancer_subtype"),
+            "description": data.get("description", "Custom oncology analysis configuration."),
+            "research_project_id": data.get("research_project_id"),
+            "is_reference": False,
+            "tested_drugs": tested_drugs,
+            "baseline_ln_ic50": baseline_ln,
+            "probe_fingerprint": fingerprint,
+            "probe_assay_count": len(fingerprint),
+            "warnings": warnings
         }
 
-        enriched = self._enrich_sample_metadata(raw_sample)
-        self.samples[sid] = enriched
-        return enriched
+        self.profiles[profile_id] = profile
+        return profile
 
     def delete_sample(self, sample_id: str) -> bool:
-        if sample_id in self.samples:
-            del self.samples[sample_id]
+        if sample_id in self.profiles:
+            # Don't delete protected reference profiles
+            if self.profiles[sample_id].get("is_reference"):
+                return False
+            del self.profiles[sample_id]
             return True
         return False

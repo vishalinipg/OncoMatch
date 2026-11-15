@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
 import { DashboardOverview } from './pages/DashboardOverview';
-import { PatientProfileUpload } from './pages/PatientProfileUpload';
-import { MolecularProfile } from './pages/MolecularProfile';
+import { SampleAnalysisSetup } from './pages/SampleAnalysisSetup';
+import { DrugTissueExplorer } from './pages/DrugTissueExplorer';
 import { DrugResponsePrediction } from './pages/DrugResponsePrediction';
 import { VisualAnalytics } from './pages/VisualAnalytics';
 import { PersonalizedReports } from './pages/PersonalizedReports';
@@ -13,7 +13,7 @@ import { Sample } from './types';
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [samples, setSamples] = useState<Sample[]>([]);
-  const [selectedSampleId, setSelectedSampleId] = useState<string>('MCF7-REF');
+  const [selectedSampleId, setSelectedSampleId] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,23 +24,29 @@ export const App: React.FC = () => {
           setSelectedSampleId(sList[0].sample_id);
         }
       })
-      .catch(err => console.error("Error loading initial samples:", err))
+      .catch(err => console.error("Error loading initial profiles:", err))
       .finally(() => setLoading(false));
   }, []);
 
   const handleSampleCreated = (newSample: Sample) => {
-    setSamples(prev => [newSample, ...prev]);
+    setSamples(prev => {
+      const exists = prev.some(s => s.sample_id === newSample.sample_id);
+      if (exists) {
+        return prev.map(s => s.sample_id === newSample.sample_id ? newSample : s);
+      }
+      return [newSample, ...prev];
+    });
     setSelectedSampleId(newSample.sample_id);
   };
 
   const getPageTitle = (page: string) => {
     switch (page) {
       case 'dashboard': return 'Dashboard Overview';
-      case 'upload': return 'Patient Profile & Sample Upload';
-      case 'molecular': return 'Molecular Profile & L1000 Expression';
-      case 'prediction': return 'Chemotherapy Drug Response Prediction';
-      case 'analytics': return 'Visual Analytics (PCA & HMM)';
-      case 'reports': return 'Personalized Report Generation';
+      case 'setup': return 'Sample & Analysis Setup';
+      case 'explorer': return 'Drug & Tissue Explorer';
+      case 'prediction': return 'Drug Response Prediction';
+      case 'analytics': return 'Visual Analytics & Benchmarks';
+      case 'reports': return 'Personalized Reports';
       default: return 'OncoMatch Platform';
     }
   };
@@ -73,8 +79,8 @@ export const App: React.FC = () => {
             />
           )}
 
-          {currentPage === 'upload' && (
-            <PatientProfileUpload
+          {currentPage === 'setup' && (
+            <SampleAnalysisSetup
               samples={samples}
               selectedSampleId={selectedSampleId}
               onSampleSelect={setSelectedSampleId}
@@ -83,12 +89,10 @@ export const App: React.FC = () => {
             />
           )}
 
-          {currentPage === 'molecular' && (
-            <MolecularProfile
-              sampleId={selectedSampleId}
-              samples={samples}
-              onSampleChange={setSelectedSampleId}
+          {currentPage === 'explorer' && (
+            <DrugTissueExplorer
               onNavigate={setCurrentPage}
+              activeSample={activeSample}
             />
           )}
 

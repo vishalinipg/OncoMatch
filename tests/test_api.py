@@ -20,6 +20,11 @@ def test_health_check():
     assert data["status"] == "online"
     assert "GDSC2" in data["dataset"]
 
+def test_spa_serving():
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "OncoMatch" in resp.text
+
 def test_get_model_info():
     resp = client.get("/api/model/info")
     assert resp.status_code == 200
@@ -33,7 +38,7 @@ def test_get_drugs():
     resp = client.get("/api/drugs")
     assert resp.status_code == 200
     drugs = resp.json()
-    assert len(drugs) >= 200
+    assert len(drugs) >= 286
     # Check cisplatin is in catalog
     cisplatin = [d for d in drugs if "cisplatin" in d["DRUG_NAME"].lower()]
     assert len(cisplatin) > 0
@@ -44,6 +49,7 @@ def test_get_tissues():
     tissues = resp.json()
     assert "LUAD" in tissues
     assert "BRCA" in tissues
+    assert len(tissues) >= 32
 
 def test_single_prediction():
     resp = client.post("/api/predict", json={
@@ -62,26 +68,53 @@ def test_batch_prediction():
     resp = client.post("/api/predict/all", json={"tissue": "BRCA"})
     assert resp.status_code == 200
     data = resp.json()
-    assert data["total_drugs"] >= 200
-    assert len(data["predictions"]) >= 200
+    assert data["total_drugs"] >= 286
+    assert len(data["predictions"]) >= 286
     # verify ordered by predicted_ln_ic50 ascending
     preds = data["predictions"]
     assert preds[0]["predicted_ln_ic50"] <= preds[-1]["predicted_ln_ic50"]
+
+def test_cell_lines_endpoint():
+    resp = client.get("/api/cell-lines")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["total"] == 969
+    assert len(data["cell_lines"]) == 969
+
+    # Test filtering by search query
+    resp_search = client.get("/api/cell-lines?search=MCF7")
+    assert resp_search.status_code == 200
+    assert resp_search.json()["filtered_count"] >= 1
+
+    # Test filtering by tissue
+    resp_tissue = client.get("/api/cell-lines?tissue=BRCA")
+    assert resp_tissue.status_code == 200
+    assert resp_tissue.json()["filtered_count"] > 10
+
+def test_cell_line_detail_and_probe_assays():
+    # MCF-7 COSMIC ID is 905946
+    resp = client.get("/api/cell-lines/905946")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert "cell_line" in data
+    assert data["cell_line"]["name"] == "MCF7"
+    assert "probe_fingerprint" in data
+    assert len(data["probe_fingerprint"]) > 0
 
 def test_samples_endpoints():
     # list samples
     resp = client.get("/api/samples")
     assert resp.status_code == 200
     samples = resp.json()
-    assert len(samples) >= 4 # at least 4 demo samples
+    assert len(samples) >= 4
 
     # get single sample
     first_id = samples[0]["sample_id"]
     resp2 = client.get(f"/api/samples/{first_id}")
     assert resp2.status_code == 200
     s_detail = resp2.json()
-    assert "expression" in s_detail
-    assert "quality" in s_detail
+    assert "tcga_desc" in s_detail
+    assert "sample_type" in s_detail
 
 def test_pca_endpoint():
     resp = client.get("/api/analytics/pca")
@@ -89,29 +122,27 @@ def test_pca_endpoint():
     pca = resp.json()
     assert "pc1_variance" in pca
     assert "samples" in pca
-    assert len(pca["samples"]) > 500
+    assert len(pca["samples"]) == 969
 
-def test_hmm_endpoint():
-    resp = client.get("/api/analytics/hmm")
+def test_probe_assays_endpoint():
+    resp = client.get("/api/analytics/probe-assays")
     assert resp.status_code == 200
-    hmm = resp.json()
-    assert "transition_matrix" in hmm
-    assert "emission_matrix" in hmm
-    assert "scientific_limitation" in hmm
-    assert len(hmm["transition_matrix"]) == 3
+    data = resp.json()
+    assert "probe_drugs" in data
+    assert len(data["probe_drugs"]) == 15
+    # Verify Camptothecin (1003) is in probe drugs
+    campt = next((p for p in data["probe_drugs"] if p["drug_id"] == 1003), None)
+    assert campt is not None
+    assert campt["drug_name"] == "Camptothecin"
 
 def test_report_generation():
-    # generate for MCF7-REF
+    # Generate report for MCF7 reference
     resp = client.post("/api/reports/generate", json={
-        "sample_id": "MCF7-REF",
+        "sample_id": "CL-MCF7",
         "tissue": "BRCA"
     })
     assert resp.status_code == 200
-    rep = resp.json()
-    assert "pdf_file" in rep
-    assert "csv_file" in rep
-    
-    # check history
-    h_resp = client.get("/api/reports/history")
-    assert h_resp.status_code == 200
-    assert len(h_resp.json()) >= 1
+    data = resp.json()
+    assert "report_id" in data
+    assert "pdf_filename" in data
+    assert "csv_filename" in data

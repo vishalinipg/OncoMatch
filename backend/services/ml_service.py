@@ -3,7 +3,7 @@ import sys
 import json
 import logging
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Union
 import numpy as np
 import pandas as pd
 import joblib
@@ -20,6 +20,8 @@ sys.path.insert(0, str(root_dir))
 from oncomatch_features import DrugResponseFeaturizer
 
 logger = logging.getLogger("oncomatch.ml")
+
+NEED_COLUMNS = ["DRUG_ID", "PUTATIVE_TARGET", "PATHWAY_NAME", "TCGA_DESC", "MIN_CONC", "MAX_CONC"]
 
 class MLService:
     _instance = None
@@ -50,6 +52,7 @@ class MLService:
         bundle_file = self.artifacts_path / "oncomatch_pbl3_bundle.joblib"
         if not bundle_file.exists():
             raise FileNotFoundError(f"Model bundle not found at {bundle_file}")
+        self.bundle_path = bundle_file
         self.bundle = joblib.load(bundle_file)
         self.model = self.bundle["model"]
         self.featurizer = self.bundle["featurizer"]
@@ -83,7 +86,23 @@ class MLService:
         with open(self.artifacts_path / "model_card.json", "r", encoding="utf-8") as f:
             self.model_card = json.load(f)
 
-        # 4. Load PCA landscape
+        # 4. Load 969 cell lines
+        cell_lines_file = self.artifacts_path / "cell_lines.json"
+        if cell_lines_file.exists():
+            with open(cell_lines_file, "r", encoding="utf-8") as f:
+                self.cell_lines = json.load(f)
+        else:
+            self.cell_lines = []
+
+        # 5. Load 15 probe assays
+        probe_file = self.artifacts_path / "probe_assays.json"
+        if probe_file.exists():
+            with open(probe_file, "r", encoding="utf-8") as f:
+                self.probe_data = json.load(f)
+        else:
+            self.probe_data = {"probe_drugs": [], "probe_ids": [], "cell_line_fingerprints": {}}
+
+        # 6. Load PCA landscape (969 cell lines)
         pca_file = self.artifacts_path / "pca_landscape.json"
         if pca_file.exists():
             with open(pca_file, "r", encoding="utf-8") as f:
@@ -91,26 +110,59 @@ class MLService:
         else:
             self.pca_data = {}
 
-        # 5. Load HMM metadata and matrices
-        hmm_file = self.artifacts_path / "hmm_meta.json"
-        if hmm_file.exists():
-            with open(hmm_file, "r", encoding="utf-8") as f:
-                self.hmm_meta = json.load(f)
-        else:
-            self.hmm_meta = {}
-
-        # 6. Load L1000 genes reference
-        l1000_file = self.artifacts_path / "l1000_genes.json"
-        if l1000_file.exists():
-            with open(l1000_file, "r", encoding="utf-8") as f:
-                self.l1000_genes = json.load(f)
-            self.l1000_symbols = {g["symbol"]: g for g in self.l1000_genes}
-        else:
-            self.l1000_genes = []
-            self.l1000_symbols = {}
-
         self.tissues = self.meta["tissues"]
         self.median_threshold = self.meta["train_median_ln_ic50"]
+
+    def build_query(self, drug: Union[int, str], tissue: str) -> pd.DataFrame:
+        """
+        Build one model-ready row from a known drug ID/name and tissue label.
+        Authoritative implementation directly from notebook cell 13.2.
+        """
+        if tissue not in self.tissues:
+            raise ValueError(f"Unknown tissue '{tissue}'. Valid values: {self.tissues}")
+        
+        if isinstance(drug, (int, np.integer)) or str(drug).strip().isdigit():
+            r = self.drug_catalog[self.drug_catalog["DRUG_ID"] == int(drug)]
+        else:
+            r = self.drug_catalog[self.drug_catalog["DRUG_NAME"].str.lower() == str(drug).strip().lower()]
+        
+        if r.empty:
+            raise ValueError(f"Unknown drug '{drug}'.")
+        if len(r) > 1:
+            raise ValueError(f"'{drug}' maps to several DRUG_IDs {r['DRUG_ID'].tolist()}; pass a DRUG_ID.")
+        
+        q = r.iloc[0][NEED_COLUMNS[:3] + NEED_COLUMNS[4:]].to_frame().T
+        q["TCGA_DESC"] = tissue
+        return q[NEED_COLUMNS].astype({"MIN_CONC": float, "MAX_CONC": float})
+
+    def predict_response(self, rows: pd.DataFrame, bundle_path: Optional[str] = None) -> pd.DataFrame:
+        """
+        Predict cell-line-level LN_IC50; lower values indicate greater in-vitro sensitivity.
+        Authoritative implementation directly from notebook cell 13.2.
+        """
+        miss = [c for c in NEED_COLUMNS if c not in rows.columns]
+        if miss:
+            raise ValueError(f"Missing required columns: {miss}")
+        
+        out = rows[NEED_COLUMNS].copy()
+        numeric = out[["MIN_CONC", "MAX_CONC"]].apply(pd.to_numeric, errors="coerce")
+        if not np.isfinite(numeric.to_numpy()).all():
+            raise ValueError("MIN_CONC and MAX_CONC must be finite numeric values")
+        if (numeric <= 0).any().any():
+            raise ValueError("MIN_CONC and MAX_CONC must be positive")
+        if (numeric["MIN_CONC"] > numeric["MAX_CONC"]).any():
+            raise ValueError("MIN_CONC cannot exceed MAX_CONC")
+        
+        out[["MIN_CONC", "MAX_CONC"]] = numeric
+        if out[["DRUG_ID", "PUTATIVE_TARGET", "PATHWAY_NAME", "TCGA_DESC"]].isna().any().any():
+            raise ValueError("Drug and tissue feature fields cannot be missing")
+        
+        b = joblib.load(bundle_path) if bundle_path else self.bundle
+        if list(b["feature_columns"]) != list(b["featurizer"].columns_):
+            raise ValueError("Saved bundle feature schema is inconsistent")
+        
+        out["PRED_LN_IC50"] = b["model"].predict(b["featurizer"].transform(out[NEED_COLUMNS]))
+        return out
 
     def get_model_info(self) -> Dict[str, Any]:
         return {
@@ -131,8 +183,11 @@ class MLService:
     def get_tissues(self) -> List[str]:
         return self.tissues
 
-    def get_l1000_reference(self) -> List[Dict[str, Any]]:
-        return self.l1000_genes
+    def get_cell_lines(self) -> List[Dict[str, Any]]:
+        return self.cell_lines
+
+    def get_probe_assays(self) -> Dict[str, Any]:
+        return self.probe_data
 
     def classify_sensitivity(self, ln_ic50: float) -> Dict[str, Any]:
         """
@@ -204,8 +259,8 @@ class MLService:
             "MAX_CONC": final_max
         }])
 
-        X = self.featurizer.transform(row_df)
-        pred_ln = float(self.model.predict(X)[0])
+        scored_df = self.predict_response(row_df)
+        pred_ln = float(scored_df["PRED_LN_IC50"].iloc[0])
         pred_ic50 = float(np.exp(pred_ln))
 
         # 80% holdout residual band from model card: [-1.43, 1.48]
@@ -232,7 +287,7 @@ class MLService:
 
     def predict_all_drugs(self, tissue: str = "PANCAN") -> List[Dict[str, Any]]:
         """
-        Batch prediction for all 295 drugs in GDSC2 catalog for a given tissue.
+        Batch prediction for all drugs in GDSC2 catalog for a given tissue.
         Returns ranked list ordered from highest sensitivity (lowest ln IC50) to lowest.
         """
         if tissue not in self.tissues:
@@ -250,8 +305,8 @@ class MLService:
             })
 
         df_batch = pd.DataFrame(rows)
-        X = self.featurizer.transform(df_batch)
-        preds = self.model.predict(X)
+        scored_df = self.predict_response(df_batch)
+        preds = scored_df["PRED_LN_IC50"].to_numpy()
 
         results = []
         for idx, pred_val in enumerate(preds):
@@ -280,6 +335,3 @@ class MLService:
 
     def get_pca_landscape(self) -> Dict[str, Any]:
         return self.pca_data
-
-    def get_hmm_data(self) -> Dict[str, Any]:
-        return self.hmm_meta

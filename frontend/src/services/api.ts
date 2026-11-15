@@ -1,11 +1,12 @@
 import { 
   Drug, 
   ModelInfo, 
+  CellLine,
+  ProbeDrug,
   Sample, 
   SinglePredictionResult, 
   BatchPredictionItem, 
   PCALandscape, 
-  HMMData, 
   HeatmapData, 
   ReportRecord 
 } from '../types';
@@ -20,7 +21,39 @@ export const api = {
     return res.json();
   },
 
-  // Drugs
+  // Cell Lines (969 GDSC2 cell lines)
+  async getCellLines(search?: string, tissue?: string, limit: number = 969): Promise<{
+    total: number;
+    filtered_count: number;
+    cell_lines: CellLine[];
+  }> {
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (tissue) params.append('tissue', tissue);
+    params.append('limit', limit.toString());
+    const res = await fetch(`${API_BASE}/cell-lines?${params.toString()}`);
+    if (!res.ok) throw new Error('Failed to fetch cell lines');
+    return res.json();
+  },
+
+  async getCellLine(cosmicId: number): Promise<{
+    cell_line: CellLine;
+    probe_fingerprint: Record<string, number>;
+    probe_assays: Array<{
+      drug_id: number;
+      drug_name: string;
+      putative_target: string;
+      pathway_name: string;
+      observed_ln_ic50: number | null;
+      overall_mean_ln_ic50: number;
+    }>;
+  }> {
+    const res = await fetch(`${API_BASE}/cell-lines/${cosmicId}`);
+    if (!res.ok) throw new Error('Failed to fetch cell line details');
+    return res.json();
+  },
+
+  // Drugs (286 unique compounds)
   async getDrugs(search?: string): Promise<Drug[]> {
     const url = search ? `${API_BASE}/drugs?search=${encodeURIComponent(search)}` : `${API_BASE}/drugs`;
     const res = await fetch(url);
@@ -28,7 +61,7 @@ export const api = {
     return res.json();
   },
 
-  // Tissues
+  // Tissues (33 lineages)
   async getTissues(): Promise<string[]> {
     const res = await fetch(`${API_BASE}/tissues`);
     if (!res.ok) throw new Error('Failed to fetch tissues');
@@ -66,7 +99,7 @@ export const api = {
     return res.json();
   },
 
-  // Samples
+  // Samples & Analysis Profiles
   async getSamples(): Promise<Sample[]> {
     const res = await fetch(`${API_BASE}/samples`);
     if (!res.ok) throw new Error('Failed to fetch samples');
@@ -92,27 +125,7 @@ export const api = {
     return res.json();
   },
 
-  async uploadExpressionFile(file: File): Promise<any> {
-    const formData = new FormData();
-    formData.append('file', file);
-    const res = await fetch(`${API_BASE}/samples/upload`, {
-      method: 'POST',
-      body: formData,
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ detail: 'File upload validation failed' }));
-      throw new Error(err.detail || 'File upload failed');
-    }
-    return res.json();
-  },
-
-  async getL1000Genes(): Promise<Array<{ symbol: string; entrez_id: string; pathway: string }>> {
-    const res = await fetch(`${API_BASE}/l1000/genes`);
-    if (!res.ok) throw new Error('Failed to fetch L1000 genes');
-    return res.json();
-  },
-
-  // Analytics
+  // Visual Analytics
   async getPCA(sampleId?: string): Promise<PCALandscape> {
     const url = sampleId ? `${API_BASE}/analytics/pca?sample_id=${encodeURIComponent(sampleId)}` : `${API_BASE}/analytics/pca`;
     const res = await fetch(url);
@@ -120,9 +133,15 @@ export const api = {
     return res.json();
   },
 
-  async getHMM(): Promise<HMMData> {
-    const res = await fetch(`${API_BASE}/analytics/hmm`);
-    if (!res.ok) throw new Error('Failed to fetch HMM data');
+  async getProbeAssays(tissue?: string): Promise<{
+    probe_drugs: ProbeDrug[];
+    probe_ids?: number[];
+    selected_tissue?: string;
+    total_probes: number;
+  }> {
+    const url = tissue ? `${API_BASE}/analytics/probe-assays?tissue=${encodeURIComponent(tissue)}` : `${API_BASE}/analytics/probe-assays`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch probe assay benchmarks');
     return res.json();
   },
 

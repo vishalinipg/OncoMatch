@@ -101,7 +101,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
               <span className="font-mono text-teal-800 bg-teal-50 px-1.5 py-0.5 rounded border border-teal-200 font-bold text-[11px]">
                 {activeSample?.tcga_desc}
               </span>{' '}
-              including 295 ranked drug sensitivities, L1000 landmark metrics, and model cards.
+              including 286 ranked drug sensitivities, 15 reference probe assay benchmarks, and model performance metrics.
             </p>
           </div>
 

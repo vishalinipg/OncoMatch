@@ -1,11 +1,11 @@
 import React from 'react';
 import { 
   Activity, 
-  Dna, 
+  FlaskConical, 
   Pill, 
   BarChart3, 
   FileText, 
-  UploadCloud, 
+  Settings2, 
   Layers
 } from 'lucide-react';
 import { SampleTypeBadge } from './SampleTypeBadge';
@@ -27,10 +27,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard Overview', icon: Activity },
-    { id: 'upload', label: 'Patient Profile & Upload', icon: UploadCloud },
-    { id: 'molecular', label: 'Molecular Profile', icon: Dna },
+    { id: 'setup', label: 'Sample & Analysis Setup', icon: Settings2 },
+    { id: 'explorer', label: 'Drug & Tissue Explorer', icon: FlaskConical },
     { id: 'prediction', label: 'Drug Response Prediction', icon: Pill },
-    { id: 'analytics', label: 'Visual Analytics (PCA & HMM)', icon: BarChart3 },
+    { id: 'analytics', label: 'Visual Analytics', icon: BarChart3 },
     { id: 'reports', label: 'Personalized Reports', icon: FileText },
   ];
 
@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Brand Header */}
       <div className="p-5 border-b border-slate-100 flex items-center space-x-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center shadow-sm shadow-teal-500/20 shrink-0">
-          <Dna className="w-5 h-5 text-white font-bold" />
+          <FlaskConical className="w-5 h-5 text-white font-bold" />
         </div>
         <div>
           <div className="flex items-center space-x-2">
@@ -52,11 +52,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Global Active Sample Selector Card (Clean, no redundant counts) */}
+      {/* Global Active Sample Selector Card */}
       <div className="p-3.5 mx-3 my-3 bg-slate-50 border border-slate-200 rounded-xl">
         <div className="flex items-center justify-between mb-1.5">
           <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider flex items-center">
-            <Layers className="w-3 h-3 mr-1.5 text-teal-600" /> Active Target Profile
+            <Layers className="w-3 h-3 mr-1.5 text-teal-600" /> Active Target Lineage
           </span>
         </div>
         <select
@@ -81,7 +81,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
 
-      {/* Main Navigation (Clean, no redundant stacked tags) */}
+      {/* Main Navigation */}
       <nav className="flex-1 px-3 py-1 space-y-1 overflow-y-auto">
         <div className="text-[10px] font-bold text-slate-500 uppercase px-3 py-1.5 tracking-wider">
           Workspace Navigation
@@ -99,12 +99,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50 border border-transparent'
               }`}
             >
-              <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-teal-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
+              <Icon
+                className={`w-4 h-4 shrink-0 transition-colors ${
+                  isActive ? 'text-teal-600' : 'text-slate-400 group-hover:text-slate-700'
+                }`}
+              />
               <span className="truncate">{item.label}</span>
             </button>
           );
         })}
       </nav>
+
+      {/* Footer Info */}
+      <div className="p-4 border-t border-slate-100 text-[11px] text-slate-500 space-y-1 bg-slate-50/50">
+        <div className="flex items-center justify-between font-medium">
+          <span>GDSC2 Screened Lines</span>
+          <span className="font-mono text-slate-700 font-bold">969</span>
+        </div>
+        <div className="flex items-center justify-between font-medium">
+          <span>Benchmarked Drugs</span>
+          <span className="font-mono text-slate-700 font-bold">286</span>
+        </div>
+        <div className="flex items-center justify-between font-medium">
+          <span>TCGA Lineages</span>
+          <span className="font-mono text-slate-700 font-bold">33</span>
+        </div>
+      </div>
     </aside>
   );
 };

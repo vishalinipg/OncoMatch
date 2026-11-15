@@ -65,29 +65,56 @@ export interface ModelInfo {
   median_threshold: number;
 }
 
-export interface SampleQuality {
-  total_genes_measured: number;
-  l1000_landmark_matched: number;
-  l1000_coverage_percent: number;
-  mean_expression: number;
-  std_expression: number;
-  min_expression: number;
-  max_expression: number;
-  outlier_count: number;
-  missing_l1000_count: number;
+export interface CellLine {
+  cosmic_id: number;
+  name: string;
+  tcga_desc: string;
+  tested_drugs: number;
+  mean_ln_ic50: number;
+  median_ln_ic50: number;
+  min_ln_ic50: number;
+  max_ln_ic50: number;
+}
+
+export interface ProbeDrug {
+  drug_id: number;
+  drug_name: string;
+  putative_target: string;
+  pathway_name: string;
+  min_conc: number;
+  max_conc: number;
+  cell_lines_tested: number;
+  overall_mean_ln_ic50: number;
+  overall_median_ln_ic50: number;
+  overall_std_ln_ic50: number;
+  tissue_distribution?: Record<string, {
+    mean_ln_ic50: number;
+    median_ln_ic50: number;
+    std_ln_ic50: number;
+    count: number;
+  }>;
+  selected_tissue?: string;
+  tissue_mean_ln_ic50?: number;
+  tissue_median_ln_ic50?: number;
+  tissue_tested_lines?: number;
 }
 
 export interface Sample {
   sample_id: string;
   name: string;
+  cell_line_name?: string;
+  cosmic_id?: number;
   sample_type: string;
-  cancer_type: string;
+  cancer_type?: string;
   cancer_subtype?: string;
   tcga_desc: string;
   description?: string;
   research_project_id?: string;
-  gene_count?: number;
-  quality?: SampleQuality;
+  tested_drugs?: number;
+  baseline_ln_ic50?: number;
+  probe_fingerprint?: Record<string, number>;
+  probe_assay_count?: number;
+  is_reference?: boolean;
   warnings?: string[];
   expression?: Record<string, number>;
 }
@@ -163,20 +190,6 @@ export interface PCALandscape {
     pc2: number;
     status: string;
   };
-}
-
-export interface HMMData {
-  model_type: string;
-  tertile_1_boundary: number;
-  tertile_2_boundary: number;
-  converged: boolean;
-  iterations: number;
-  log_likelihood: number;
-  startprob: number[];
-  transition_matrix: number[][];
-  emission_matrix: number[][];
-  hidden_state_counts: Record<string, number>;
-  scientific_limitation: string;
 }
 
 export interface HeatmapData {

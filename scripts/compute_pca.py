@@ -3,10 +3,12 @@ import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+from pathlib import Path
 
-print("Computing PCA on cell-line drug-response landscape...")
+print("Computing PCA on cell-line drug-response landscape across all 969 cell lines...")
 
-df = pd.read_csv("GDSC2_fitted_dose_response_24Jul22.csv")
+df = pd.read_csv("dataset/GDSC2_fitted_dose_response_24Jul22.csv")
+df["TCGA_DESC"] = df["TCGA_DESC"].fillna("UNCLASSIFIED")
 
 # Create a cell line x drug pivot table of LN_IC50
 pivot = df.pivot_table(index=["COSMIC_ID", "CELL_LINE_NAME", "TCGA_DESC"], 
@@ -32,8 +34,8 @@ for idx, (multi_idx, row) in enumerate(pivot_imputed.iterrows()):
     cosmic_id, cell_name, tcga = multi_idx
     sample_points.append({
         "sample_id": f"COSMIC_{cosmic_id}",
-        "name": cell_name,
-        "tcga_desc": str(tcga) if pd.notna(tcga) else "UNKNOWN",
+        "name": str(cell_name),
+        "tcga_desc": str(tcga),
         "sample_type": "Established cancer cell line",
         "pc1": round(float(X_pca[idx, 0]), 3),
         "pc2": round(float(X_pca[idx, 1]), 3),
@@ -41,44 +43,50 @@ for idx, (multi_idx, row) in enumerate(pivot_imputed.iterrows()):
     })
 
 # Drug loadings on PC1 and PC2
-drug_cat = pd.read_csv("oncomatch_artifacts/drug_catalog.csv").set_index("DRUG_ID")
+drug_cat = pd.read_csv("ml/artifacts/drug_catalog.csv").set_index("DRUG_ID")
 drug_ids = pivot.columns.tolist()
 
 pc1_loadings = []
 pc2_loadings = []
 for d_idx, d_id in enumerate(drug_ids):
     d_name = drug_cat.loc[d_id, "DRUG_NAME"] if d_id in drug_cat.index else f"Drug_{d_id}"
-    pathway = drug_cat.loc[d_id, "PATHWAY_NAME"] if d_id in drug_cat.index else "Unknown"
+    d_target = drug_cat.loc[d_id, "PUTATIVE_TARGET"] if d_id in drug_cat.index else "Unspecified"
+    d_pathway = drug_cat.loc[d_id, "PATHWAY_NAME"] if d_id in drug_cat.index else "Unclassified"
+    
     pc1_loadings.append({
         "drug_id": int(d_id),
         "drug_name": str(d_name),
-        "pathway": str(pathway),
+        "pathway": str(d_pathway),
         "loading": round(float(pca.components_[0, d_idx]), 4)
     })
     pc2_loadings.append({
         "drug_id": int(d_id),
         "drug_name": str(d_name),
-        "pathway": str(pathway),
+        "pathway": str(d_pathway),
         "loading": round(float(pca.components_[1, d_idx]), 4)
     })
 
-# Sort top positive and negative loadings
-pc1_loadings.sort(key=lambda x: abs(x["loading"]), reverse=True)
-pc2_loadings.sort(key=lambda x: abs(x["loading"]), reverse=True)
+# Top loadings
+top_pc1 = sorted(pc1_loadings, key=lambda x: abs(x["loading"]), reverse=True)[:10]
+top_pc2 = sorted(pc2_loadings, key=lambda x: abs(x["loading"]), reverse=True)[:10]
 
-pca_export = {
+tissues_in_pca = sorted(list(set(s["tcga_desc"] for s in sample_points)))
+
+pca_output = {
     "total_cell_lines": len(sample_points),
     "total_drugs": len(drug_ids),
     "explained_variance_ratio": explained_variance,
     "pc1_variance": explained_variance[0],
     "pc2_variance": explained_variance[1],
     "samples": sample_points,
-    "top_pc1_drugs": pc1_loadings[:15],
-    "top_pc2_drugs": pc2_loadings[:15],
-    "tissues": sorted(list(set(s["tcga_desc"] for s in sample_points)))
+    "top_pc1_drugs": top_pc1,
+    "top_pc2_drugs": top_pc2,
+    "tissues": tissues_in_pca
 }
 
-with open("oncomatch_artifacts/pca_landscape.json", "w") as f:
-    json.dump(pca_export, f, indent=2)
+for out_dir in ["ml/artifacts", "oncomatch_artifacts"]:
+    out_file = Path(out_dir) / "pca_landscape.json"
+    with open(out_file, "w", encoding="utf-8") as f:
+        json.dump(pca_output, f, indent=2)
 
-print(f"Saved PCA landscape with {len(sample_points)} cell lines and loadings to oncomatch_artifacts/pca_landscape.json")
+print(f"Saved {len(sample_points)} sample points to pca_landscape.json.")
