@@ -9,8 +9,8 @@ export const SensitivityBadge: React.FC<SensitivityBadgeProps> = ({ category }) 
 
   if (cat === 'sensitive') {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-[#79AC78]/25 text-[#D0E7D2] border border-[#79AC78]/40">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#B0D9B1] mr-1.5"></span>
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
         Sensitive
       </span>
     );
@@ -18,16 +18,16 @@ export const SensitivityBadge: React.FC<SensitivityBadgeProps> = ({ category }) 
 
   if (cat === 'intermediate') {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-[#618264]/30 text-[#D0E7D2] border border-[#618264]/50">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#79AC78] mr-1.5"></span>
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-semibold bg-teal-50 text-teal-700 border border-teal-300 shadow-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mr-1.5"></span>
         Intermediate
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/15 text-rose-400 border border-rose-500/30">
-      <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mr-1.5"></span>
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-300 shadow-sm">
+      <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span>
       Resistant
     </span>
   );

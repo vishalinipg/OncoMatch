@@ -9,8 +9,8 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
   
   if (t.includes('organoid')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-purple-500/15 text-purple-300 border border-purple-500/30">
-        <span className="w-1.5 h-1.5 rounded-full bg-purple-400 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-purple-50 text-purple-700 border border-purple-200 shadow-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-1.5"></span>
         Patient-Derived Organoid
       </span>
     );
@@ -18,8 +18,8 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
   
   if (t.includes('patient-derived')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200 shadow-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
         Patient-Derived Cell Line
       </span>
     );
@@ -27,16 +27,16 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
 
   if (t.includes('established')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#618264]/25 text-[#D0E7D2] border border-[#79AC78]/40">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#79AC78] mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
         Established Cell Line
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-500/15 text-slate-300 border border-slate-500/30">
-      <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200 shadow-sm">
+      <span className="w-1.5 h-1.5 rounded-full bg-slate-500 mr-1.5"></span>
       Exploratory Profile
     </span>
   );

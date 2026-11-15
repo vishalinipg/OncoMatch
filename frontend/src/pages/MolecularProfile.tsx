@@ -7,8 +7,6 @@ import {
   Activity, 
   AlertCircle, 
   BarChart2, 
-  HelpCircle,
-  CheckCircle,
   Flame,
   ArrowRight
 } from 'lucide-react';
@@ -89,12 +87,14 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
     return rows;
   }, [sampleDetail, l1000Genes]);
 
+  // Unique pathways for filter
   const pathways = useMemo(() => {
     const pSet = new Set<string>();
     l1000Genes.forEach(g => pSet.add(g.pathway));
     return ['ALL', ...Array.from(pSet).sort()];
   }, [l1000Genes]);
 
+  // Filtered and sorted rows
   const filteredRows = useMemo(() => {
     let list = [...geneRows];
 
@@ -122,6 +122,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
     return list;
   }, [geneRows, searchTerm, pathwayFilter, sortBy]);
 
+  // Distribution bins for chart
   const distributionData = useMemo(() => {
     if (!sampleDetail?.expression) return [];
     const vals = Object.values(sampleDetail.expression);
@@ -158,20 +159,20 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
-            <Dna className="w-6 h-6 mr-2.5 text-[#79AC78]" />
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center">
+            <Dna className="w-6 h-6 mr-2.5 text-emerald-600" />
             Molecular Profile & L1000 Expression Architecture
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Analyzing 978 L1000 landmark gene expression values, pathway annotations, z-scores, and quality control indicators.
           </p>
         </div>
 
         <button
           onClick={() => onNavigate('prediction')}
-          className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#79AC78] hover:bg-[#618264] text-slate-950 font-bold text-xs transition-all shadow-md shadow-[#618264]/25 active:scale-95 shrink-0"
+          className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all shadow-md shadow-emerald-600/20 active:scale-95 shrink-0"
         >
           <span>Proceed to Prediction</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -179,58 +180,58 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
       </div>
 
       {/* Transcriptomic Scope Notice */}
-      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-start space-x-3">
-        <AlertCircle className="w-4 h-4 text-[#B0D9B1] shrink-0 mt-0.5" />
-        <div className="text-slate-300 leading-relaxed">
-          <span className="font-semibold text-white">Transcriptomic Scope Notice:</span> Displays <span className="text-[#D0E7D2] font-medium">mRNA transcript abundance (log2 expression)</span> for the 978 LINCS L1000 landmark genes. It does <span className="font-semibold text-white">not</span> report genomic variant calls, point mutations (e.g. SNVs), or copy number amplifications (CNVs) unless annotated in the sample descriptor.
+      <div className="p-4 rounded-xl bg-white border border-slate-200 text-xs flex items-start space-x-3 shadow-xs">
+        <AlertCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+        <div className="text-slate-600 leading-relaxed">
+          <span className="font-bold text-slate-900">Transcriptomic Scope Notice:</span> Displays <span className="text-emerald-700 font-semibold">mRNA transcript abundance (log2 expression)</span> for the 978 LINCS L1000 landmark genes. It does <span className="font-semibold text-slate-800">not</span> report genomic variant calls, point mutations (e.g. SNVs), or copy number amplifications (CNVs) unless annotated in the sample descriptor.
         </div>
       </div>
 
       {/* Quality Control Metrics Strip */}
       {sampleDetail?.quality && (
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-[11px] text-slate-400">Landmark Coverage</div>
-            <div className="text-xl font-bold text-[#D0E7D2] font-mono mt-1">
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-500">Landmark Coverage</div>
+            <div className="text-xl font-bold text-emerald-700 font-mono mt-1">
               {sampleDetail.quality.l1000_landmark_matched} / 978
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">{sampleDetail.quality.l1000_coverage_percent}% coverage</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">{sampleDetail.quality.l1000_coverage_percent}% coverage</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-[11px] text-slate-400">Mean Expression</div>
-            <div className="text-xl font-bold text-white font-mono mt-1">
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-500">Mean Expression</div>
+            <div className="text-xl font-bold text-slate-900 font-mono mt-1">
               {sampleDetail.quality.mean_expression}
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">log2 scale baseline</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">log2 scale baseline</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-[11px] text-slate-400">Standard Deviation</div>
-            <div className="text-xl font-bold text-white font-mono mt-1">
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-500">Standard Deviation</div>
+            <div className="text-xl font-bold text-slate-900 font-mono mt-1">
               {sampleDetail.quality.std_expression}
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">variance across profile</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">variance across profile</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-[11px] text-slate-400">Expression Range</div>
-            <div className="text-xl font-bold text-white font-mono mt-1">
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-500">Expression Range</div>
+            <div className="text-xl font-bold text-slate-900 font-mono mt-1">
               {sampleDetail.quality.min_expression} - {sampleDetail.quality.max_expression}
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">min to max bounds</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">min to max bounds</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-[11px] text-slate-400">Outliers (|z| &gt; 3)</div>
-            <div className="text-xl font-bold text-amber-400 font-mono mt-1">
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-500">Outliers (|z| &gt; 3)</div>
+            <div className="text-xl font-bold text-amber-600 font-mono mt-1">
               {sampleDetail.quality.outlier_count}
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">genes outside 3 std devs</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">genes outside 3 std devs</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-[11px] text-slate-400">Sample Classification</div>
+          <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-500">Sample Classification</div>
             <div className="mt-1.5 truncate">
               <SampleTypeBadge type={sampleDetail.sample_type} />
             </div>
@@ -239,46 +240,46 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
       )}
 
       {/* Full-Width Expression Density Histogram */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
-            <BarChart2 className="w-4 h-4 mr-2 text-[#79AC78]" />
+          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center">
+            <BarChart2 className="w-4 h-4 mr-2 text-emerald-600" />
             L1000 Expression Density Histogram
           </h3>
-          <span className="text-xs text-slate-500 font-mono">Binned Log2 Frequencies</span>
+          <span className="text-xs text-slate-400 font-mono">Binned Log2 Frequencies</span>
         </div>
 
         <div className="h-48 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={distributionData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
-              <XAxis dataKey="bin" stroke="#64748b" fontSize={10} tickLine={false} />
-              <YAxis stroke="#64748b" fontSize={10} tickLine={false} />
+              <XAxis dataKey="bin" stroke="#94a3b8" fontSize={10} tickLine={false} />
+              <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} />
               <Tooltip 
-                contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+                contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', fontSize: '11px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 formatter={(val: any) => [`${val} genes`, 'Frequency']}
               />
-              <Bar dataKey="count" fill="#79AC78" radius={[4, 4, 0, 0]}>
+              <Bar dataKey="count" fill="#10b981" radius={[4, 4, 0, 0]}>
                 {distributionData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={index > 7 ? '#B0D9B1' : '#618264'} />
+                  <Cell key={`cell-${index}`} fill={index > 7 ? '#f59e0b' : '#059669'} />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/60">
+        <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
           <span>Normal biological baseline typically centers between 6.0 and 8.5 log2 intensity.</span>
-          <span className="text-[#B0D9B1] font-medium">Lighter green bars indicate hyper-expressed oncogenic outliers.</span>
+          <span className="text-amber-700 font-medium">Orange bins indicate hyper-expressed oncogenic outliers.</span>
         </div>
       </div>
 
       {/* L1000 Expression Table */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
               Landmark Genes Expression Table
             </h3>
-            <span className="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-mono">
+            <span className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full font-mono font-semibold">
               {filteredRows.length} displayed
             </span>
           </div>
@@ -292,7 +293,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                 placeholder="Search gene or pathway..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#79AC78] w-48 sm:w-56"
+                className="bg-slate-50 border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 w-48 sm:w-56"
               />
             </div>
 
@@ -300,7 +301,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             <select
               value={pathwayFilter}
               onChange={(e) => setPathwayFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-[#79AC78] max-w-[180px] truncate"
+              className="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:bg-white focus:outline-none focus:border-emerald-500 max-w-[180px] truncate"
             >
               <option value="ALL">All Pathways</option>
               {pathways.filter(p => p !== 'ALL').map(p => (
@@ -312,7 +313,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             <select
               value={sortBy}
               onChange={(e: any) => setSortBy(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-[#79AC78]"
+              className="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:bg-white focus:outline-none focus:border-emerald-500"
             >
               <option value="expr-desc">Highest Expression</option>
               <option value="expr-asc">Lowest Expression</option>
@@ -322,9 +323,9 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto max-h-[480px] rounded-xl border border-slate-800">
+        <div className="overflow-x-auto max-h-[480px] rounded-xl border border-slate-200">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950/80 sticky top-0 text-slate-400 font-semibold border-b border-slate-800">
+            <thead className="bg-slate-50 sticky top-0 text-slate-600 font-semibold border-b border-slate-200">
               <tr>
                 <th className="py-3 px-4">Gene Symbol</th>
                 <th className="py-3 px-4">Entrez ID</th>
@@ -334,34 +335,34 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                 <th className="py-3 px-4 text-center">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 font-mono">
+            <tbody className="divide-y divide-slate-100 font-mono">
               {filteredRows.slice(0, 100).map((row) => (
-                <tr key={row.symbol} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="py-2.5 px-4 font-bold text-white font-sans flex items-center space-x-1.5">
+                <tr key={row.symbol} className="hover:bg-emerald-50/40 transition-colors">
+                  <td className="py-2.5 px-4 font-bold text-slate-900 font-sans flex items-center space-x-1.5">
                     <span>{row.symbol}</span>
                     {row.isOutlier && (
                       <span title="Outlier expression (|z| > 3)">
-                        <Flame className="w-3.5 h-3.5 text-amber-400" />
+                        <Flame className="w-3.5 h-3.5 text-amber-500" />
                       </span>
                     )}
                   </td>
-                  <td className="py-2.5 px-4 text-slate-400">{row.entrez_id}</td>
-                  <td className="py-2.5 px-4 text-slate-300 font-sans truncate max-w-xs">{row.pathway}</td>
-                  <td className="py-2.5 px-4 text-right font-bold text-[#D0E7D2]">
+                  <td className="py-2.5 px-4 text-slate-500">{row.entrez_id}</td>
+                  <td className="py-2.5 px-4 text-slate-700 font-sans truncate max-w-xs">{row.pathway}</td>
+                  <td className="py-2.5 px-4 text-right font-bold text-emerald-700">
                     {row.expression !== null ? row.expression.toFixed(3) : 'Imputed 7.000'}
                   </td>
                   <td className={`py-2.5 px-4 text-right font-semibold ${
-                    row.zScore > 2 ? 'text-amber-400' : row.zScore < -2 ? 'text-[#B0D9B1]' : 'text-slate-400'
+                    row.zScore > 2 ? 'text-amber-700' : row.zScore < -2 ? 'text-teal-700' : 'text-slate-500'
                   }`}>
                     {row.zScore > 0 ? `+${row.zScore}` : row.zScore}
                   </td>
                   <td className="py-2.5 px-4 text-center">
                     {row.isOutlier ? (
-                      <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded font-sans">
+                      <span className="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.5 rounded font-sans font-medium">
                         Outlier
                       </span>
                     ) : (
-                      <span className="text-[10px] bg-[#618264]/25 text-[#D0E7D2] border border-[#79AC78]/40 px-1.5 py-0.5 rounded font-sans">
+                      <span className="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded font-sans font-medium">
                         Norm
                       </span>
                     )}
