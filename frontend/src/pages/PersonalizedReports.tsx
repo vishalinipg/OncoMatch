@@ -5,7 +5,6 @@ import {
   Clock, 
   CheckCircle2, 
   AlertTriangle, 
-  Sparkles, 
   FileSpreadsheet, 
   ChevronRight,
   ShieldCheck,
@@ -15,7 +14,6 @@ import {
 import { api } from '../services/api';
 import { ReportRecord, Sample } from '../types';
 import { SampleTypeBadge } from '../components/SampleTypeBadge';
-import { ScientificDisclaimer } from '../components/ScientificDisclaimer';
 
 interface PersonalizedReportsProps {
   sampleId: string;
@@ -92,35 +90,21 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-white">
-              Generate Report for Current Sample
+              Generate Report for Active Sample
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Compiles full molecular quality metrics, 295 chemotherapy sensitivity rankings, and research disclaimers into a multi-format package.
+              Compiles molecular quality metrics, 295 chemotherapy sensitivity rankings, and model cards into a multi-format package.
             </p>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <select
-              value={sampleId}
-              onChange={(e) => onSampleChange(e.target.value)}
-              className="bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-teal-500 font-medium"
-            >
-              {samples.map(s => (
-                <option key={s.sample_id} value={s.sample_id}>
-                  {s.name} ({s.tcga_desc})
-                </option>
-              ))}
-            </select>
-
-            <button
-              onClick={handleGenerateReport}
-              disabled={isGenerating || !activeSample}
-              className="flex items-center space-x-2 px-5 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95 disabled:opacity-50"
-            >
-              <FileText className="w-4 h-4" />
-              <span>{isGenerating ? "Compiling..." : "Generate PDF & CSV"}</span>
-            </button>
-          </div>
+          <button
+            onClick={handleGenerateReport}
+            disabled={isGenerating || !activeSample}
+            className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95 disabled:opacity-50 shrink-0"
+          >
+            <FileText className="w-4 h-4" />
+            <span>{isGenerating ? "Compiling PDF..." : "Generate Vector PDF & CSV"}</span>
+          </button>
         </div>
 
         {activeSample && (
@@ -144,11 +128,9 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
         )}
 
         {successNotice && (
-          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>{successNotice}</span>
-            </div>
+          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs flex items-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span>{successNotice}</span>
           </div>
         )}
 
@@ -227,12 +209,10 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
           </div>
         ) : (
           <div className="py-12 text-center text-xs text-slate-500 bg-slate-950/40 rounded-xl border border-dashed border-slate-800">
-            No reports generated yet. Select a sample above and click "Generate PDF & CSV".
+            No reports generated yet. Click "Generate Vector PDF & CSV" above to compile a comprehensive report for the active sample.
           </div>
         )}
       </div>
-
-      <ScientificDisclaimer />
     </div>
   );
 };

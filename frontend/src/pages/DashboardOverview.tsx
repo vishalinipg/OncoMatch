@@ -12,11 +12,11 @@ import {
   ShieldAlert, 
   TrendingDown, 
   Activity,
-  Layers
+  Layers,
+  Sparkles
 } from 'lucide-react';
 import { api } from '../services/api';
 import { ModelInfo, Sample } from '../types';
-import { ScientificDisclaimer } from '../components/ScientificDisclaimer';
 
 interface DashboardOverviewProps {
   onNavigate: (page: string) => void;
@@ -48,7 +48,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             Personalized Chemotherapy Drug Response Prediction in Cancer Treatments
           </h1>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            OncoMatch empowers oncology researchers to analyze cancer molecular profiles, map transcriptomic landscapes, and evaluate predicted chemotherapy sensitivity across 295 anticancer therapeutics trained on the Sanger Institute GDSC2 dataset.
+            OncoMatch enables oncology researchers to analyze cancer molecular profiles, map transcriptomic landscapes, and evaluate predicted chemotherapy sensitivity across 295 anticancer therapeutics trained on the Sanger Institute GDSC2 dataset.
           </p>
 
           <div className="pt-2 flex flex-wrap gap-3">
@@ -78,37 +78,37 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
         </div>
       </div>
 
-      {/* Dataset Statistics vs Model Evaluation vs Workspace Activity */}
+      {/* Ground-Truth Dataset Statistics */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
             <Database className="w-4 h-4 mr-2 text-teal-400" /> Ground-Truth Dataset Statistics (Sanger GDSC2)
           </h2>
-          <span className="text-xs text-slate-500 font-mono">Released 24-Jul-2022</span>
+          <span className="text-xs text-slate-500 font-mono">24-Jul-2022 Release</span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all">
-            <div className="text-xs font-medium text-slate-400">Total Dose-Response Curves</div>
+          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <div className="text-xs font-medium text-slate-400">Dose-Response Curves</div>
             <div className="text-2xl font-bold text-white mt-1 font-mono">242,036</div>
             <div className="text-[11px] text-teal-400 mt-1 flex items-center">
               <CheckCircle2 className="w-3 h-3 mr-1" /> Quality-controlled NLME fits
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all">
+          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
             <div className="text-xs font-medium text-slate-400">Cancer Cell Lines</div>
             <div className="text-2xl font-bold text-white mt-1 font-mono">969</div>
             <div className="text-[11px] text-slate-400 mt-1">Unique COSMIC Cell Lines</div>
           </div>
 
-          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all">
-            <div className="text-xs font-medium text-slate-400">Anticancer Drugs</div>
+          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
+            <div className="text-xs font-medium text-slate-400">Anticancer Therapeutics</div>
             <div className="text-2xl font-bold text-white mt-1 font-mono">295</div>
             <div className="text-[11px] text-slate-400 mt-1">Spanning 243 Putative Targets</div>
           </div>
 
-          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all">
+          <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
             <div className="text-xs font-medium text-slate-400">TCGA Cancer Tissues</div>
             <div className="text-2xl font-bold text-white mt-1 font-mono">33</div>
             <div className="text-[11px] text-slate-400 mt-1">e.g. BRCA, LUAD, GBM, SKCM</div>
@@ -116,7 +116,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
         </div>
       </div>
 
-      {/* Rigorous ML Benchmark Results */}
+      {/* Production ML Benchmark Results */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
@@ -132,7 +132,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
               <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">-51.3% vs Baseline</span>
             </div>
             <div className="text-3xl font-extrabold text-emerald-300 mt-2 font-mono">1.0270</div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
               Mean baseline test MAE was <span className="font-mono text-slate-300">2.108</span>. The tuned HistGradientBoosting model halves prediction error across 48,328 holdout experiments.
             </p>
           </div>
@@ -140,40 +140,41 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
           <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
             <div className="text-xs text-slate-400">Holdout Explained Variance (R²)</div>
             <div className="text-3xl font-extrabold text-teal-300 mt-2 font-mono">0.7585</div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
               Explains <span className="text-slate-200 font-semibold">75.85% of total variance</span> in in-vitro drug sensitivity across cancer cell lines completely absent from training.
             </p>
           </div>
 
           <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
-            <div className="text-xs text-slate-400">Feature Engineering Architecture</div>
-            <div className="text-base font-bold text-white mt-1">Leakage-Safe Target Encodings</div>
-            <p className="text-xs text-slate-400 mt-2">
+            <div className="text-xs text-slate-400">Leakage-Safe Architecture</div>
+            <div className="text-base font-bold text-white mt-1">Grouped Target Encodings</div>
+            <p className="text-xs text-slate-400 mt-2 leading-relaxed">
               Ordinal drug & target encodings + log concentration bounds + Empirical Bayes grouped out-of-fold target encodings ($k=10$). Strictly excludes leaky curve parameters (AUC/Z-Score).
             </p>
           </div>
         </div>
       </div>
 
-      {/* Navigation Cards to Six Core Pages */}
+      {/* Streamlined Interactive Analysis Pipeline (Replaces the repetitive 6-card menu clone) */}
       <div className="space-y-4">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
-          <Layers className="w-4 h-4 mr-2 text-cyan-400" /> Platform Workflow & Core Pages
+          <Layers className="w-4 h-4 mr-2 text-cyan-400" /> End-to-End Analysis Pipeline
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div 
             onClick={() => onNavigate('upload')}
             className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-800/40 cursor-pointer transition-all group"
           >
-            <div className="w-9 h-9 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <UploadCloud className="w-5 h-5" />
+            <div className="text-[11px] font-mono text-teal-400 mb-1 font-semibold">STAGE 01</div>
+            <div className="flex items-center space-x-2 mb-2">
+              <UploadCloud className="w-4 h-4 text-teal-400" />
+              <h3 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
+                Profile & Upload
+              </h3>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
-              Page 2 — Patient Profile & Upload
-            </h3>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              Create sample profiles, upload CSV/TSV expression data, and validate 978 L1000 landmark genes with generalization warnings.
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Upload CSV/TSV expression data or select from 4 preloaded biological models.
             </p>
           </div>
 
@@ -181,14 +182,15 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             onClick={() => onNavigate('molecular')}
             className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-800/40 cursor-pointer transition-all group"
           >
-            <div className="w-9 h-9 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Dna className="w-5 h-5" />
+            <div className="text-[11px] font-mono text-teal-400 mb-1 font-semibold">STAGE 02</div>
+            <div className="flex items-center space-x-2 mb-2">
+              <Dna className="w-4 h-4 text-teal-400" />
+              <h3 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
+                Molecular QC
+              </h3>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-teal-300 transition-colors">
-              Page 3 — Molecular Profile
-            </h3>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              Explore 978 L1000 landmark gene expression distributions, pathway annotations, z-scores, and quality control indicators.
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Quality-control 978 L1000 landmark genes, pathway annotations, and outlier z-scores.
             </p>
           </div>
 
@@ -196,29 +198,15 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             onClick={() => onNavigate('prediction')}
             className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-800/40 cursor-pointer transition-all group"
           >
-            <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Pill className="w-5 h-5" />
+            <div className="text-[11px] font-mono text-emerald-400 mb-1 font-semibold">STAGE 03</div>
+            <div className="flex items-center space-x-2 mb-2">
+              <Pill className="w-4 h-4 text-emerald-400" />
+              <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                Sensitivity Prediction
+              </h3>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
-              Page 4 — Drug Response Prediction
-            </h3>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              Execute production HistGB model to estimate ln(IC50), calculate 80% confidence bands, and rank 295 chemotherapy agents.
-            </p>
-          </div>
-
-          <div 
-            onClick={() => onNavigate('analytics')}
-            className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-800/40 cursor-pointer transition-all group"
-          >
-            <div className="w-9 h-9 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <BarChart3 className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
-              Page 5 — Visual Analytics (PCA & HMM)
-            </h3>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              Interactive 2D PCA landscape across 963 cell lines, drug loadings, sensitivity heatmaps, and exploratory 3-state HMM matrices.
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Estimate ln(IC50), calculate 80% confidence bands, and rank all 295 drugs.
             </p>
           </div>
 
@@ -226,32 +214,19 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             onClick={() => onNavigate('reports')}
             className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-800/40 cursor-pointer transition-all group"
           >
-            <div className="w-9 h-9 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <FileText className="w-5 h-5" />
+            <div className="text-[11px] font-mono text-indigo-400 mb-1 font-semibold">STAGE 04</div>
+            <div className="flex items-center space-x-2 mb-2">
+              <FileText className="w-4 h-4 text-indigo-400" />
+              <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                Report Generation
+              </h3>
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
-              Page 6 — Personalized Report Generation
-            </h3>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              Compile comprehensive scientific reports with vector PDF export, CSV datasets, and timestamped reproducibility history.
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Export downloadable vector PDF clinical reports and complete CSV prediction sheets.
             </p>
-          </div>
-
-          <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 flex flex-col justify-center">
-            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-              Active Workspace Summary
-            </div>
-            <div className="text-xs text-slate-300 space-y-1">
-              <div>• {samples.length} Cancer Sample Profiles Ready</div>
-              <div>• 4 Validated Demo Cell Lines & Organoids</div>
-              <div>• Zero Recurring Infrastructure Overhead</div>
-            </div>
           </div>
         </div>
       </div>
-
-      {/* Mandatory Scientific Disclaimer */}
-      <ScientificDisclaimer />
     </div>
   );
 };

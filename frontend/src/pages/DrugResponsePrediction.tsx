@@ -7,7 +7,6 @@ import {
   CheckCircle2, 
   AlertTriangle, 
   Sliders, 
-  Layers, 
   ExternalLink,
   ChevronRight,
   Info,
@@ -20,7 +19,6 @@ import { api } from '../services/api';
 import { Drug, Sample, SinglePredictionResult, BatchPredictionItem, ModelInfo } from '../types';
 import { SensitivityBadge } from '../components/SensitivityBadge';
 import { SampleTypeBadge } from '../components/SampleTypeBadge';
-import { ScientificDisclaimer } from '../components/ScientificDisclaimer';
 
 interface DrugResponsePredictionProps {
   sampleId: string;
@@ -62,11 +60,9 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
         setDrugs(drugList);
         setModelInfo(info);
         if (drugList.length > 0) {
-          // Default to Cisplatin or first drug
           const cis = drugList.find(d => d.DRUG_NAME.toLowerCase() === 'cisplatin');
           const defDrug = cis || drugList[0];
           setSelectedDrugId(defDrug.DRUG_ID);
-          // Run initial prediction for default drug
           runSinglePrediction(defDrug.DRUG_ID, tissue);
         }
       })
@@ -137,22 +133,20 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
             Chemotherapy Drug Response Prediction & Sensitivity Ranking
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Execute the production HistGradientBoosting model (MAE 1.027, R² 0.7585) across 295 anticancer agents.
+            Production HistGradientBoosting inference across 295 anticancer therapeutics.
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={() => setShowModelCard(!showModelCard)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors"
-          >
-            <Info className="w-3.5 h-3.5 text-teal-400" />
-            <span>{showModelCard ? "Hide Model Card" : "Model Card & Metrics"}</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setShowModelCard(!showModelCard)}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors"
+        >
+          <Info className="w-3.5 h-3.5 text-teal-400" />
+          <span>{showModelCard ? "Hide Model Card" : "Model Card & Metrics"}</span>
+        </button>
       </div>
 
-      {/* Model Card Modal / Drawer */}
+      {/* Model Card Modal */}
       {showModelCard && modelInfo && (
         <div className="p-6 rounded-2xl bg-slate-900 border border-teal-500/30 text-xs space-y-4 shadow-xl">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -194,76 +188,47 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
         </div>
       )}
 
-      {/* Target Sample & Drug Selection Panel */}
+      {/* Prediction Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Input Selection & Single Drug Prediction (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-5">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center">
-              <Sliders className="w-4 h-4 mr-2 text-teal-400" />
-              Inference Parameters
-            </h3>
-
-            {/* Active Sample Card */}
-            <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">
-                Target Cancer Sample Profile:
-              </label>
-              <select
-                value={sampleId}
-                onChange={(e) => onSampleChange(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-teal-500 font-medium"
-              >
-                {samples.map(s => (
-                  <option key={s.sample_id} value={s.sample_id}>
-                    {s.name} — {s.tcga_desc} ({s.sample_type})
-                  </option>
-                ))}
-              </select>
-
-              {activeSample && (
-                <div className="mt-2.5 flex items-center justify-between text-xs text-slate-400 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-mono text-teal-400">{activeSample.tcga_desc}</span>
-                    <span>•</span>
-                    <span className="truncate max-w-[150px]">{activeSample.cancer_type}</span>
-                  </div>
-                  <SampleTypeBadge type={activeSample.sample_type} />
-                </div>
-              )}
+          <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center">
+                <Sliders className="w-4 h-4 mr-2 text-teal-400" />
+                Select Chemotherapy Drug
+              </h3>
+              <span className="text-xs font-mono text-teal-400">
+                {drugs.length} Compounds
+              </span>
             </div>
 
-            {/* Drug Selection */}
-            <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">
-                Select Chemotherapy / Targeted Agent:
-              </label>
-              <select
-                value={selectedDrugId ?? ''}
-                onChange={(e) => {
-                  const did = Number(e.target.value);
-                  setSelectedDrugId(did);
-                  runSinglePrediction(did, tissue);
-                }}
-                className="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-teal-500 font-medium"
-              >
-                {drugs.map(d => (
-                  <option key={d.DRUG_ID} value={d.DRUG_ID}>
-                    {d.DRUG_NAME} — {d.PUTATIVE_TARGET} ({d.PATHWAY_NAME})
-                  </option>
-                ))}
-              </select>
-            </div>
+            {/* Drug Dropdown */}
+            <select
+              value={selectedDrugId ?? ''}
+              onChange={(e) => {
+                const did = Number(e.target.value);
+                setSelectedDrugId(did);
+                runSinglePrediction(did, tissue);
+              }}
+              className="w-full bg-slate-950 border border-slate-700 text-xs rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-teal-500 font-medium"
+            >
+              {drugs.map(d => (
+                <option key={d.DRUG_ID} value={d.DRUG_ID}>
+                  {d.DRUG_NAME} — {d.PUTATIVE_TARGET} ({d.PATHWAY_NAME})
+                </option>
+              ))}
+            </select>
 
             {/* Batch Run Button */}
-            <div className="pt-2 border-t border-slate-800 flex items-center space-x-3">
+            <div className="pt-2">
               <button
                 onClick={() => runBatchPrediction()}
                 disabled={isBatchRunning}
                 className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-teal-500/20 active:scale-95 disabled:opacity-50"
               >
                 <Zap className="w-4 h-4" />
-                <span>{isBatchRunning ? "Predicting Across 295 Drugs..." : "Run Prediction for ALL 295 Drugs"}</span>
+                <span>{isBatchRunning ? "Predicting Across 295 Drugs..." : "Rank All 295 Drugs for This Profile"}</span>
               </button>
             </div>
           </div>
@@ -275,7 +240,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 <div>
                   <span className="text-base font-bold text-white">{singleResult.drug_name}</span>
                   <div className="text-[11px] text-slate-400 font-mono">
-                    ID #{singleResult.drug_id} • {singleResult.tissue} Tissue Screen
+                    ID #{singleResult.drug_id} • {singleResult.tissue} Tissue
                   </div>
                 </div>
                 <SensitivityBadge category={singleResult.sensitivity.category} />
@@ -306,7 +271,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
 
               <div className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-slate-800/80">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Putative Mechanism / Target:</span>
+                  <span className="text-slate-500">Putative Target:</span>
                   <span className="font-semibold text-white">{singleResult.putative_target}</span>
                 </div>
                 <div className="flex justify-between">
@@ -315,11 +280,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Screening Range:</span>
-                  <span className="font-mono text-slate-400">{singleResult.min_conc_uM} µM to {singleResult.max_conc_uM} µM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Dataset Median Relative:</span>
-                  <span className="text-slate-300">{singleResult.sensitivity.relative_to_median}</span>
+                  <span className="font-mono text-slate-400">{singleResult.min_conc_uM} µM - {singleResult.max_conc_uM} µM</span>
                 </div>
               </div>
 
@@ -340,7 +301,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                   Drug Sensitivity Ranking for {tissue}
                 </h3>
                 <span className="text-xs text-slate-400">
-                  {batchResults.length > 0 ? `Displaying ${filteredBatch.length} of ${batchResults.length} drugs (Ranked by lowest ln IC50)` : "Click 'Run Prediction for ALL 295 Drugs' to view full ranking"}
+                  {batchResults.length > 0 ? `Displaying ${filteredBatch.length} of ${batchResults.length} drugs (Ranked by lowest ln IC50)` : "Click button on left to rank all 295 drugs"}
                 </span>
               </div>
 
@@ -450,24 +411,15 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
             ) : (
               <div className="py-16 text-center space-y-3 bg-slate-950/40 rounded-xl border border-dashed border-slate-800">
                 <Pill className="w-10 h-10 text-slate-600 mx-auto" />
-                <div className="text-sm font-semibold text-slate-300">No Full Batch Prediction Run Yet</div>
+                <div className="text-sm font-semibold text-slate-300">No Batch Prediction Executed</div>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Click the button below to predict and rank all 295 chemotherapy compounds for tissue <span className="text-teal-400 font-mono">{tissue}</span>.
+                  Click 'Rank All 295 Drugs for This Profile' on the left to evaluate complete sensitivity rankings.
                 </p>
-                <button
-                  onClick={() => runBatchPrediction()}
-                  disabled={isBatchRunning}
-                  className="px-5 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95"
-                >
-                  {isBatchRunning ? "Predicting..." : `Rank All 295 Drugs for ${tissue}`}
-                </button>
               </div>
             )}
           </div>
         </div>
       </div>
-
-      <ScientificDisclaimer />
     </div>
   );
 };

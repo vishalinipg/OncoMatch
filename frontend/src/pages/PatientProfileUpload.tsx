@@ -5,16 +5,15 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   PlusCircle, 
-  Info, 
   Sparkles,
   Layers,
   ArrowRight,
-  ShieldAlert
+  ShieldAlert,
+  Dna
 } from 'lucide-react';
 import { api } from '../services/api';
 import { Sample } from '../types';
 import { SampleTypeBadge } from '../components/SampleTypeBadge';
-import { ScientificDisclaimer } from '../components/ScientificDisclaimer';
 
 interface PatientProfileUploadProps {
   samples: Sample[];
@@ -116,8 +115,6 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
     }
   };
 
-  const activeSample = samples.find(s => s.sample_id === selectedSampleId);
-
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
       {/* Header */}
@@ -125,30 +122,22 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center">
             <UploadCloud className="w-6 h-6 mr-2.5 text-teal-400" />
-            Patient Profile & Molecular Sample Upload
+            Patient Profile & Molecular Sample Ingestion
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Establish sample metadata, manage patient-derived vs. cell line distinctions, and upload 978 L1000 molecular expression data.
+            Register sample metadata, specify patient-derived vs. cell line distinctions, and upload 978 L1000 molecular expression data.
           </p>
         </div>
-
-        {activeSample && (
-          <div className="flex items-center space-x-3 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl text-xs">
-            <span className="text-slate-400">Current Selection:</span>
-            <span className="font-semibold text-white">{activeSample.name}</span>
-            <SampleTypeBadge type={activeSample.sample_type} />
-          </div>
-        )}
       </div>
 
-      {/* Critical Scientific Note on Sample Generalization */}
-      <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200/90 text-xs space-y-2">
+      {/* Model Transferability Alert */}
+      <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200/90 text-xs space-y-1.5">
         <div className="flex items-center space-x-2 text-sm font-semibold text-amber-300">
           <ShieldAlert className="w-4 h-4 text-amber-400" />
-          <span>Scientific Generalization & Model Transferability Advisory</span>
+          <span>Model Generalization Advisory (2D vs. 3D & Patient-Derived Models)</span>
         </div>
         <p className="leading-relaxed">
-          The underlying ML model was trained on <span className="font-semibold text-white">242,036 high-throughput 2D cancer cell line dose-response curves</span> from GDSC2. While patient-derived cell lines (PDCs) and patient-derived organoids (PDOs) can be profiled for translational research, <span className="underline decoration-amber-400">in-vitro 2D cell-line predictions do not automatically generalize to 3D microenvironments or human clinical outcomes</span>. OncoMatch enforces explicit sample categorization and highlights transferability disclaimers on all outputs.
+          The underlying ML model was trained on <span className="font-semibold text-white">242,036 high-throughput 2D cancer cell line dose-response curves</span> from GDSC2. While patient-derived cell lines (PDCs) and patient-derived organoids (PDOs) can be analyzed, <span className="underline decoration-amber-400">in-vitro monolayer predictions do not automatically generalize to 3D microenvironments or human clinical outcomes</span>. OncoMatch enforces explicit sample categorization and highlights transferability disclaimers on all outputs.
         </p>
       </div>
 
@@ -272,7 +261,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. EGFR L858R / T790M"
+                    placeholder="e.g. EGFR L858R"
                     value={cancerSubtype}
                     onChange={(e) => setCancerSubtype(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500"
@@ -346,57 +335,39 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Preloaded Reference Library & Sample Cards (5 cols) */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
-                <Layers className="w-4 h-4 mr-2 text-teal-400" />
-                Available Reference Profiles
-              </h3>
-              <span className="text-xs text-slate-500 font-mono">{samples.length} loaded</span>
-            </div>
-
-            <p className="text-xs text-slate-400">
-              Select any preloaded biological reference sample to instantly explore molecular features, predict drug sensitivity, or compare profiles.
+        {/* Right Column: Preloaded Reference Library (5 cols) */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
+              <Layers className="w-4 h-4 mr-2 text-teal-400" />
+              Preloaded Reference Profiles
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Quickly switch the active analysis target to any preloaded model:
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5 pt-1">
               {samples.map((s) => {
                 const isSelected = s.sample_id === selectedSampleId;
                 return (
                   <div
                     key={s.sample_id}
                     onClick={() => onSampleSelect(s.sample_id)}
-                    className={`p-4 rounded-xl border text-xs cursor-pointer transition-all ${
+                    className={`p-3.5 rounded-xl border text-xs cursor-pointer transition-all ${
                       isSelected
                         ? 'bg-teal-500/10 border-teal-500 shadow-md shadow-teal-500/10'
                         : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="font-bold text-white text-sm">{s.name}</span>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-white">{s.name}</span>
                       <SampleTypeBadge type={s.sample_type} />
                     </div>
-                    <div className="flex items-center space-x-2 text-slate-400 text-[11px] mb-2 font-mono">
-                      <span>{s.sample_id}</span>
-                      <span>•</span>
+                    <div className="flex items-center space-x-2 text-slate-400 text-[11px] font-mono">
                       <span className="text-teal-400 font-semibold">{s.tcga_desc}</span>
                       <span>•</span>
                       <span>{s.cancer_type}</span>
                     </div>
-                    {s.description && (
-                      <p className="text-slate-400 text-[11px] line-clamp-2 leading-relaxed">
-                        {s.description}
-                      </p>
-                    )}
-                    {s.quality && (
-                      <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-                        <span>L1000: {s.quality.l1000_landmark_matched}/978</span>
-                        <span>Outliers: {s.quality.outlier_count}</span>
-                        <span>Coverage: {s.quality.l1000_coverage_percent}%</span>
-                      </div>
-                    )}
                   </div>
                 );
               })}

@@ -45,6 +45,8 @@ export const App: React.FC = () => {
     }
   };
 
+  const activeSample = samples.find(s => s.sample_id === selectedSampleId);
+
   return (
     <div className="flex min-h-screen bg-slate-950 text-slate-100 font-sans">
       {/* Sidebar */}
@@ -58,9 +60,12 @@ export const App: React.FC = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        <Navbar currentPageTitle={getPageTitle(currentPage)} />
+        <Navbar 
+          currentPageTitle={getPageTitle(currentPage)} 
+          activeSample={activeSample}
+        />
 
-        <main className="flex-1 pb-12">
+        <main className="flex-1 pb-10">
           {currentPage === 'dashboard' && (
             <DashboardOverview 
               onNavigate={setCurrentPage} 

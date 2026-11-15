@@ -24,7 +24,6 @@ import {
 import { api } from '../services/api';
 import { Sample } from '../types';
 import { SampleTypeBadge } from '../components/SampleTypeBadge';
-import { ScientificDisclaimer } from '../components/ScientificDisclaimer';
 
 interface MolecularProfileProps {
   sampleId: string;
@@ -72,7 +71,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
     const rows = l1000Genes.map(g => {
       const val = expr[g.symbol];
       const hasValue = val !== undefined && val !== null;
-      const numericVal = hasValue ? val : 7.0; // imputed baseline
+      const numericVal = hasValue ? val : 7.0;
       const zScore = (numericVal - mean) / (std > 0 ? std : 1.0);
       const isOutlier = Math.abs(zScore) > 3.0;
 
@@ -169,35 +168,28 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             Molecular Profile & L1000 Expression Architecture
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Analyze 978 L1000 landmark gene expression values, pathway annotations, z-scores, and quality control indicators.
+            Analyzing 978 L1000 landmark gene expression values, pathway annotations, z-scores, and quality control indicators.
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <label className="text-xs text-slate-400 font-medium">Select Profile:</label>
-          <select
-            value={sampleId}
-            onChange={(e) => onSampleChange(e.target.value)}
-            className="bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-teal-500"
-          >
-            {samples.map(s => (
-              <option key={s.sample_id} value={s.sample_id}>
-                {s.name} ({s.tcga_desc})
-              </option>
-            ))}
-          </select>
-        </div>
+        <button
+          onClick={() => onNavigate('prediction')}
+          className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95 shrink-0"
+        >
+          <span>Proceed to Prediction</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
       </div>
 
-      {/* Distinction Advisory */}
+      {/* Transcriptomic Scope Notice */}
       <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-start space-x-3">
         <AlertCircle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
         <div className="text-slate-300 leading-relaxed">
-          <span className="font-semibold text-white">Transcriptomic Scope Notice:</span> This page displays <span className="text-cyan-300 font-medium">mRNA transcript abundance (log2 expression)</span> for the 978 LINCS L1000 landmark genes. It does <span className="font-semibold text-white">not</span> report genomic variant calls, point mutations (e.g. SNVs), or copy number amplifications (CNVs) unless annotated in the sample descriptor.
+          <span className="font-semibold text-white">Transcriptomic Scope Notice:</span> Displays <span className="text-cyan-300 font-medium">mRNA transcript abundance (log2 expression)</span> for the 978 LINCS L1000 landmark genes. It does <span className="font-semibold text-white">not</span> report genomic variant calls, point mutations (e.g. SNVs), or copy number amplifications (CNVs) unless annotated in the sample descriptor.
         </div>
       </div>
 
-      {/* Quality Control Metrics */}
+      {/* Quality Control Metrics Strip */}
       {sampleDetail?.quality && (
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
           <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
@@ -249,84 +241,40 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
         </div>
       )}
 
-      {/* Expression Distribution Chart & Sample Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-slate-900/90 border border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
-              <BarChart2 className="w-4 h-4 mr-2 text-teal-400" />
-              L1000 Expression Density Histogram
-            </h3>
-            <span className="text-xs text-slate-500 font-mono">Binned Log2 Frequencies</span>
-          </div>
-
-          <div className="h-56 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={distributionData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
-                <XAxis dataKey="bin" stroke="#64748b" fontSize={10} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={10} tickLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
-                  formatter={(val: any) => [`${val} genes`, 'Frequency']}
-                />
-                <Bar dataKey="count" fill="#14b8a6" radius={[4, 4, 0, 0]}>
-                  {distributionData.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={index > 7 ? '#f59e0b' : '#0d9488'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/60">
-            <span>Normal biological baseline typically centers between 6.0 and 8.5 log2 intensity.</span>
-            <span className="text-amber-400 font-medium">Orange bins indicate hyper-expressed oncogenic outliers.</span>
-          </div>
+      {/* Full-Width Expression Density Histogram */}
+      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center">
+            <BarChart2 className="w-4 h-4 mr-2 text-teal-400" />
+            L1000 Expression Density Histogram
+          </h3>
+          <span className="text-xs text-slate-500 font-mono">Binned Log2 Frequencies</span>
         </div>
 
-        <div className="lg:col-span-4 p-6 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between">
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-3">
-              Selected Sample Metadata
-            </h3>
-            <div className="space-y-3 text-xs">
-              <div>
-                <span className="text-slate-500 block text-[11px]">Cell Line / Subject Name:</span>
-                <span className="font-semibold text-white text-sm">{sampleDetail?.name}</span>
-              </div>
-              <div>
-                <span className="text-slate-500 block text-[11px]">Primary Cancer Site & Tissue:</span>
-                <span className="text-teal-400 font-mono font-medium">{sampleDetail?.cancer_type} ({sampleDetail?.tcga_desc})</span>
-              </div>
-              {sampleDetail?.cancer_subtype && (
-                <div>
-                  <span className="text-slate-500 block text-[11px]">Subtype / Key Molecular Biomarkers:</span>
-                  <span className="text-slate-300 font-medium">{sampleDetail.cancer_subtype}</span>
-                </div>
-              )}
-              {sampleDetail?.description && (
-                <div>
-                  <span className="text-slate-500 block text-[11px]">Research Notes:</span>
-                  <p className="text-slate-400 text-[11px] leading-relaxed line-clamp-3">
-                    {sampleDetail.description}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-slate-800">
-            <button
-              onClick={() => onNavigate('prediction')}
-              className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-xs transition-all shadow-md shadow-teal-500/20 active:scale-95"
-            >
-              <span>Proceed to Drug Prediction</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
+        <div className="h-48 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={distributionData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
+              <XAxis dataKey="bin" stroke="#64748b" fontSize={10} tickLine={false} />
+              <YAxis stroke="#64748b" fontSize={10} tickLine={false} />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+                formatter={(val: any) => [`${val} genes`, 'Frequency']}
+              />
+              <Bar dataKey="count" fill="#14b8a6" radius={[4, 4, 0, 0]}>
+                {distributionData.map((_, index) => (
+                  <Cell key={`cell-${index}`} fill={index > 7 ? '#f59e0b' : '#0d9488'} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800/60">
+          <span>Normal biological baseline typically centers between 6.0 and 8.5 log2 intensity.</span>
+          <span className="text-amber-400 font-medium">Orange bins indicate hyper-expressed oncogenic outliers.</span>
         </div>
       </div>
 
-      {/* L1000 Expression Table with Filtering & Sorting */}
+      {/* L1000 Expression Table */}
       <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
@@ -428,12 +376,10 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
         </div>
         {filteredRows.length > 100 && (
           <div className="text-[11px] text-slate-500 text-center font-mono pt-1">
-            Displaying top 100 of {filteredRows.length} filtered genes. Use search to locate specific targets.
+            Displaying top 100 of {filteredRows.length} filtered genes.
           </div>
         )}
       </div>
-
-      <ScientificDisclaimer />
     </div>
   );
 };

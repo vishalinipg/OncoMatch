@@ -26,7 +26,6 @@ import {
 } from 'recharts';
 import { api } from '../services/api';
 import { PCALandscape, HMMData, HeatmapData, Sample } from '../types';
-import { ScientificDisclaimer } from '../components/ScientificDisclaimer';
 
 interface VisualAnalyticsProps {
   sampleId: string;
@@ -65,7 +64,6 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
       .finally(() => setLoading(false));
   }, [sampleId]);
 
-  // Color mapping for tissues in PCA
   const tissueColors: Record<string, string> = {
     BRCA: '#ec4899',
     LUAD: '#3b82f6',
@@ -86,10 +84,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
     return pcaData.samples.filter(s => s.tcga_desc === selectedTissueFilter);
   }, [pcaData, selectedTissueFilter]);
 
-  // Calculate heatmap color
   const getHeatmapColor = (score: number) => {
-    // ln IC50 ranges from roughly -3 to +7
-    // lower (sensitive) = green, middle = yellow/cyan, high (resistant) = red
     if (score < 2.0) return 'bg-emerald-500/80 text-slate-950 font-bold';
     if (score < 3.2) return 'bg-teal-500/50 text-white';
     if (score < 4.5) return 'bg-amber-500/50 text-white';
@@ -145,10 +140,10 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
         </div>
       </div>
 
-      {/* TAB A: PCA (Principal Component Analysis) */}
+      {/* TAB A: PCA */}
       {activeTab === 'pca' && (
         <div className="space-y-6 animate-fadeIn">
-          {/* PCA Overview Cards */}
+          {/* PCA Metrics Strip */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-5 rounded-xl bg-slate-900/90 border border-slate-800">
               <div className="text-xs text-slate-400">PC1 Explained Variance</div>
@@ -248,7 +243,6 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                       ))}
                     </Scatter>
 
-                    {/* Active Sample Projection Star */}
                     {pcaData?.current_sample_projection && (
                       <Scatter 
                         name="Active Sample" 
@@ -378,11 +372,11 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
         </div>
       )}
 
-      {/* TAB C: Exploratory HMM (Hidden Markov Model) */}
+      {/* TAB C: Exploratory HMM */}
       {activeTab === 'hmm' && hmmData && (
         <div className="space-y-6 animate-fadeIn">
-          {/* Critical HMM Scientific Caveat Banner */}
-          <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200/90 text-xs space-y-2">
+          {/* HMM Scientific Caveat Alert */}
+          <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200/90 text-xs space-y-1.5">
             <div className="flex items-center space-x-2 text-sm font-semibold text-amber-300">
               <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
               <span>Scientific Caveat: Artificial Sequence Ordering Convention</span>
@@ -486,8 +480,6 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
           </div>
         </div>
       )}
-
-      <ScientificDisclaimer />
     </div>
   );
 };
