@@ -9,8 +9,8 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
   
   if (t.includes('organoid')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-purple-50 text-purple-700 border border-purple-200 shadow-sm">
-        <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-800 border border-purple-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-purple-600 mr-1.5"></span>
         Patient-Derived Organoid
       </span>
     );
@@ -18,8 +18,8 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
   
   if (t.includes('patient-derived')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200 shadow-sm">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-900 border border-amber-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-600 mr-1.5"></span>
         Patient-Derived Cell Line
       </span>
     );
@@ -27,15 +27,15 @@ export const SampleTypeBadge: React.FC<SampleTypeBadgeProps> = ({ type }) => {
 
   if (t.includes('established')) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5"></span>
         Established Cell Line
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200 shadow-sm">
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
       <span className="w-1.5 h-1.5 rounded-full bg-slate-500 mr-1.5"></span>
       Exploratory Profile
     </span>

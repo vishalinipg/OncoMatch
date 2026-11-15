@@ -119,7 +119,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center">
-            <UploadCloud className="w-6 h-6 mr-2.5 text-emerald-600" />
+            <UploadCloud className="w-6 h-6 mr-2.5 text-teal-600" />
             Patient Profile & Molecular Sample Ingestion
           </h2>
           <p className="text-xs text-slate-500 mt-1">
@@ -129,12 +129,12 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
       </div>
 
       {/* Model Transferability Alert */}
-      <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1.5 shadow-2xs">
-        <div className="flex items-center space-x-2 text-sm font-bold text-amber-950">
-          <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
+      <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-950 text-xs space-y-1.5 shadow-2xs">
+        <div className="flex items-center space-x-2 text-sm font-bold text-amber-900">
+          <ShieldAlert className="w-4 h-4 text-amber-600" />
           <span>Model Generalization Advisory (2D vs. 3D & Patient-Derived Models)</span>
         </div>
-        <p className="text-amber-900/90 leading-relaxed">
+        <p className="leading-relaxed text-slate-700">
           The underlying ML model was trained on <span className="font-semibold text-slate-900">242,036 high-throughput 2D cancer cell line dose-response curves</span> from GDSC2. While patient-derived cell lines (PDCs) and patient-derived organoids (PDOs) can be analyzed, <span className="underline decoration-amber-500 font-medium">in-vitro monolayer predictions do not automatically generalize to 3D microenvironments or human clinical outcomes</span>. OncoMatch enforces explicit sample categorization and highlights transferability disclaimers on all outputs.
         </p>
       </div>
@@ -142,13 +142,13 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Form: Profile Creation & Upload (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-5">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-800 flex items-center">
-              <PlusCircle className="w-4 h-4 mr-2 text-emerald-600" /> New Sample Profile Registration
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-teal-800 flex items-center">
+              <PlusCircle className="w-4 h-4 mr-2 text-teal-600" /> New Sample Profile Registration
             </h3>
 
             {successMessage && (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs flex items-center justify-between shadow-2xs">
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs flex items-center justify-between font-medium">
                 <span>{successMessage}</span>
                 <button 
                   onClick={() => onNavigate('molecular')}
@@ -160,7 +160,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
             )}
 
             {uploadError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-lg text-xs flex items-center space-x-2">
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-lg text-xs flex items-center space-x-2 font-medium">
                 <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
                 <span>{uploadError}</span>
               </div>
@@ -178,7 +178,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="e.g. PDC-LUNG-088"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs"
                   />
                 </div>
 
@@ -191,7 +191,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="Auto-generated if empty"
                     value={sampleId}
                     onChange={(e) => setSampleId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs"
                   />
                 </div>
               </div>
@@ -214,8 +214,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                       onClick={() => setSampleType(st)}
                       className={`text-left p-2.5 rounded-lg border text-xs transition-all ${
                         sampleType === st
-                          ? 'bg-emerald-50 border-emerald-400 text-emerald-900 font-bold shadow-2xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300'
+                          ? 'bg-teal-50 border-teal-500 text-teal-900 font-bold shadow-2xs'
+                          : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:bg-slate-100 hover:border-slate-300'
                       }`}
                     >
                       <div className="truncate">{st}</div>
@@ -232,7 +232,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   <select
                     value={tcgaDesc}
                     onChange={(e) => setTcgaDesc(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs font-medium"
                   >
                     {tcgaOptions.map(t => (
                       <option key={t} value={t}>{t}</option>
@@ -249,7 +249,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="e.g. Non-Small Cell Lung"
                     value={cancerType}
                     onChange={(e) => setCancerType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs"
                   />
                 </div>
 
@@ -262,7 +262,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     placeholder="e.g. EGFR L858R"
                     value={cancerSubtype}
                     onChange={(e) => setCancerSubtype(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs"
                   />
                 </div>
               </div>
@@ -276,7 +276,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   placeholder="e.g. Isolated from treatment-naive biopsy, passage 3, confirmed p53 deficient..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs"
                 />
               </div>
 
@@ -285,7 +285,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Molecular Expression File (CSV / TSV format)
                 </label>
-                <div className="border-2 border-dashed border-emerald-300 hover:border-emerald-500 rounded-xl p-5 text-center bg-emerald-50/20 transition-colors">
+                <div className="border-2 border-dashed border-slate-300 hover:border-teal-500 rounded-xl p-5 text-center bg-slate-50/60 transition-colors">
                   <input
                     type="file"
                     id="expression-file-input"
@@ -297,8 +297,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     htmlFor="expression-file-input"
                     className="cursor-pointer flex flex-col items-center space-y-2"
                   >
-                    <FileSpreadsheet className="w-8 h-8 text-emerald-600" />
-                    <span className="text-xs font-semibold text-slate-800">
+                    <FileSpreadsheet className="w-8 h-8 text-teal-600/80" />
+                    <span className="text-xs font-semibold text-slate-700">
                       {isUploading ? "Validating & Extracting Genes..." : "Drag & drop or click to upload expression file"}
                     </span>
                     <span className="text-[11px] text-slate-500">
@@ -308,8 +308,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 </div>
 
                 {uploadedData && (
-                  <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs space-y-1.5 shadow-2xs">
-                    <div className="flex items-center justify-between text-emerald-900 font-bold">
+                  <div className="mt-3 p-3 bg-teal-50 border border-teal-200 rounded-lg text-xs space-y-1.5 shadow-2xs">
+                    <div className="flex items-center justify-between text-teal-900 font-bold">
                       <span>✓ File Validated Successfully</span>
                       <span>{uploadedData.valid_genes_extracted} Genes Extracted</span>
                     </div>
@@ -324,7 +324,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all shadow-md shadow-emerald-600/25 active:scale-95 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs transition-all shadow-sm shadow-teal-600/20 active:scale-95 disabled:opacity-50"
                 >
                   {isSubmitting ? "Saving Profile..." : "Create & Activate Profile"}
                 </button>
@@ -335,9 +335,9 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
 
         {/* Right Column: Preloaded Reference Library (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center">
-              <Layers className="w-4 h-4 mr-2 text-emerald-600" />
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center">
+              <Layers className="w-4 h-4 mr-2 text-teal-600" />
               Preloaded Reference Profiles
             </h3>
             <p className="text-xs text-slate-500 leading-relaxed">
@@ -353,8 +353,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                     onClick={() => onSampleSelect(s.sample_id)}
                     className={`p-3.5 rounded-xl border text-xs cursor-pointer transition-all ${
                       isSelected
-                        ? 'bg-emerald-50 border-emerald-400 shadow-xs'
-                        : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                        ? 'bg-teal-50 border-teal-400 shadow-2xs'
+                        : 'bg-slate-50/60 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -362,7 +362,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                       <SampleTypeBadge type={s.sample_type} />
                     </div>
                     <div className="flex items-center space-x-2 text-slate-500 text-[11px] font-mono">
-                      <span className="text-emerald-700 font-bold bg-white px-1.5 py-0.5 rounded border border-emerald-100">{s.tcga_desc}</span>
+                      <span className="text-teal-700 font-bold">{s.tcga_desc}</span>
                       <span>•</span>
                       <span>{s.cancer_type}</span>
                     </div>
