@@ -11,6 +11,7 @@ except ImportError:
 router = APIRouter(prefix="/api/analytics", tags=["Visual Analytics"])
 ml_service = MLService()
 sample_service = SampleService()
+_heatmap_cache: Dict[int, Any] = {}
 
 @router.get("/pca")
 def get_pca_analytics(sample_id: Optional[str] = None):
@@ -67,6 +68,8 @@ def get_heatmap_matrix(top_n_drugs: int = Query(15, ge=5, le=50)):
     Generate a cross-tissue drug sensitivity matrix for key chemotherapy drugs.
     Returns matrix of tissues x drugs with predicted ln(IC50) values.
     """
+    if top_n_drugs in _heatmap_cache:
+        return _heatmap_cache[top_n_drugs]
     target_drugs = [
         "Cisplatin", "Paclitaxel", "Doxorubicin", "5-Fluorouracil", 
         "Gemcitabine", "Docetaxel", "Etoposide", "Methotrexate", 
@@ -95,8 +98,16 @@ def get_heatmap_matrix(top_n_drugs: int = Query(15, ge=5, le=50)):
             tissue_row["scores"][drug["DRUG_NAME"]] = pred["predicted_ln_ic50"]
         matrix.append(tissue_row)
 
-    return {
+    result = {
         "tissues": key_tissues,
         "drugs": [d["DRUG_NAME"] for d in matched_drugs],
         "matrix": matrix
     }
+    _heatmap_cache[top_n_drugs] = result
+    return result
+
+# Pre-warm default heatmap cache
+try:
+    get_heatmap_matrix(15)
+except Exception as _e:
+    pass

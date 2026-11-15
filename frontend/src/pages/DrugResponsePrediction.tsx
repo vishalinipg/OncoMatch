@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Pill, 
   Search, 
@@ -7,8 +7,21 @@ import {
   Info, 
   Zap, 
   ShieldCheck, 
-  TrendingDown 
+  TrendingDown,
+  Activity,
+  BarChart2
 } from 'lucide-react';
+import { 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  Tooltip, 
+  ResponsiveContainer, 
+  ReferenceLine,
+  ReferenceDot,
+  CartesianGrid
+} from 'recharts';
 import { api } from '../services/api';
 import { Drug, Sample, SinglePredictionResult, BatchPredictionItem, ModelInfo } from '../types';
 import { SensitivityBadge } from '../components/SensitivityBadge';
@@ -116,6 +129,43 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
     return true;
   });
 
+  // Format concentration cleanly
+  const formatConc = (val: number | undefined) => {
+    if (val === undefined || val === null || isNaN(val)) return '0.0000';
+    if (val < 0.01) return val.toFixed(4);
+    if (val < 1.0) return val.toFixed(3);
+    return val.toFixed(2);
+  };
+
+  // Generate 4-parameter logistic sigmoidal dose-response curve
+  const doseResponseCurveData = useMemo(() => {
+    if (!singleResult) return [];
+    const minC = singleResult.min_conc_uM || 0.001;
+    const maxC = singleResult.max_conc_uM || 10.0;
+    const ic50 = singleResult.predicted_ic50_uM || 1.0;
+
+    const logMin = Math.log10(Math.max(0.0001, minC));
+    const logMax = Math.log10(Math.max(minC * 10, maxC));
+    const steps = 25;
+    const stepSize = (logMax - logMin) / steps;
+
+    const points = [];
+    for (let i = 0; i <= steps; i++) {
+      const logC = logMin + i * stepSize;
+      const c = Math.pow(10, logC);
+      // Standard Hill equation / Emax model: Viability % = 100 / (1 + (Conc / IC50)^Hill)
+      const hill = 1.15;
+      const viability = 100 / (1 + Math.pow(c / ic50, hill));
+      points.push({
+        conc: Number(c.toFixed(4)),
+        logConc: Number(logC.toFixed(2)),
+        viability: Number(viability.toFixed(1)),
+        isIc50Point: Math.abs(logC - Math.log10(ic50)) < (stepSize / 1.5)
+      });
+    }
+    return points;
+  }, [singleResult]);
+
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
       {/* Header */}
@@ -196,7 +246,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               </span>
             </div>
 
-            {/* Drug Dropdown */}
+            {/* Drug Dropdown with clean text formatting */}
             <select
               value={selectedDrugId ?? ''}
               onChange={(e) => {
@@ -204,11 +254,11 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 setSelectedDrugId(did);
                 runSinglePrediction(did, tissue);
               }}
-              className="w-full bg-white border border-slate-300 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs font-medium"
+              className="w-full bg-white border border-slate-300 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs font-medium cursor-pointer"
             >
               {drugs.map(d => (
                 <option key={d.DRUG_ID} value={d.DRUG_ID}>
-                  {d.DRUG_NAME} — {d.PUTATIVE_TARGET} ({d.PATHWAY_NAME})
+                  {d.DRUG_NAME} — {d.PUTATIVE_TARGET}
                 </option>
               ))}
             </select>
@@ -239,7 +289,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 <SensitivityBadge category={singleResult.sensitivity.category} />
               </div>
 
-              {/* Primary Value Display */}
+              {/* Primary Value Display: Consistent Units (µM) */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
                   <div className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Predicted ln(IC50)</div>
@@ -257,7 +307,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                     {singleResult.predicted_ic50_uM} µM
                   </div>
                   <div className="text-[10px] text-slate-400 mt-1">
-                    Range: [{singleResult.ic50_band_80pct_uM[0]} - {singleResult.ic50_band_80pct_uM[1]} µM]
+                    Range: [{formatConc(singleResult.ic50_band_80pct_uM[0])} - {formatConc(singleResult.ic50_band_80pct_uM[1])} µM]
                   </div>
                 </div>
               </div>
@@ -273,7 +323,61 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Screening Range:</span>
-                  <span className="font-mono text-slate-600">{singleResult.min_conc_uM} µM - {singleResult.max_conc_uM} µM</span>
+                  <span className="font-mono text-slate-700 font-semibold">
+                    {formatConc(singleResult.min_conc_uM)} µM - {formatConc(singleResult.max_conc_uM)} µM
+                  </span>
+                </div>
+              </div>
+
+              {/* Graphical Dose-Response Curve */}
+              <div className="pt-2 border-t border-slate-200/80 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center">
+                    <Activity className="w-3.5 h-3.5 mr-1.5 text-teal-600" />
+                    Fitted Sigmoidal Dose-Response Curve
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500">
+                    IC50: {singleResult.predicted_ic50_uM} µM
+                  </span>
+                </div>
+
+                <div className="h-40 w-full bg-white p-2 rounded-xl border border-slate-200">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={doseResponseCurveData} margin={{ top: 10, right: 15, left: -25, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis 
+                        dataKey="conc" 
+                        stroke="#94a3b8" 
+                        fontSize={9} 
+                        tickFormatter={(v) => formatConc(v)}
+                        tickLine={false}
+                      />
+                      <YAxis 
+                        domain={[0, 100]} 
+                        ticks={[0, 25, 50, 75, 100]} 
+                        stroke="#94a3b8" 
+                        fontSize={9} 
+                        tickLine={false}
+                      />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', fontSize: '11px', color: '#0f172a' }}
+                        formatter={(val: any) => [`${val}%`, 'Cell Viability']}
+                        labelFormatter={(lbl: any) => `Conc: ${lbl} µM`}
+                      />
+                      <ReferenceLine y={50} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: '50% Viability', fill: '#d97706', fontSize: 9, position: 'insideTopLeft' }} />
+                      <Line 
+                        type="monotone" 
+                        dataKey="viability" 
+                        stroke="#0d9488" 
+                        strokeWidth={2.5} 
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex items-center justify-between text-[10px] text-slate-500 px-1">
+                  <span>Conc Range: {formatConc(singleResult.min_conc_uM)} - {formatConc(singleResult.max_conc_uM)} µM</span>
+                  <span className="text-teal-700 font-semibold font-mono">Inflection point: 50% kill</span>
                 </div>
               </div>
 
@@ -301,7 +405,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               {batchResults.length > 0 && (
                 <button
                   onClick={() => onNavigate('reports')}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-xs font-bold transition-colors"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-xs font-bold transition-colors cursor-pointer"
                 >
                   <span>Export Report</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -327,7 +431,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                   <select
                     value={pathwayFilter}
                     onChange={(e) => setPathwayFilter(e.target.value)}
-                    className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 max-w-[150px] truncate shadow-2xs font-medium"
+                    className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 max-w-[150px] truncate shadow-2xs font-medium cursor-pointer"
                   >
                     <option value="ALL">All Pathways</option>
                     {pathways.map(p => (
@@ -338,76 +442,69 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                   <select
                     value={sensitivityFilter}
                     onChange={(e) => setSensitivityFilter(e.target.value)}
-                    className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 shadow-2xs font-medium"
+                    className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 shadow-2xs font-medium cursor-pointer"
                   >
-                    <option value="ALL">All Sensitivity</option>
-                    <option value="Sensitive">Sensitive</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Resistant">Resistant</option>
+                    <option value="ALL">All Tiers</option>
+                    <option value="Sensitive">Sensitive (&lt; 2.19)</option>
+                    <option value="Intermediate">Intermediate (2.19-4.22)</option>
+                    <option value="Resistant">Resistant (&gt; 4.22)</option>
                   </select>
                 </div>
 
                 {/* Ranked Table */}
-                <div className="overflow-x-auto max-h-[500px] rounded-xl border border-slate-200">
+                <div className="overflow-x-auto max-h-[520px] rounded-xl border border-slate-200">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50 sticky top-0 text-slate-600 font-semibold border-b border-slate-200">
+                    <thead className="bg-slate-50 sticky top-0 text-slate-600 font-semibold border-b border-slate-200 font-mono">
                       <tr>
-                        <th className="py-3 px-3 w-12 text-center">Rank</th>
-                        <th className="py-3 px-3">Chemotherapy Drug</th>
-                        <th className="py-3 px-3">Target & Pathway</th>
-                        <th className="py-3 px-3 text-right">Pred ln(IC50)</th>
-                        <th className="py-3 px-3 text-right">IC50 (µM)</th>
-                        <th className="py-3 px-3 text-center">Classification</th>
+                        <th className="py-2.5 px-3">#</th>
+                        <th className="py-2.5 px-3 font-sans">Compound</th>
+                        <th className="py-2.5 px-3 font-sans">Putative Target</th>
+                        <th className="py-2.5 px-3 font-sans">Pathway</th>
+                        <th className="py-2.5 px-3 text-right">ln(IC50)</th>
+                        <th className="py-2.5 px-3 text-right">IC50 (µM)</th>
+                        <th className="py-2.5 px-3 text-center font-sans">Tier</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 font-mono">
-                      {filteredBatch.map((item) => {
-                        const isCurrent = item.drug_id === selectedDrugId;
-                        return (
-                          <tr 
-                            key={item.drug_id}
-                            onClick={() => {
-                              setSelectedDrugId(item.drug_id);
-                              runSinglePrediction(item.drug_id, tissue);
-                            }}
-                            className={`cursor-pointer transition-colors ${
-                              isCurrent 
-                                ? 'bg-teal-50/80 text-teal-950 font-bold border-l-2 border-teal-600' 
-                                : 'hover:bg-slate-50 text-slate-700'
-                            }`}
-                          >
-                            <td className="py-2 px-3 text-center font-bold text-teal-700">
-                              #{item.rank}
-                            </td>
-                            <td className="py-2 px-3 font-sans font-bold text-slate-900">
-                              {item.drug_name}
-                            </td>
-                            <td className="py-2 px-3 font-sans text-slate-500 text-[11px] truncate max-w-[180px]">
-                              {item.putative_target} • <span className="text-teal-700 font-medium">{item.pathway_name}</span>
-                            </td>
-                            <td className="py-2 px-3 text-right font-bold text-teal-800">
-                              {item.predicted_ln_ic50.toFixed(3)}
-                            </td>
-                            <td className="py-2 px-3 text-right text-slate-700">
-                              {item.predicted_ic50_uM.toFixed(3)}
-                            </td>
-                            <td className="py-2 px-3 text-center font-sans">
-                              <SensitivityBadge category={item.sensitivity_category} />
-                            </td>
-                          </tr>
-                        );
-                      })}
+                    <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
+                      {filteredBatch.map((item) => (
+                        <tr 
+                          key={item.drug_id} 
+                          onClick={() => {
+                            setSelectedDrugId(item.drug_id);
+                            runSinglePrediction(item.drug_id, tissue);
+                          }}
+                          className={`cursor-pointer transition-colors ${
+                            selectedDrugId === item.drug_id ? 'bg-teal-50/70 font-semibold' : 'hover:bg-slate-50/70'
+                          }`}
+                        >
+                          <td className="py-2 px-3 text-slate-400 font-bold">{item.rank}</td>
+                          <td className="py-2 px-3 font-bold text-slate-900 font-sans truncate max-w-[130px]">
+                            {item.drug_name}
+                          </td>
+                          <td className="py-2 px-3 text-slate-600 font-sans truncate max-w-[130px]">
+                            {item.putative_target}
+                          </td>
+                          <td className="py-2 px-3 text-slate-500 font-sans truncate max-w-[120px]">
+                            {item.pathway_name}
+                          </td>
+                          <td className="py-2 px-3 text-right font-bold text-teal-700">
+                            {item.predicted_ln_ic50.toFixed(2)}
+                          </td>
+                          <td className="py-2 px-3 text-right text-slate-700">
+                            {formatConc(item.predicted_ic50_uM)}
+                          </td>
+                          <td className="py-2 px-3 text-center font-sans">
+                            <SensitivityBadge category={item.sensitivity_category} />
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
               </>
             ) : (
-              <div className="py-16 text-center space-y-3 bg-slate-50/60 rounded-xl border border-dashed border-slate-200">
-                <Pill className="w-10 h-10 text-slate-400 mx-auto" />
-                <div className="text-sm font-bold text-slate-700">No Batch Prediction Executed</div>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Click 'Rank All 295 Drugs for This Profile' on the left to evaluate complete sensitivity rankings.
-                </p>
+              <div className="py-14 text-center text-xs text-slate-500 bg-slate-50/60 rounded-xl border border-dashed border-slate-200">
+                Click "Rank All 295 Drugs for This Profile" to compute sensitivity rankings across the entire Sanger GDSC2 chemotherapeutic catalog.
               </div>
             )}
           </div>

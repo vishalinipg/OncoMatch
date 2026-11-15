@@ -38,10 +38,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const activeSample = samples.find(s => s.sample_id === selectedSampleId);
 
   return (
-    <aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0 select-none z-20 shadow-xs">
+    <aside className="w-80 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0 select-none z-20 shadow-xs shrink-0">
       {/* Brand Header */}
       <div className="p-5 border-b border-slate-100 flex items-center space-x-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center shadow-md shadow-teal-500/20">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center shadow-md shadow-teal-500/20 shrink-0">
           <Dna className="w-6 h-6 text-white font-bold" />
         </div>
         <div>
@@ -66,7 +66,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <select
           value={selectedSampleId}
           onChange={(e) => onSampleChange(e.target.value)}
-          className="w-full bg-white border border-slate-300 text-xs rounded-lg px-2.5 py-2 text-slate-800 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-colors shadow-2xs font-medium"
+          title={activeSample ? `${activeSample.name} (${activeSample.tcga_desc})` : ''}
+          className="w-full bg-white border border-slate-300 text-xs rounded-lg px-2.5 py-2 text-slate-800 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-colors shadow-2xs font-medium cursor-pointer"
         >
           {samples.map((s) => (
             <option key={s.sample_id} value={s.sample_id}>
@@ -75,8 +76,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ))}
         </select>
         {activeSample && (
-          <div className="mt-2 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px]">
-            <span className="font-mono text-teal-700 font-bold">
+          <div className="mt-2.5 pt-2 border-t border-slate-200/80 flex items-center justify-between gap-1.5 text-[10px]">
+            <span className="font-mono text-teal-800 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded font-bold shrink-0">
               {activeSample.tcga_desc}
             </span>
             <SampleTypeBadge type={activeSample.sample_type} />
@@ -85,7 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Main Navigation */}
-      <nav className="flex-1 px-3 py-1 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-1 space-y-1.5 overflow-y-auto">
         <div className="text-[10px] font-bold text-slate-400 uppercase px-3 py-1 tracking-wider">
           Workspace Navigation
         </div>
@@ -99,14 +100,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all group ${
                 isActive
                   ? 'bg-teal-50 text-teal-900 border border-teal-200 shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 border border-transparent'
               }`}
             >
-              <div className="flex items-center space-x-2.5 truncate">
+              <div className="flex items-center space-x-2.5 min-w-0 pr-1">
                 <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-teal-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
-                <span className="truncate">{item.label}</span>
+                <span className="whitespace-nowrap font-medium">{item.label}</span>
               </div>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+              <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono shrink-0 ml-1 ${
                 isActive 
                   ? 'bg-teal-100/80 text-teal-800 font-bold' 
                   : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
@@ -117,16 +118,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           );
         })}
       </nav>
-
-      {/* Persistent Research Use Disclaimer in Sidebar */}
-      <div className="p-3 border-t border-slate-100 bg-slate-50/50">
-        <div className="flex items-start space-x-2 text-[10px] text-amber-900 bg-amber-50/80 border border-amber-200/80 rounded-lg p-2.5">
-          <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-amber-600 mt-0.5" />
-          <div className="leading-tight">
-            <span className="font-bold text-amber-950">Research Use Only.</span> Cell-line predictions do not substitute for clinical diagnostics or therapy guidance.
-          </div>
-        </div>
-      </div>
     </aside>
   );
 };

@@ -9,7 +9,9 @@ import {
   ChevronRight,
   ShieldCheck,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Dna,
+  Flame
 } from 'lucide-react';
 import { api } from '../services/api';
 import { ReportRecord, Sample } from '../types';
@@ -78,7 +80,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
 
         <button
           onClick={loadHistory}
-          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium border border-slate-200 shadow-2xs transition-colors"
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium border border-slate-200 shadow-2xs transition-colors cursor-pointer"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Refresh History</span>
@@ -100,7 +102,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
           <button
             onClick={handleGenerateReport}
             disabled={isGenerating || !activeSample}
-            className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs transition-all shadow-xs active:scale-95 disabled:opacity-50 shrink-0"
+            className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs transition-all shadow-xs active:scale-95 disabled:opacity-50 shrink-0 cursor-pointer"
           >
             <FileText className="w-4 h-4" />
             <span>{isGenerating ? "Compiling PDF..." : "Generate Vector PDF & CSV"}</span>
@@ -112,31 +114,38 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-slate-900 text-sm">{activeSample.name}</span>
-                <span className="text-slate-500">({activeSample.sample_id})</span>
+                <span className="text-slate-500 font-mono">({activeSample.sample_id})</span>
                 <SampleTypeBadge type={activeSample.sample_type} />
               </div>
               <div className="text-slate-600 text-[11px]">
-                {activeSample.cancer_type} • Tissue Origin: <span className="text-teal-700 font-mono font-semibold">{activeSample.tcga_desc}</span>
+                {activeSample.cancer_type} • Tissue Origin: <span className="text-teal-700 font-mono font-semibold bg-teal-50 px-1.5 py-0.5 rounded border border-teal-100">{activeSample.tcga_desc}</span>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4 font-mono text-[11px] text-slate-600">
-              <div>L1000 Landmark: <span className="text-slate-900 font-bold">{activeSample.quality?.l1000_landmark_matched || 978}/978</span></div>
-              <div>Outliers: <span className="text-amber-700 font-bold">{activeSample.quality?.outlier_count || 0}</span></div>
+            {/* Styled Metric Badges */}
+            <div className="flex items-center space-x-2.5">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-semibold bg-white text-slate-800 border border-slate-200 shadow-2xs">
+                <Dna className="w-3.5 h-3.5 mr-1.5 text-teal-600" />
+                L1000: <strong className="text-teal-800 ml-1">{activeSample.quality?.l1000_landmark_matched || 978}/978</strong>
+              </span>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-semibold bg-white text-slate-800 border border-slate-200 shadow-2xs">
+                <Flame className="w-3.5 h-3.5 mr-1.5 text-amber-500" />
+                Outliers: <strong className="text-amber-700 ml-1">{activeSample.quality?.outlier_count || 0}</strong>
+              </span>
             </div>
           </div>
         )}
 
         {successNotice && (
           <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs flex items-center space-x-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>{successNotice}</span>
           </div>
         )}
 
         {errorNotice && (
           <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-lg text-xs flex items-center space-x-2">
-            <AlertTriangle className="w-4 h-4 text-rose-600" />
+            <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
             <span>{errorNotice}</span>
           </div>
         )}
@@ -161,7 +170,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 sticky top-0 text-slate-600 font-semibold border-b border-slate-200">
                 <tr>
-                  <th className="py-3 px-4">Report ID</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Report ID</th>
                   <th className="py-3 px-4">Sample Name & ID</th>
                   <th className="py-3 px-4">Tissue</th>
                   <th className="py-3 px-4">Top Sensitive Agent</th>
@@ -172,7 +181,10 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
               <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
                 {history.map((rep) => (
                   <tr key={rep.report_id} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-bold text-teal-700">{rep.report_id}</td>
+                    {/* Report ID with whitespace-nowrap so it never splits across two lines */}
+                    <td className="py-3 px-4 font-bold text-teal-700 whitespace-nowrap font-mono">
+                      {rep.report_id}
+                    </td>
                     <td className="py-3 px-4 font-sans">
                       <div className="font-semibold text-slate-900">{rep.sample_name}</div>
                       <div className="text-[10px] text-slate-500 font-mono">{rep.sample_id}</div>
@@ -181,7 +193,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
                     <td className="py-3 px-4 text-emerald-700 font-sans font-semibold">
                       {rep.top_sensitive_drug}
                     </td>
-                    <td className="py-3 px-4 text-slate-500">{rep.timestamp}</td>
+                    <td className="py-3 px-4 text-slate-500 whitespace-nowrap">{rep.timestamp}</td>
                     <td className="py-3 px-4 text-right font-sans">
                       <div className="inline-flex items-center space-x-2">
                         <a

@@ -119,7 +119,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
     return list;
   }, [geneRows, searchTerm, pathwayFilter, sortBy]);
 
-  // Distribution bins for chart
+  // Distribution bins for chart with outlier bin detection
   const distributionData = useMemo(() => {
     if (!sampleDetail?.expression) return [];
     const vals = Object.values(sampleDetail.expression);
@@ -127,17 +127,23 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
 
     const min = Math.floor(Math.min(...vals));
     const max = Math.ceil(Math.max(...vals));
+    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const std = Math.sqrt(vals.reduce((sq, n) => sq + Math.pow(n - mean, 2), 0) / vals.length);
+    const outlierThreshold = mean + 2.5 * std;
+
     const binCount = 10;
     const step = (max - min) / binCount;
 
     const bins = Array.from({ length: binCount }, (_, i) => {
       const bMin = min + i * step;
       const bMax = bMin + step;
+      const isOutlierBin = bMax >= outlierThreshold || bMin >= outlierThreshold;
       return {
         bin: `${bMin.toFixed(1)}-${bMax.toFixed(1)}`,
         count: 0,
         bMin,
-        bMax
+        bMax,
+        isOutlierBin
       };
     });
 
@@ -186,7 +192,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
 
       {/* Quality Control Metrics Strip */}
       {sampleDetail?.quality && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
             <div className="text-[11px] font-medium text-slate-500">Landmark Coverage</div>
             <div className="text-xl font-extrabold text-teal-700 font-mono mt-1">
@@ -229,7 +235,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
 
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
             <div className="text-[11px] font-medium text-slate-500">Sample Classification</div>
-            <div className="mt-1.5 truncate">
+            <div className="mt-2 flex items-center">
               <SampleTypeBadge type={sampleDetail.sample_type} />
             </div>
           </div>
@@ -255,9 +261,12 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
                 contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', fontSize: '11px', color: '#0f172a', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}
                 formatter={(val: any) => [`${val} genes`, 'Frequency']}
               />
-              <Bar dataKey="count" fill="#0d9488" radius={[4, 4, 0, 0]}>
-                {distributionData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={index > 7 ? '#f59e0b' : '#0d9488'} />
+              <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                {distributionData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={entry.isOutlierBin && entry.count > 0 ? '#f97316' : '#0d9488'} 
+                  />
                 ))}
               </Bar>
             </BarChart>
@@ -265,7 +274,10 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
         </div>
         <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
           <span>Normal biological baseline typically centers between 6.0 and 8.5 log2 intensity.</span>
-          <span className="text-amber-700 font-semibold">Orange bins indicate hyper-expressed oncogenic outliers.</span>
+          <span className="text-amber-700 font-semibold flex items-center">
+            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block mr-1.5"></span>
+            Orange bins indicate hyper-expressed oncogenic outliers (|z| &gt; 2.5).
+          </span>
         </div>
       </div>
 
@@ -298,7 +310,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             <select
               value={pathwayFilter}
               onChange={(e) => setPathwayFilter(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 max-w-[180px] truncate shadow-2xs font-medium"
+              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 max-w-[180px] truncate shadow-2xs font-medium cursor-pointer"
             >
               <option value="ALL">All Pathways</option>
               {pathways.filter(p => p !== 'ALL').map(p => (
@@ -310,7 +322,7 @@ export const MolecularProfile: React.FC<MolecularProfileProps> = ({
             <select
               value={sortBy}
               onChange={(e: any) => setSortBy(e.target.value)}
-              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 shadow-2xs font-medium"
+              className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-teal-500 shadow-2xs font-medium cursor-pointer"
             >
               <option value="expr-desc">Highest Expression</option>
               <option value="expr-asc">Lowest Expression</option>

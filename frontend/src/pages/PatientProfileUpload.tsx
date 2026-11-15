@@ -4,10 +4,11 @@ import {
   FileSpreadsheet, 
   AlertTriangle, 
   CheckCircle2, 
+  ShieldAlert, 
   PlusCircle, 
   Layers, 
-  ArrowRight, 
-  ShieldAlert 
+  HelpCircle,
+  ArrowRight
 } from 'lucide-react';
 import { api } from '../services/api';
 import { Sample } from '../types';
@@ -17,7 +18,7 @@ interface PatientProfileUploadProps {
   samples: Sample[];
   selectedSampleId: string;
   onSampleSelect: (id: string) => void;
-  onSampleCreated: (newSample: Sample) => void;
+  onSampleCreated: (sample: Sample) => void;
   onNavigate: (page: string) => void;
 }
 
@@ -28,44 +29,43 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
   onSampleCreated,
   onNavigate
 }) => {
-  // Form state
+  // Form State
   const [sampleId, setSampleId] = useState('');
   const [name, setName] = useState('');
   const [sampleType, setSampleType] = useState('Established cancer cell line');
-  const [cancerType, setCancerType] = useState('Lung Adenocarcinoma');
+  const [tcgaDesc, setTcgaDesc] = useState('BRCA');
+  const [cancerType, setCancerType] = useState('Breast Adenocarcinoma');
   const [cancerSubtype, setCancerSubtype] = useState('');
-  const [tcgaDesc, setTcgaDesc] = useState('LUAD');
   const [description, setDescription] = useState('');
-  const [projectId, setProjectId] = useState('PROJ-ONCO-01');
+  const [projectId, setProjectId] = useState('');
 
-  // File upload state
-  const [uploadedData, setUploadedData] = useState<any | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+  // Upload State
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadedData, setUploadedData] = useState<{
+    valid_genes_extracted: number;
+    l1000_matched: number;
+    l1000_coverage_percent: number;
+    expression_dict: Record<string, number>;
+  } | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const tcgaOptions = [
-    "BRCA", "LUAD", "SKCM", "COREAD", "PAAD", "OV", "GBM", "LAML", 
-    "PRAD", "KIRC", "HNSC", "BLCA", "STAD", "LIHC", "CESC", "SCLC", "PANCAN"
+    'BRCA', 'LUAD', 'SKCM', 'COREAD', 'PAAD', 'OV', 'GBM', 'LAML', 
+    'PRAD', 'KIRC', 'HNSC', 'STAD', 'BLCA', 'LIHC', 'CESC', 'SCLC', 'OTHER'
   ];
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 25 * 1024 * 1024) {
-      setUploadError("File size exceeds 25 MB limit.");
-      return;
-    }
-
     setIsUploading(true);
     setUploadError(null);
-    setSuccessMessage(null);
-
     try {
       const res = await api.uploadExpressionFile(file);
       setUploadedData(res);
+      setSuccessMessage(`Extracted ${res.valid_genes_extracted} genes (${res.l1000_matched}/978 L1000 matched).`);
     } catch (err: any) {
       setUploadError(err.message || "Failed to parse molecular profile file.");
     } finally {
@@ -152,7 +152,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 <span>{successMessage}</span>
                 <button 
                   onClick={() => onNavigate('molecular')}
-                  className="font-bold text-emerald-700 hover:underline flex items-center"
+                  className="font-bold text-emerald-700 hover:underline flex items-center ml-2 shrink-0"
                 >
                   View Profile <ArrowRight className="w-3 h-3 ml-1" />
                 </button>
@@ -168,8 +168,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
 
             <form onSubmit={handleCreateProfile} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700">
                     Sample Name / Cell Line Name *
                   </label>
                   <input
@@ -182,8 +182,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700">
                     Custom Sample ID (Optional)
                   </label>
                   <input
@@ -197,11 +197,11 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
               </div>
 
               {/* Sample Category Selection */}
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <div className="space-y-2 pt-1">
+                <label className="block text-xs font-bold text-slate-700">
                   Sample Category *
                 </label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     "Established cancer cell line",
                     "Patient-derived cancer cell line",
@@ -212,7 +212,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                       type="button"
                       key={st}
                       onClick={() => setSampleType(st)}
-                      className={`text-left p-2.5 rounded-lg border text-xs transition-all ${
+                      className={`text-left p-3 rounded-lg border text-xs transition-all ${
                         sampleType === st
                           ? 'bg-teal-50 border-teal-500 text-teal-900 font-bold shadow-2xs'
                           : 'bg-slate-50/60 border-slate-200 text-slate-600 hover:bg-slate-100 hover:border-slate-300'
@@ -224,15 +224,15 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700">
                     TCGA Tissue Type *
                   </label>
                   <select
                     value={tcgaDesc}
                     onChange={(e) => setTcgaDesc(e.target.value)}
-                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs font-medium"
+                    className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 shadow-2xs font-medium cursor-pointer"
                   >
                     {tcgaOptions.map(t => (
                       <option key={t} value={t}>{t}</option>
@@ -240,8 +240,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700">
                     Cancer Type
                   </label>
                   <input
@@ -253,8 +253,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700">
                     Subtype / Driver Mutation
                   </label>
                   <input
@@ -267,8 +267,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <div className="space-y-1.5 pt-1">
+                <label className="block text-xs font-bold text-slate-700">
                   Sample Description & Clinical History (De-identified)
                 </label>
                 <textarea
@@ -281,8 +281,8 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
               </div>
 
               {/* Molecular File Upload Dropzone */}
-              <div className="pt-2">
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <div className="pt-2 space-y-1.5">
+                <label className="block text-xs font-bold text-slate-700">
                   Molecular Expression File (CSV / TSV format)
                 </label>
                 <div className="border-2 border-dashed border-slate-300 hover:border-teal-500 rounded-xl p-5 text-center bg-slate-50/60 transition-colors">
@@ -320,7 +320,7 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                 )}
               </div>
 
-              <div className="pt-2 flex items-center justify-end space-x-3">
+              <div className="pt-3 flex items-center justify-end space-x-3">
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -357,14 +357,14 @@ export const PatientProfileUpload: React.FC<PatientProfileUploadProps> = ({
                         : 'bg-slate-50/60 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-slate-900">{s.name}</span>
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="font-bold text-slate-900 truncate">{s.name}</span>
                       <SampleTypeBadge type={s.sample_type} />
                     </div>
                     <div className="flex items-center space-x-2 text-slate-500 text-[11px] font-mono">
-                      <span className="text-teal-700 font-bold">{s.tcga_desc}</span>
+                      <span className="text-teal-700 font-bold bg-teal-50/60 px-1.5 py-0.5 rounded border border-teal-100">{s.tcga_desc}</span>
                       <span>•</span>
-                      <span>{s.cancer_type}</span>
+                      <span className="truncate">{s.cancer_type}</span>
                     </div>
                   </div>
                 );
