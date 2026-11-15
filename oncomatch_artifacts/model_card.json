@@ -1,0 +1,60 @@
+{
+  "name": "OncoMatch PBL-III drug-response regressor",
+  "model": "HistGradientBoostingRegressor (tuned; refitted on all available data)",
+  "target": "LN_IC50 (GDSC2 fitted)",
+  "intended_use": "Course project: exploratory estimate of ln(IC50) for a drug in a cancer tissue type",
+  "not_for": "Clinical decisions or patient treatment selection",
+  "data": {
+    "source": "GDSC2_fitted_dose_response_24Jul22.csv",
+    "rows": 242036,
+    "cell_lines": 969,
+    "drug_names": 286,
+    "tissue_labels": 33
+  },
+  "evaluation": {
+    "method": "Cell-line-grouped 80:20 hold-out (seed 42); test cell lines unseen during model selection",
+    "train_rows": 193708,
+    "test_rows": 48328,
+    "train_cell_lines": 775,
+    "test_cell_lines": 194,
+    "test_metrics": {
+      "MAE": 1.027,
+      "RMSE": 1.3612,
+      "R2": 0.7585
+    },
+    "mean_baseline_test_MAE": 2.108
+  },
+  "production_refit": {
+    "rows": 242036,
+    "cell_lines": 969,
+    "feature_strategy": "Scenario B; grouped out-of-fold target encodings for model-fitting rows",
+    "hyperparameters_selected_on": "Training split only, using grouped cross-validation"
+  },
+  "inputs": [
+    "DRUG_ID",
+    "PUTATIVE_TARGET",
+    "PATHWAY_NAME",
+    "TCGA_DESC",
+    "MIN_CONC",
+    "MAX_CONC"
+  ],
+  "excluded_inputs": [
+    "AUC",
+    "RMSE",
+    "Z_SCORE"
+  ],
+  "limitations": [
+    "No omics columns in raw GDSC2 fitted curves: tissue-level baselines modulated by drug chemistry",
+    "Cell-line data does not establish clinical effectiveness",
+    "Predictions for unseen drugs are not validated",
+    "UNCLASSIFIED is the largest tissue group"
+  ],
+  "best_params": {
+    "min_samples_leaf": 100,
+    "max_leaf_nodes": 15,
+    "max_iter": 200,
+    "max_depth": 6,
+    "learning_rate": 0.03,
+    "l2_regularization": 0
+  }
+}

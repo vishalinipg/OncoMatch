@@ -1,0 +1,53 @@
+{
+  "model_type": "CategoricalHMM (n_components=3, n_features=3)",
+  "tertile_1_boundary": 2.1929,
+  "tertile_2_boundary": 4.2193,
+  "converged": true,
+  "iterations": 100,
+  "log_likelihood": -254147.5986,
+  "startprob": [
+    1.0,
+    0.0,
+    0.0
+  ],
+  "transition_matrix": [
+    [
+      0.001,
+      0.999,
+      0.0
+    ],
+    [
+      0.9035,
+      0.0089,
+      0.0876
+    ],
+    [
+      0.0264,
+      0.0039,
+      0.9697
+    ]
+  ],
+  "emission_matrix": [
+    [
+      0.4885,
+      0.412,
+      0.0995
+    ],
+    [
+      0.5099,
+      0.3475,
+      0.1426
+    ],
+    [
+      0.196,
+      0.2951,
+      0.5088
+    ]
+  ],
+  "hidden_state_counts": {
+    "0": 52200,
+    "1": 52136,
+    "2": 137700
+  },
+  "scientific_limitation": "HMM sequence order is by DRUG_ID (artificial convention, not a biological time series). Learned transitions describe this artificial ordering and must not be interpreted as biological progression or real temporal transitions."
+}

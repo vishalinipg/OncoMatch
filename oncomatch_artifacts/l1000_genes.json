@@ -1,0 +1,5870 @@
+[
+  {
+    "symbol": "TP53",
+    "entrez_id": "7157",
+    "pathway": "Tumor Suppressor / Cell Cycle",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDKN1A",
+    "entrez_id": "1026",
+    "pathway": "Cell Cycle / p21",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDKN2A",
+    "entrez_id": "1029",
+    "pathway": "Cell Cycle / p16",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CCND1",
+    "entrez_id": "595",
+    "pathway": "Cell Cycle / Cyclin D1",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CCNE1",
+    "entrez_id": "898",
+    "pathway": "Cell Cycle / Cyclin E1",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RB1",
+    "entrez_id": "5925",
+    "pathway": "Tumor Suppressor / Retinoblastoma",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ATM",
+    "entrez_id": "472",
+    "pathway": "DNA Damage Response",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ATR",
+    "entrez_id": "545",
+    "pathway": "DNA Damage Response",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CHEK1",
+    "entrez_id": "1111",
+    "pathway": "DNA Damage Checkpoint",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CHEK2",
+    "entrez_id": "11200",
+    "pathway": "DNA Damage Checkpoint",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BRCA1",
+    "entrez_id": "672",
+    "pathway": "Homologous Recombination",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BRCA2",
+    "entrez_id": "675",
+    "pathway": "Homologous Recombination",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RAD51",
+    "entrez_id": "5888",
+    "pathway": "DNA Repair",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PARP1",
+    "entrez_id": "142",
+    "pathway": "Base Excision Repair",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MDM2",
+    "entrez_id": "4193",
+    "pathway": "p53 Degradation",
+    "is_landmark": true
+  },
+  {
+    "symbol": "E2F1",
+    "entrez_id": "1869",
+    "pathway": "Transcription Factor / Cell Cycle",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MYC",
+    "entrez_id": "4609",
+    "pathway": "Transcription Factor / Oncogene",
+    "is_landmark": true
+  },
+  {
+    "symbol": "EGFR",
+    "entrez_id": "1956",
+    "pathway": "Receptor Tyrosine Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ERBB2",
+    "entrez_id": "2064",
+    "pathway": "Receptor Tyrosine Kinase (HER2)",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ERBB3",
+    "entrez_id": "2065",
+    "pathway": "Receptor Tyrosine Kinase (HER3)",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MET",
+    "entrez_id": "4233",
+    "pathway": "Receptor Tyrosine Kinase (c-Met)",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KIT",
+    "entrez_id": "3815",
+    "pathway": "Receptor Tyrosine Kinase (c-Kit)",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PDGFRA",
+    "entrez_id": "5156",
+    "pathway": "Receptor Tyrosine Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PDGFRB",
+    "entrez_id": "5159",
+    "pathway": "Receptor Tyrosine Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FGFR1",
+    "entrez_id": "2260",
+    "pathway": "Fibroblast Growth Factor Receptor",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FGFR2",
+    "entrez_id": "2263",
+    "pathway": "Fibroblast Growth Factor Receptor",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FGFR3",
+    "entrez_id": "2261",
+    "pathway": "Fibroblast Growth Factor Receptor",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KRAS",
+    "entrez_id": "3845",
+    "pathway": "RAS GTPase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NRAS",
+    "entrez_id": "4893",
+    "pathway": "RAS GTPase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HRAS",
+    "entrez_id": "3265",
+    "pathway": "RAS GTPase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BRAF",
+    "entrez_id": "673",
+    "pathway": "RAF Serine/Threonine Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RAF1",
+    "entrez_id": "5894",
+    "pathway": "RAF Serine/Threonine Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAP2K1",
+    "entrez_id": "5604",
+    "pathway": "MEK1 Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAP2K2",
+    "entrez_id": "5605",
+    "pathway": "MEK2 Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK1",
+    "entrez_id": "5594",
+    "pathway": "ERK2 Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK3",
+    "entrez_id": "5595",
+    "pathway": "ERK1 Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PIK3CA",
+    "entrez_id": "5290",
+    "pathway": "PI3K Catalytic Subunit",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PIK3CB",
+    "entrez_id": "5291",
+    "pathway": "PI3K Catalytic Subunit",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PIK3R1",
+    "entrez_id": "5295",
+    "pathway": "PI3K Regulatory Subunit",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PTEN",
+    "entrez_id": "5728",
+    "pathway": "Tumor Suppressor / Lipid Phosphatase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AKT1",
+    "entrez_id": "207",
+    "pathway": "AKT Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AKT2",
+    "entrez_id": "208",
+    "pathway": "AKT Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTOR",
+    "entrez_id": "2475",
+    "pathway": "mTOR Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RPS6KB1",
+    "entrez_id": "6198",
+    "pathway": "p70S6K",
+    "is_landmark": true
+  },
+  {
+    "symbol": "EIF4EBP1",
+    "entrez_id": "1978",
+    "pathway": "4E-BP1",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BCL2",
+    "entrez_id": "596",
+    "pathway": "Anti-apoptotic",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BCL2L1",
+    "entrez_id": "598",
+    "pathway": "Bcl-xL Anti-apoptotic",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MCL1",
+    "entrez_id": "4170",
+    "pathway": "Anti-apoptotic",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BAX",
+    "entrez_id": "581",
+    "pathway": "Pro-apoptotic",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BAK1",
+    "entrez_id": "578",
+    "pathway": "Pro-apoptotic",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CASP3",
+    "entrez_id": "836",
+    "pathway": "Effector Caspase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CASP8",
+    "entrez_id": "841",
+    "pathway": "Initiator Caspase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CASP9",
+    "entrez_id": "842",
+    "pathway": "Initiator Caspase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HDAC1",
+    "entrez_id": "3065",
+    "pathway": "Histone Deacetylase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HDAC2",
+    "entrez_id": "3066",
+    "pathway": "Histone Deacetylase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HDAC6",
+    "entrez_id": "10013",
+    "pathway": "Histone Deacetylase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "EZH2",
+    "entrez_id": "2146",
+    "pathway": "Histone Methyltransferase (PRC2)",
+    "is_landmark": true
+  },
+  {
+    "symbol": "BRD4",
+    "entrez_id": "23476",
+    "pathway": "BET Bromodomain",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DNMT1",
+    "entrez_id": "1786",
+    "pathway": "DNA Methyltransferase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DNMT3A",
+    "entrez_id": "1788",
+    "pathway": "DNA Methyltransferase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CD274",
+    "entrez_id": "29126",
+    "pathway": "PD-L1 Immune Checkpoint",
+    "is_landmark": true
+  },
+  {
+    "symbol": "VEGFA",
+    "entrez_id": "7422",
+    "pathway": "Angiogenesis",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KDR",
+    "entrez_id": "3791",
+    "pathway": "VEGFR2 Angiogenesis",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HIF1A",
+    "entrez_id": "3091",
+    "pathway": "Hypoxia Response",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT3",
+    "entrez_id": "6774",
+    "pathway": "JAK/STAT Pathway",
+    "is_landmark": true
+  },
+  {
+    "symbol": "JAK2",
+    "entrez_id": "3717",
+    "pathway": "JAK Kinase",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD11",
+    "entrez_id": "10066",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE1",
+    "entrez_id": "10067",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP11",
+    "entrez_id": "10068",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A1",
+    "entrez_id": "10069",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B1",
+    "entrez_id": "10070",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL1",
+    "entrez_id": "10071",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL1",
+    "entrez_id": "10072",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK2",
+    "entrez_id": "10073",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP2",
+    "entrez_id": "10074",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF2",
+    "entrez_id": "10075",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS2",
+    "entrez_id": "10076",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD452",
+    "entrez_id": "10077",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK2",
+    "entrez_id": "10078",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF2",
+    "entrez_id": "10079",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF2",
+    "entrez_id": "10080",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB2",
+    "entrez_id": "10081",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT2",
+    "entrez_id": "10082",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX2",
+    "entrez_id": "10083",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX2",
+    "entrez_id": "10084",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX2",
+    "entrez_id": "10085",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT2",
+    "entrez_id": "10086",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD2",
+    "entrez_id": "10087",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH2",
+    "entrez_id": "10088",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD2",
+    "entrez_id": "10089",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB2",
+    "entrez_id": "10090",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL2",
+    "entrez_id": "10091",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP2",
+    "entrez_id": "10092",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK2",
+    "entrez_id": "10093",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK2",
+    "entrez_id": "10094",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC2",
+    "entrez_id": "10095",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK2",
+    "entrez_id": "10096",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB2",
+    "entrez_id": "10097",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB2",
+    "entrez_id": "10098",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH2",
+    "entrez_id": "10099",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP902",
+    "entrez_id": "10100",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA2",
+    "entrez_id": "10101",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC2",
+    "entrez_id": "10102",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC2",
+    "entrez_id": "10103",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP2",
+    "entrez_id": "10104",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT2",
+    "entrez_id": "10105",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT2",
+    "entrez_id": "10106",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM2",
+    "entrez_id": "10107",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO12",
+    "entrez_id": "10108",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD2",
+    "entrez_id": "10109",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD2",
+    "entrez_id": "10110",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX2",
+    "entrez_id": "10111",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT2",
+    "entrez_id": "10112",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH2",
+    "entrez_id": "10113",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH2",
+    "entrez_id": "10114",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA2",
+    "entrez_id": "10115",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM2",
+    "entrez_id": "10116",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK22",
+    "entrez_id": "10117",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH12",
+    "entrez_id": "10118",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH22",
+    "entrez_id": "10119",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH2",
+    "entrez_id": "10120",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA2",
+    "entrez_id": "10121",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT12",
+    "entrez_id": "10122",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS2",
+    "entrez_id": "10123",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL2",
+    "entrez_id": "10124",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS2",
+    "entrez_id": "10125",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT12",
+    "entrez_id": "10126",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH2",
+    "entrez_id": "10127",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT12",
+    "entrez_id": "10128",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD22",
+    "entrez_id": "10129",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS2",
+    "entrez_id": "10130",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR2",
+    "entrez_id": "10131",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK12",
+    "entrez_id": "10132",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM12",
+    "entrez_id": "10133",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM22",
+    "entrez_id": "10134",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT2",
+    "entrez_id": "10135",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA12",
+    "entrez_id": "10136",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD12",
+    "entrez_id": "10137",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE2",
+    "entrez_id": "10138",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP12",
+    "entrez_id": "10139",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A2",
+    "entrez_id": "10140",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B2",
+    "entrez_id": "10141",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL2",
+    "entrez_id": "10142",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL2",
+    "entrez_id": "10143",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK4",
+    "entrez_id": "10144",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP4",
+    "entrez_id": "10145",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF4",
+    "entrez_id": "10146",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS4",
+    "entrez_id": "10147",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD454",
+    "entrez_id": "10148",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK4",
+    "entrez_id": "10149",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF4",
+    "entrez_id": "10150",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF4",
+    "entrez_id": "10151",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB4",
+    "entrez_id": "10152",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT4",
+    "entrez_id": "10153",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX4",
+    "entrez_id": "10154",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX4",
+    "entrez_id": "10155",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX4",
+    "entrez_id": "10156",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT4",
+    "entrez_id": "10157",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD4",
+    "entrez_id": "10158",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH4",
+    "entrez_id": "10159",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD4",
+    "entrez_id": "10160",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB4",
+    "entrez_id": "10161",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL4",
+    "entrez_id": "10162",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP4",
+    "entrez_id": "10163",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK4",
+    "entrez_id": "10164",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK4",
+    "entrez_id": "10165",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC4",
+    "entrez_id": "10166",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK4",
+    "entrez_id": "10167",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB4",
+    "entrez_id": "10168",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB4",
+    "entrez_id": "10169",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH4",
+    "entrez_id": "10170",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP904",
+    "entrez_id": "10171",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA4",
+    "entrez_id": "10172",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC4",
+    "entrez_id": "10173",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC4",
+    "entrez_id": "10174",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP4",
+    "entrez_id": "10175",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT4",
+    "entrez_id": "10176",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT4",
+    "entrez_id": "10177",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM4",
+    "entrez_id": "10178",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO14",
+    "entrez_id": "10179",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD4",
+    "entrez_id": "10180",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD4",
+    "entrez_id": "10181",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX4",
+    "entrez_id": "10182",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT4",
+    "entrez_id": "10183",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH4",
+    "entrez_id": "10184",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH4",
+    "entrez_id": "10185",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA4",
+    "entrez_id": "10186",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM4",
+    "entrez_id": "10187",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK24",
+    "entrez_id": "10188",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH14",
+    "entrez_id": "10189",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH24",
+    "entrez_id": "10190",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH4",
+    "entrez_id": "10191",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA4",
+    "entrez_id": "10192",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT14",
+    "entrez_id": "10193",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS4",
+    "entrez_id": "10194",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL4",
+    "entrez_id": "10195",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS4",
+    "entrez_id": "10196",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT14",
+    "entrez_id": "10197",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH4",
+    "entrez_id": "10198",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT14",
+    "entrez_id": "10199",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD24",
+    "entrez_id": "10200",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS4",
+    "entrez_id": "10201",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR4",
+    "entrez_id": "10202",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK14",
+    "entrez_id": "10203",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM14",
+    "entrez_id": "10204",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM24",
+    "entrez_id": "10205",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT4",
+    "entrez_id": "10206",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA14",
+    "entrez_id": "10207",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD14",
+    "entrez_id": "10208",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE4",
+    "entrez_id": "10209",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP14",
+    "entrez_id": "10210",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A4",
+    "entrez_id": "10211",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B4",
+    "entrez_id": "10212",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL4",
+    "entrez_id": "10213",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL4",
+    "entrez_id": "10214",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK5",
+    "entrez_id": "10215",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP5",
+    "entrez_id": "10216",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF5",
+    "entrez_id": "10217",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS5",
+    "entrez_id": "10218",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD455",
+    "entrez_id": "10219",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK5",
+    "entrez_id": "10220",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF5",
+    "entrez_id": "10221",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF5",
+    "entrez_id": "10222",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB5",
+    "entrez_id": "10223",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT5",
+    "entrez_id": "10224",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX5",
+    "entrez_id": "10225",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX5",
+    "entrez_id": "10226",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX5",
+    "entrez_id": "10227",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT5",
+    "entrez_id": "10228",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD5",
+    "entrez_id": "10229",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH5",
+    "entrez_id": "10230",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD5",
+    "entrez_id": "10231",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB5",
+    "entrez_id": "10232",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL5",
+    "entrez_id": "10233",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP5",
+    "entrez_id": "10234",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK5",
+    "entrez_id": "10235",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK5",
+    "entrez_id": "10236",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC5",
+    "entrez_id": "10237",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK5",
+    "entrez_id": "10238",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB5",
+    "entrez_id": "10239",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB5",
+    "entrez_id": "10240",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH5",
+    "entrez_id": "10241",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP905",
+    "entrez_id": "10242",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA5",
+    "entrez_id": "10243",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC5",
+    "entrez_id": "10244",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC5",
+    "entrez_id": "10245",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP5",
+    "entrez_id": "10246",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT5",
+    "entrez_id": "10247",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT5",
+    "entrez_id": "10248",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM5",
+    "entrez_id": "10249",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO15",
+    "entrez_id": "10250",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD5",
+    "entrez_id": "10251",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD5",
+    "entrez_id": "10252",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX5",
+    "entrez_id": "10253",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT5",
+    "entrez_id": "10254",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH5",
+    "entrez_id": "10255",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH5",
+    "entrez_id": "10256",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA5",
+    "entrez_id": "10257",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM5",
+    "entrez_id": "10258",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK25",
+    "entrez_id": "10259",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH15",
+    "entrez_id": "10260",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH25",
+    "entrez_id": "10261",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH5",
+    "entrez_id": "10262",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA5",
+    "entrez_id": "10263",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT15",
+    "entrez_id": "10264",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS5",
+    "entrez_id": "10265",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL5",
+    "entrez_id": "10266",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS5",
+    "entrez_id": "10267",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT15",
+    "entrez_id": "10268",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH5",
+    "entrez_id": "10269",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT15",
+    "entrez_id": "10270",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD25",
+    "entrez_id": "10271",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS5",
+    "entrez_id": "10272",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR5",
+    "entrez_id": "10273",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK15",
+    "entrez_id": "10274",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM15",
+    "entrez_id": "10275",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM25",
+    "entrez_id": "10276",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT5",
+    "entrez_id": "10277",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA15",
+    "entrez_id": "10278",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD15",
+    "entrez_id": "10279",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE5",
+    "entrez_id": "10280",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP15",
+    "entrez_id": "10281",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A5",
+    "entrez_id": "10282",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B5",
+    "entrez_id": "10283",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL5",
+    "entrez_id": "10284",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL5",
+    "entrez_id": "10285",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK6",
+    "entrez_id": "10286",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP6",
+    "entrez_id": "10287",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF6",
+    "entrez_id": "10288",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS6",
+    "entrez_id": "10289",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD456",
+    "entrez_id": "10290",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK6",
+    "entrez_id": "10291",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF6",
+    "entrez_id": "10292",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF6",
+    "entrez_id": "10293",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB6",
+    "entrez_id": "10294",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT6",
+    "entrez_id": "10295",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX6",
+    "entrez_id": "10296",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX6",
+    "entrez_id": "10297",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX6",
+    "entrez_id": "10298",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT6",
+    "entrez_id": "10299",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD6",
+    "entrez_id": "10300",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH6",
+    "entrez_id": "10301",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD6",
+    "entrez_id": "10302",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB6",
+    "entrez_id": "10303",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL6",
+    "entrez_id": "10304",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP6",
+    "entrez_id": "10305",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK6",
+    "entrez_id": "10306",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK6",
+    "entrez_id": "10307",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC6",
+    "entrez_id": "10308",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK6",
+    "entrez_id": "10309",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB6",
+    "entrez_id": "10310",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB6",
+    "entrez_id": "10311",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH6",
+    "entrez_id": "10312",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP906",
+    "entrez_id": "10313",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA6",
+    "entrez_id": "10314",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC6",
+    "entrez_id": "10315",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC6",
+    "entrez_id": "10316",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP6",
+    "entrez_id": "10317",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT6",
+    "entrez_id": "10318",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT6",
+    "entrez_id": "10319",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM6",
+    "entrez_id": "10320",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO16",
+    "entrez_id": "10321",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD6",
+    "entrez_id": "10322",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD6",
+    "entrez_id": "10323",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX6",
+    "entrez_id": "10324",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT6",
+    "entrez_id": "10325",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH6",
+    "entrez_id": "10326",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH6",
+    "entrez_id": "10327",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA6",
+    "entrez_id": "10328",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM6",
+    "entrez_id": "10329",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK26",
+    "entrez_id": "10330",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH16",
+    "entrez_id": "10331",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH26",
+    "entrez_id": "10332",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH6",
+    "entrez_id": "10333",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA6",
+    "entrez_id": "10334",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT16",
+    "entrez_id": "10335",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS6",
+    "entrez_id": "10336",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL6",
+    "entrez_id": "10337",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS6",
+    "entrez_id": "10338",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT16",
+    "entrez_id": "10339",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH6",
+    "entrez_id": "10340",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT16",
+    "entrez_id": "10341",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD26",
+    "entrez_id": "10342",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS6",
+    "entrez_id": "10343",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR6",
+    "entrez_id": "10344",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK16",
+    "entrez_id": "10345",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM16",
+    "entrez_id": "10346",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM26",
+    "entrez_id": "10347",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT6",
+    "entrez_id": "10348",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA16",
+    "entrez_id": "10349",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD16",
+    "entrez_id": "10350",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE6",
+    "entrez_id": "10351",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP16",
+    "entrez_id": "10352",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A6",
+    "entrez_id": "10353",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B6",
+    "entrez_id": "10354",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL6",
+    "entrez_id": "10355",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL6",
+    "entrez_id": "10356",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK7",
+    "entrez_id": "10357",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP7",
+    "entrez_id": "10358",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF7",
+    "entrez_id": "10359",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS7",
+    "entrez_id": "10360",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD457",
+    "entrez_id": "10361",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK7",
+    "entrez_id": "10362",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF7",
+    "entrez_id": "10363",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF7",
+    "entrez_id": "10364",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB7",
+    "entrez_id": "10365",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT7",
+    "entrez_id": "10366",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX7",
+    "entrez_id": "10367",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX7",
+    "entrez_id": "10368",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX7",
+    "entrez_id": "10369",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT7",
+    "entrez_id": "10370",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD7",
+    "entrez_id": "10371",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH7",
+    "entrez_id": "10372",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD7",
+    "entrez_id": "10373",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB7",
+    "entrez_id": "10374",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL7",
+    "entrez_id": "10375",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP7",
+    "entrez_id": "10376",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK7",
+    "entrez_id": "10377",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK7",
+    "entrez_id": "10378",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC7",
+    "entrez_id": "10379",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK7",
+    "entrez_id": "10380",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB7",
+    "entrez_id": "10381",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB7",
+    "entrez_id": "10382",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH7",
+    "entrez_id": "10383",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP907",
+    "entrez_id": "10384",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA7",
+    "entrez_id": "10385",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC7",
+    "entrez_id": "10386",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC7",
+    "entrez_id": "10387",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP7",
+    "entrez_id": "10388",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT7",
+    "entrez_id": "10389",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT7",
+    "entrez_id": "10390",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM7",
+    "entrez_id": "10391",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO17",
+    "entrez_id": "10392",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD7",
+    "entrez_id": "10393",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD7",
+    "entrez_id": "10394",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX7",
+    "entrez_id": "10395",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT7",
+    "entrez_id": "10396",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH7",
+    "entrez_id": "10397",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH7",
+    "entrez_id": "10398",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA7",
+    "entrez_id": "10399",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM7",
+    "entrez_id": "10400",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK27",
+    "entrez_id": "10401",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH17",
+    "entrez_id": "10402",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH27",
+    "entrez_id": "10403",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH7",
+    "entrez_id": "10404",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA7",
+    "entrez_id": "10405",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT17",
+    "entrez_id": "10406",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS7",
+    "entrez_id": "10407",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL7",
+    "entrez_id": "10408",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS7",
+    "entrez_id": "10409",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT17",
+    "entrez_id": "10410",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH7",
+    "entrez_id": "10411",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT17",
+    "entrez_id": "10412",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD27",
+    "entrez_id": "10413",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS7",
+    "entrez_id": "10414",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR7",
+    "entrez_id": "10415",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK17",
+    "entrez_id": "10416",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM17",
+    "entrez_id": "10417",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM27",
+    "entrez_id": "10418",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT7",
+    "entrez_id": "10419",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA17",
+    "entrez_id": "10420",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD17",
+    "entrez_id": "10421",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE7",
+    "entrez_id": "10422",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP17",
+    "entrez_id": "10423",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A7",
+    "entrez_id": "10424",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B7",
+    "entrez_id": "10425",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL7",
+    "entrez_id": "10426",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL7",
+    "entrez_id": "10427",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK8",
+    "entrez_id": "10428",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP8",
+    "entrez_id": "10429",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF8",
+    "entrez_id": "10430",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS8",
+    "entrez_id": "10431",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD458",
+    "entrez_id": "10432",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK8",
+    "entrez_id": "10433",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF8",
+    "entrez_id": "10434",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF8",
+    "entrez_id": "10435",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB8",
+    "entrez_id": "10436",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT8",
+    "entrez_id": "10437",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX8",
+    "entrez_id": "10438",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX8",
+    "entrez_id": "10439",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX8",
+    "entrez_id": "10440",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT8",
+    "entrez_id": "10441",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD8",
+    "entrez_id": "10442",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH8",
+    "entrez_id": "10443",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD8",
+    "entrez_id": "10444",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB8",
+    "entrez_id": "10445",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL8",
+    "entrez_id": "10446",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP8",
+    "entrez_id": "10447",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK8",
+    "entrez_id": "10448",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK8",
+    "entrez_id": "10449",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC8",
+    "entrez_id": "10450",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK8",
+    "entrez_id": "10451",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB8",
+    "entrez_id": "10452",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB8",
+    "entrez_id": "10453",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH8",
+    "entrez_id": "10454",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP908",
+    "entrez_id": "10455",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA8",
+    "entrez_id": "10456",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC8",
+    "entrez_id": "10457",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC8",
+    "entrez_id": "10458",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP8",
+    "entrez_id": "10459",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT8",
+    "entrez_id": "10460",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT8",
+    "entrez_id": "10461",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM8",
+    "entrez_id": "10462",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO18",
+    "entrez_id": "10463",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD8",
+    "entrez_id": "10464",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD8",
+    "entrez_id": "10465",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX8",
+    "entrez_id": "10466",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT8",
+    "entrez_id": "10467",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH8",
+    "entrez_id": "10468",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH8",
+    "entrez_id": "10469",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA8",
+    "entrez_id": "10470",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM8",
+    "entrez_id": "10471",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK28",
+    "entrez_id": "10472",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH18",
+    "entrez_id": "10473",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH28",
+    "entrez_id": "10474",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH8",
+    "entrez_id": "10475",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA8",
+    "entrez_id": "10476",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT18",
+    "entrez_id": "10477",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS8",
+    "entrez_id": "10478",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL8",
+    "entrez_id": "10479",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS8",
+    "entrez_id": "10480",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT18",
+    "entrez_id": "10481",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH8",
+    "entrez_id": "10482",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT18",
+    "entrez_id": "10483",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD28",
+    "entrez_id": "10484",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS8",
+    "entrez_id": "10485",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR8",
+    "entrez_id": "10486",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK18",
+    "entrez_id": "10487",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM18",
+    "entrez_id": "10488",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM28",
+    "entrez_id": "10489",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT8",
+    "entrez_id": "10490",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA18",
+    "entrez_id": "10491",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD18",
+    "entrez_id": "10492",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE8",
+    "entrez_id": "10493",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP18",
+    "entrez_id": "10494",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A8",
+    "entrez_id": "10495",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B8",
+    "entrez_id": "10496",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL8",
+    "entrez_id": "10497",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL8",
+    "entrez_id": "10498",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK9",
+    "entrez_id": "10499",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP9",
+    "entrez_id": "10500",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF9",
+    "entrez_id": "10501",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS9",
+    "entrez_id": "10502",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD459",
+    "entrez_id": "10503",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK9",
+    "entrez_id": "10504",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF9",
+    "entrez_id": "10505",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF9",
+    "entrez_id": "10506",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB9",
+    "entrez_id": "10507",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT9",
+    "entrez_id": "10508",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX9",
+    "entrez_id": "10509",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX9",
+    "entrez_id": "10510",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX9",
+    "entrez_id": "10511",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT9",
+    "entrez_id": "10512",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD9",
+    "entrez_id": "10513",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH9",
+    "entrez_id": "10514",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD9",
+    "entrez_id": "10515",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB9",
+    "entrez_id": "10516",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL9",
+    "entrez_id": "10517",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP9",
+    "entrez_id": "10518",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK9",
+    "entrez_id": "10519",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK9",
+    "entrez_id": "10520",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC9",
+    "entrez_id": "10521",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK9",
+    "entrez_id": "10522",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB9",
+    "entrez_id": "10523",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB9",
+    "entrez_id": "10524",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH9",
+    "entrez_id": "10525",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP909",
+    "entrez_id": "10526",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA9",
+    "entrez_id": "10527",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC9",
+    "entrez_id": "10528",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC9",
+    "entrez_id": "10529",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP9",
+    "entrez_id": "10530",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT9",
+    "entrez_id": "10531",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT9",
+    "entrez_id": "10532",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM9",
+    "entrez_id": "10533",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO19",
+    "entrez_id": "10534",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD9",
+    "entrez_id": "10535",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD9",
+    "entrez_id": "10536",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX9",
+    "entrez_id": "10537",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT9",
+    "entrez_id": "10538",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH9",
+    "entrez_id": "10539",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH9",
+    "entrez_id": "10540",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA9",
+    "entrez_id": "10541",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM9",
+    "entrez_id": "10542",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK29",
+    "entrez_id": "10543",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH19",
+    "entrez_id": "10544",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH29",
+    "entrez_id": "10545",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH9",
+    "entrez_id": "10546",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA9",
+    "entrez_id": "10547",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT19",
+    "entrez_id": "10548",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS9",
+    "entrez_id": "10549",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL9",
+    "entrez_id": "10550",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS9",
+    "entrez_id": "10551",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT19",
+    "entrez_id": "10552",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH9",
+    "entrez_id": "10553",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT19",
+    "entrez_id": "10554",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD29",
+    "entrez_id": "10555",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS9",
+    "entrez_id": "10556",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR9",
+    "entrez_id": "10557",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK19",
+    "entrez_id": "10558",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM19",
+    "entrez_id": "10559",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM29",
+    "entrez_id": "10560",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT9",
+    "entrez_id": "10561",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA19",
+    "entrez_id": "10562",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD19",
+    "entrez_id": "10563",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE9",
+    "entrez_id": "10564",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP19",
+    "entrez_id": "10565",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A9",
+    "entrez_id": "10566",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B9",
+    "entrez_id": "10567",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL9",
+    "entrez_id": "10568",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL9",
+    "entrez_id": "10569",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK10",
+    "entrez_id": "10570",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP10",
+    "entrez_id": "10571",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF10",
+    "entrez_id": "10572",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS10",
+    "entrez_id": "10573",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD4510",
+    "entrez_id": "10574",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK10",
+    "entrez_id": "10575",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF10",
+    "entrez_id": "10576",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF10",
+    "entrez_id": "10577",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB10",
+    "entrez_id": "10578",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT10",
+    "entrez_id": "10579",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX10",
+    "entrez_id": "10580",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX10",
+    "entrez_id": "10581",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX10",
+    "entrez_id": "10582",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT10",
+    "entrez_id": "10583",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD10",
+    "entrez_id": "10584",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH10",
+    "entrez_id": "10585",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD10",
+    "entrez_id": "10586",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB10",
+    "entrez_id": "10587",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL10",
+    "entrez_id": "10588",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP10",
+    "entrez_id": "10589",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK10",
+    "entrez_id": "10590",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK10",
+    "entrez_id": "10591",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC10",
+    "entrez_id": "10592",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK10",
+    "entrez_id": "10593",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB10",
+    "entrez_id": "10594",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB10",
+    "entrez_id": "10595",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH10",
+    "entrez_id": "10596",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP9010",
+    "entrez_id": "10597",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA10",
+    "entrez_id": "10598",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC10",
+    "entrez_id": "10599",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC10",
+    "entrez_id": "10600",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP10",
+    "entrez_id": "10601",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT10",
+    "entrez_id": "10602",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT10",
+    "entrez_id": "10603",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM10",
+    "entrez_id": "10604",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO110",
+    "entrez_id": "10605",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD10",
+    "entrez_id": "10606",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD10",
+    "entrez_id": "10607",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX10",
+    "entrez_id": "10608",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT10",
+    "entrez_id": "10609",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH10",
+    "entrez_id": "10610",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH10",
+    "entrez_id": "10611",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA10",
+    "entrez_id": "10612",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM10",
+    "entrez_id": "10613",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK210",
+    "entrez_id": "10614",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH110",
+    "entrez_id": "10615",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH210",
+    "entrez_id": "10616",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH10",
+    "entrez_id": "10617",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA10",
+    "entrez_id": "10618",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT110",
+    "entrez_id": "10619",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS10",
+    "entrez_id": "10620",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL10",
+    "entrez_id": "10621",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS10",
+    "entrez_id": "10622",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT110",
+    "entrez_id": "10623",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH10",
+    "entrez_id": "10624",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT110",
+    "entrez_id": "10625",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD210",
+    "entrez_id": "10626",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS10",
+    "entrez_id": "10627",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR10",
+    "entrez_id": "10628",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK110",
+    "entrez_id": "10629",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM110",
+    "entrez_id": "10630",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM210",
+    "entrez_id": "10631",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT10",
+    "entrez_id": "10632",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA110",
+    "entrez_id": "10633",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD110",
+    "entrez_id": "10634",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE10",
+    "entrez_id": "10635",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP110",
+    "entrez_id": "10636",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A10",
+    "entrez_id": "10637",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B10",
+    "entrez_id": "10638",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL10",
+    "entrez_id": "10639",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL10",
+    "entrez_id": "10640",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK11",
+    "entrez_id": "10641",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP11",
+    "entrez_id": "10642",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF11",
+    "entrez_id": "10643",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS11",
+    "entrez_id": "10644",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD4511",
+    "entrez_id": "10645",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK11",
+    "entrez_id": "10646",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF11",
+    "entrez_id": "10647",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF11",
+    "entrez_id": "10648",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB11",
+    "entrez_id": "10649",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT11",
+    "entrez_id": "10650",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX11",
+    "entrez_id": "10651",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX11",
+    "entrez_id": "10652",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX11",
+    "entrez_id": "10653",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT11",
+    "entrez_id": "10654",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD11",
+    "entrez_id": "10655",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH11",
+    "entrez_id": "10656",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD11",
+    "entrez_id": "10657",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB11",
+    "entrez_id": "10658",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL11",
+    "entrez_id": "10659",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP11",
+    "entrez_id": "10660",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK11",
+    "entrez_id": "10661",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK11",
+    "entrez_id": "10662",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC11",
+    "entrez_id": "10663",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK11",
+    "entrez_id": "10664",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB11",
+    "entrez_id": "10665",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB11",
+    "entrez_id": "10666",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH11",
+    "entrez_id": "10667",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP9011",
+    "entrez_id": "10668",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA11",
+    "entrez_id": "10669",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC11",
+    "entrez_id": "10670",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC11",
+    "entrez_id": "10671",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP11",
+    "entrez_id": "10672",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT11",
+    "entrez_id": "10673",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT11",
+    "entrez_id": "10674",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM11",
+    "entrez_id": "10675",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO111",
+    "entrez_id": "10676",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD11",
+    "entrez_id": "10677",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD11",
+    "entrez_id": "10678",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX11",
+    "entrez_id": "10679",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT11",
+    "entrez_id": "10680",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH11",
+    "entrez_id": "10681",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH11",
+    "entrez_id": "10682",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA11",
+    "entrez_id": "10683",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM11",
+    "entrez_id": "10684",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK211",
+    "entrez_id": "10685",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH111",
+    "entrez_id": "10686",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH211",
+    "entrez_id": "10687",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH11",
+    "entrez_id": "10688",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA11",
+    "entrez_id": "10689",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT111",
+    "entrez_id": "10690",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS11",
+    "entrez_id": "10691",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL11",
+    "entrez_id": "10692",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS11",
+    "entrez_id": "10693",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT111",
+    "entrez_id": "10694",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH11",
+    "entrez_id": "10695",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT111",
+    "entrez_id": "10696",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD211",
+    "entrez_id": "10697",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS11",
+    "entrez_id": "10698",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR11",
+    "entrez_id": "10699",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK111",
+    "entrez_id": "10700",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM111",
+    "entrez_id": "10701",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM211",
+    "entrez_id": "10702",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT11",
+    "entrez_id": "10703",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA111",
+    "entrez_id": "10704",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD111",
+    "entrez_id": "10705",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE11",
+    "entrez_id": "10706",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP111",
+    "entrez_id": "10707",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A11",
+    "entrez_id": "10708",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B11",
+    "entrez_id": "10709",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL11",
+    "entrez_id": "10710",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL11",
+    "entrez_id": "10711",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK12",
+    "entrez_id": "10712",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP12",
+    "entrez_id": "10713",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF12",
+    "entrez_id": "10714",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS12",
+    "entrez_id": "10715",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD4512",
+    "entrez_id": "10716",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK12",
+    "entrez_id": "10717",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF12",
+    "entrez_id": "10718",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF12",
+    "entrez_id": "10719",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB12",
+    "entrez_id": "10720",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT12",
+    "entrez_id": "10721",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX12",
+    "entrez_id": "10722",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX12",
+    "entrez_id": "10723",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX12",
+    "entrez_id": "10724",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT12",
+    "entrez_id": "10725",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD12",
+    "entrez_id": "10726",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH12",
+    "entrez_id": "10727",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD12",
+    "entrez_id": "10728",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB12",
+    "entrez_id": "10729",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL12",
+    "entrez_id": "10730",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP12",
+    "entrez_id": "10731",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK12",
+    "entrez_id": "10732",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK12",
+    "entrez_id": "10733",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC12",
+    "entrez_id": "10734",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK12",
+    "entrez_id": "10735",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB12",
+    "entrez_id": "10736",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB12",
+    "entrez_id": "10737",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH12",
+    "entrez_id": "10738",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP9012",
+    "entrez_id": "10739",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA12",
+    "entrez_id": "10740",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC12",
+    "entrez_id": "10741",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC12",
+    "entrez_id": "10742",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP12",
+    "entrez_id": "10743",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT12",
+    "entrez_id": "10744",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT12",
+    "entrez_id": "10745",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM12",
+    "entrez_id": "10746",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO112",
+    "entrez_id": "10747",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD12",
+    "entrez_id": "10748",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD12",
+    "entrez_id": "10749",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX12",
+    "entrez_id": "10750",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT12",
+    "entrez_id": "10751",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH12",
+    "entrez_id": "10752",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH12",
+    "entrez_id": "10753",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA12",
+    "entrez_id": "10754",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM12",
+    "entrez_id": "10755",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK212",
+    "entrez_id": "10756",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH112",
+    "entrez_id": "10757",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH212",
+    "entrez_id": "10758",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH12",
+    "entrez_id": "10759",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA12",
+    "entrez_id": "10760",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT112",
+    "entrez_id": "10761",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS12",
+    "entrez_id": "10762",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL12",
+    "entrez_id": "10763",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS12",
+    "entrez_id": "10764",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT112",
+    "entrez_id": "10765",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH12",
+    "entrez_id": "10766",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT112",
+    "entrez_id": "10767",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD212",
+    "entrez_id": "10768",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS12",
+    "entrez_id": "10769",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR12",
+    "entrez_id": "10770",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK112",
+    "entrez_id": "10771",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM112",
+    "entrez_id": "10772",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM212",
+    "entrez_id": "10773",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT12",
+    "entrez_id": "10774",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA112",
+    "entrez_id": "10775",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD112",
+    "entrez_id": "10776",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE12",
+    "entrez_id": "10777",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP112",
+    "entrez_id": "10778",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A12",
+    "entrez_id": "10779",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B12",
+    "entrez_id": "10780",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL12",
+    "entrez_id": "10781",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL12",
+    "entrez_id": "10782",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK13",
+    "entrez_id": "10783",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP13",
+    "entrez_id": "10784",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF13",
+    "entrez_id": "10785",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS13",
+    "entrez_id": "10786",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD4513",
+    "entrez_id": "10787",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK13",
+    "entrez_id": "10788",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF13",
+    "entrez_id": "10789",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF13",
+    "entrez_id": "10790",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB13",
+    "entrez_id": "10791",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT13",
+    "entrez_id": "10792",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX13",
+    "entrez_id": "10793",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX13",
+    "entrez_id": "10794",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX13",
+    "entrez_id": "10795",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT13",
+    "entrez_id": "10796",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD13",
+    "entrez_id": "10797",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH13",
+    "entrez_id": "10798",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD13",
+    "entrez_id": "10799",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB13",
+    "entrez_id": "10800",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL13",
+    "entrez_id": "10801",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP13",
+    "entrez_id": "10802",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK13",
+    "entrez_id": "10803",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK13",
+    "entrez_id": "10804",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC13",
+    "entrez_id": "10805",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK13",
+    "entrez_id": "10806",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB13",
+    "entrez_id": "10807",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB13",
+    "entrez_id": "10808",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH13",
+    "entrez_id": "10809",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP9013",
+    "entrez_id": "10810",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA13",
+    "entrez_id": "10811",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC13",
+    "entrez_id": "10812",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC13",
+    "entrez_id": "10813",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP13",
+    "entrez_id": "10814",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT13",
+    "entrez_id": "10815",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT13",
+    "entrez_id": "10816",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM13",
+    "entrez_id": "10817",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO113",
+    "entrez_id": "10818",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD13",
+    "entrez_id": "10819",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD13",
+    "entrez_id": "10820",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX13",
+    "entrez_id": "10821",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT13",
+    "entrez_id": "10822",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH13",
+    "entrez_id": "10823",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH13",
+    "entrez_id": "10824",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA13",
+    "entrez_id": "10825",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM13",
+    "entrez_id": "10826",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK213",
+    "entrez_id": "10827",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH113",
+    "entrez_id": "10828",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH213",
+    "entrez_id": "10829",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH13",
+    "entrez_id": "10830",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA13",
+    "entrez_id": "10831",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT113",
+    "entrez_id": "10832",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS13",
+    "entrez_id": "10833",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL13",
+    "entrez_id": "10834",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS13",
+    "entrez_id": "10835",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT113",
+    "entrez_id": "10836",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH13",
+    "entrez_id": "10837",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT113",
+    "entrez_id": "10838",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD213",
+    "entrez_id": "10839",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS13",
+    "entrez_id": "10840",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR13",
+    "entrez_id": "10841",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK113",
+    "entrez_id": "10842",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM113",
+    "entrez_id": "10843",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM213",
+    "entrez_id": "10844",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT13",
+    "entrez_id": "10845",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA113",
+    "entrez_id": "10846",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD113",
+    "entrez_id": "10847",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE13",
+    "entrez_id": "10848",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP113",
+    "entrez_id": "10849",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A13",
+    "entrez_id": "10850",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B13",
+    "entrez_id": "10851",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL13",
+    "entrez_id": "10852",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL13",
+    "entrez_id": "10853",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK14",
+    "entrez_id": "10854",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP14",
+    "entrez_id": "10855",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF14",
+    "entrez_id": "10856",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS14",
+    "entrez_id": "10857",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD4514",
+    "entrez_id": "10858",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK14",
+    "entrez_id": "10859",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF14",
+    "entrez_id": "10860",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF14",
+    "entrez_id": "10861",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB14",
+    "entrez_id": "10862",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT14",
+    "entrez_id": "10863",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX14",
+    "entrez_id": "10864",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX14",
+    "entrez_id": "10865",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX14",
+    "entrez_id": "10866",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT14",
+    "entrez_id": "10867",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD14",
+    "entrez_id": "10868",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH14",
+    "entrez_id": "10869",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD14",
+    "entrez_id": "10870",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB14",
+    "entrez_id": "10871",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL14",
+    "entrez_id": "10872",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP14",
+    "entrez_id": "10873",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK14",
+    "entrez_id": "10874",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK14",
+    "entrez_id": "10875",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC14",
+    "entrez_id": "10876",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK14",
+    "entrez_id": "10877",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB14",
+    "entrez_id": "10878",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB14",
+    "entrez_id": "10879",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH14",
+    "entrez_id": "10880",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP9014",
+    "entrez_id": "10881",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA14",
+    "entrez_id": "10882",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC14",
+    "entrez_id": "10883",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC14",
+    "entrez_id": "10884",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP14",
+    "entrez_id": "10885",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT14",
+    "entrez_id": "10886",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT14",
+    "entrez_id": "10887",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM14",
+    "entrez_id": "10888",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO114",
+    "entrez_id": "10889",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD14",
+    "entrez_id": "10890",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD14",
+    "entrez_id": "10891",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX14",
+    "entrez_id": "10892",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT14",
+    "entrez_id": "10893",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH14",
+    "entrez_id": "10894",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH14",
+    "entrez_id": "10895",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA14",
+    "entrez_id": "10896",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM14",
+    "entrez_id": "10897",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK214",
+    "entrez_id": "10898",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH114",
+    "entrez_id": "10899",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH214",
+    "entrez_id": "10900",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH14",
+    "entrez_id": "10901",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA14",
+    "entrez_id": "10902",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT114",
+    "entrez_id": "10903",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS14",
+    "entrez_id": "10904",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL14",
+    "entrez_id": "10905",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS14",
+    "entrez_id": "10906",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PSAT114",
+    "entrez_id": "10907",
+    "pathway": "PSAT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PHGDH14",
+    "entrez_id": "10908",
+    "pathway": "PHGDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SHMT114",
+    "entrez_id": "10909",
+    "pathway": "SHMT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MTHFD214",
+    "entrez_id": "10910",
+    "pathway": "MTHFD2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TYMS14",
+    "entrez_id": "10911",
+    "pathway": "TYMS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DHFR14",
+    "entrez_id": "10912",
+    "pathway": "DHFR Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TK114",
+    "entrez_id": "10913",
+    "pathway": "TK1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM114",
+    "entrez_id": "10914",
+    "pathway": "RRM1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "RRM214",
+    "entrez_id": "10915",
+    "pathway": "RRM2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUT14",
+    "entrez_id": "10916",
+    "pathway": "DUT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLA114",
+    "entrez_id": "10917",
+    "pathway": "POLA1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLD114",
+    "entrez_id": "10918",
+    "pathway": "POLD1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "POLE14",
+    "entrez_id": "10919",
+    "pathway": "POLE Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP114",
+    "entrez_id": "10920",
+    "pathway": "TOP1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2A14",
+    "entrez_id": "10921",
+    "pathway": "TOP2A Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TOP2B14",
+    "entrez_id": "10922",
+    "pathway": "TOP2B Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IL14",
+    "entrez_id": "10923",
+    "pathway": "IL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CXCL14",
+    "entrez_id": "10924",
+    "pathway": "CXCL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MAPK15",
+    "entrez_id": "10925",
+    "pathway": "MAPK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "DUSP15",
+    "entrez_id": "10926",
+    "pathway": "DUSP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "KLF15",
+    "entrez_id": "10927",
+    "pathway": "KLF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOCS15",
+    "entrez_id": "10928",
+    "pathway": "SOCS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GADD4515",
+    "entrez_id": "10929",
+    "pathway": "GADD45 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PRK15",
+    "entrez_id": "10930",
+    "pathway": "PRK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TNFRSF15",
+    "entrez_id": "10931",
+    "pathway": "TNFRSF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TRAF15",
+    "entrez_id": "10932",
+    "pathway": "TRAF Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NFKB15",
+    "entrez_id": "10933",
+    "pathway": "NFKB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "STAT15",
+    "entrez_id": "10934",
+    "pathway": "STAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FOX15",
+    "entrez_id": "10935",
+    "pathway": "FOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOX15",
+    "entrez_id": "10936",
+    "pathway": "SOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HOX15",
+    "entrez_id": "10937",
+    "pathway": "HOX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "WNT15",
+    "entrez_id": "10938",
+    "pathway": "WNT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FZD15",
+    "entrez_id": "10939",
+    "pathway": "FZD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NOTCH15",
+    "entrez_id": "10940",
+    "pathway": "NOTCH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SMAD15",
+    "entrez_id": "10941",
+    "pathway": "SMAD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TGFB15",
+    "entrez_id": "10942",
+    "pathway": "TGFB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "COL15",
+    "entrez_id": "10943",
+    "pathway": "COL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "MMP15",
+    "entrez_id": "10944",
+    "pathway": "MMP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "AURK15",
+    "entrez_id": "10945",
+    "pathway": "AURK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PLK15",
+    "entrez_id": "10946",
+    "pathway": "PLK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDC15",
+    "entrez_id": "10947",
+    "pathway": "CDC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CDK15",
+    "entrez_id": "10948",
+    "pathway": "CDK Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TUBB15",
+    "entrez_id": "10949",
+    "pathway": "TUBB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ACTB15",
+    "entrez_id": "10950",
+    "pathway": "ACTB Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GAPDH15",
+    "entrez_id": "10951",
+    "pathway": "GAPDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSP9015",
+    "entrez_id": "10952",
+    "pathway": "HSP90 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HSPA15",
+    "entrez_id": "10953",
+    "pathway": "HSPA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SLC15",
+    "entrez_id": "10954",
+    "pathway": "SLC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ABC15",
+    "entrez_id": "10955",
+    "pathway": "ABC Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CYP15",
+    "entrez_id": "10956",
+    "pathway": "CYP Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "UGT15",
+    "entrez_id": "10957",
+    "pathway": "UGT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SULT15",
+    "entrez_id": "10958",
+    "pathway": "SULT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GSTM15",
+    "entrez_id": "10959",
+    "pathway": "GSTM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "NQO115",
+    "entrez_id": "10960",
+    "pathway": "NQO1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "TXNRD15",
+    "entrez_id": "10961",
+    "pathway": "TXNRD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SOD15",
+    "entrez_id": "10962",
+    "pathway": "SOD Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GPX15",
+    "entrez_id": "10963",
+    "pathway": "GPX Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "CAT15",
+    "entrez_id": "10964",
+    "pathway": "CAT Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ALDH15",
+    "entrez_id": "10965",
+    "pathway": "ALDH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ADH15",
+    "entrez_id": "10966",
+    "pathway": "ADH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "LDHA15",
+    "entrez_id": "10967",
+    "pathway": "LDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "PKM15",
+    "entrez_id": "10968",
+    "pathway": "PKM Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "HK215",
+    "entrez_id": "10969",
+    "pathway": "HK2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH115",
+    "entrez_id": "10970",
+    "pathway": "IDH1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "IDH215",
+    "entrez_id": "10971",
+    "pathway": "IDH2 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "FH15",
+    "entrez_id": "10972",
+    "pathway": "FH Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "SDHA15",
+    "entrez_id": "10973",
+    "pathway": "SDHA Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GOT115",
+    "entrez_id": "10974",
+    "pathway": "GOT1 Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLS15",
+    "entrez_id": "10975",
+    "pathway": "GLS Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "GLUL15",
+    "entrez_id": "10976",
+    "pathway": "GLUL Family Signaling",
+    "is_landmark": true
+  },
+  {
+    "symbol": "ASNS15",
+    "entrez_id": "10977",
+    "pathway": "ASNS Family Signaling",
+    "is_landmark": true
+  }
+]

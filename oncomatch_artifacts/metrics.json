@@ -1,0 +1,24 @@
+{
+  "evaluation_split": "GroupShuffleSplit by COSMIC_ID, 80:20, seed 42",
+  "train_rows": 193708,
+  "test_rows": 48328,
+  "train_cell_lines": 775,
+  "test_cell_lines": 194,
+  "mean_baseline_test_MAE": 2.108,
+  "tuned_histgb_holdout": {
+    "MAE": 1.027,
+    "RMSE": 1.3612,
+    "R2": 0.7585
+  },
+  "production_refit_rows": 242036,
+  "production_refit_cell_lines": 969,
+  "best_params": {
+    "min_samples_leaf": 100,
+    "max_leaf_nodes": 15,
+    "max_iter": 200,
+    "max_depth": 6,
+    "learning_rate": 0.03,
+    "l2_regularization": 0
+  },
+  "classification_view_threshold": 3.255135
+}
