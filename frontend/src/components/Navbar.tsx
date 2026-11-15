@@ -64,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPageTitle, activeSample }
               <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
                 <div className="text-slate-600">Dataset Scope</div>
                 <div className="font-bold text-slate-900 text-xs font-sans">
-                  242,036 NLME fitted dose-response curves across 969 cell lines and 295 drugs.
+                  242,036 NLME fitted dose-response curves across 969 cell lines and 286 drugs (295 regimens).
                 </div>
               </div>
 

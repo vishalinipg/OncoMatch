@@ -45,7 +45,7 @@ export const App: React.FC = () => {
       case 'setup': return 'Sample & Analysis Setup';
       case 'explorer': return 'Drug & Tissue Explorer';
       case 'prediction': return 'Drug Response Prediction';
-      case 'analytics': return 'Visual Analytics & Benchmarks';
+      case 'analytics': return 'Visual Analytics';
       case 'reports': return 'Personalized Reports';
       default: return 'OncoMatch Platform';
     }

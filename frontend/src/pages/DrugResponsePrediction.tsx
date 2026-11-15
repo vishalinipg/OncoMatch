@@ -198,7 +198,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               <ShieldCheck className="w-5 h-5 text-teal-600" />
               <span className="text-sm font-bold text-slate-900">{modelInfo.model_card.name}</span>
             </div>
-            <span className="text-[11px] font-mono text-teal-800 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded font-bold">
+            <span className="text-xs font-mono text-teal-800 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-lg font-bold tracking-normal">
               Cell-Line Grouped 80:20 Split
             </span>
           </div>
@@ -332,17 +332,17 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
 
               {/* Graphical Dose-Response Curve */}
               <div className="pt-2 border-t border-slate-200/80 space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center">
-                    <Activity className="w-3.5 h-3.5 mr-1.5 text-teal-600" />
-                    Fitted Sigmoidal Dose-Response Curve
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center min-w-0 pr-2">
+                    <Activity className="w-3.5 h-3.5 mr-1.5 text-teal-600 shrink-0" />
+                    <span className="truncate">Fitted Sigmoidal Dose-Response Curve</span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-500">
-                    IC50: {singleResult.predicted_ic50_uM} µM
+                  <span className="text-[10px] font-mono text-slate-700 font-bold bg-white px-2 py-0.5 rounded border border-slate-200 shrink-0">
+                    IC50: {singleResult.predicted_ic50_uM.toFixed(3)} µM
                   </span>
                 </div>
 
-                <div className="h-44 w-full bg-white p-2 rounded-xl border border-slate-200">
+                <div className="h-48 w-full bg-white p-2.5 rounded-xl border border-slate-200">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={doseResponseCurveData} margin={{ top: 10, right: 15, left: -20, bottom: 15 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -378,7 +378,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-slate-600 px-1 font-mono">
+                <div className="flex flex-wrap items-center justify-between text-[10px] text-slate-600 px-1 pt-0.5 font-mono gap-1">
                   <span>Range: {formatConc(singleResult.min_conc_uM)} to {formatConc(singleResult.max_conc_uM)}</span>
                   <span className="text-teal-800 font-semibold font-sans">Hill inflection: 50% kill @ IC50</span>
                 </div>
@@ -456,16 +456,16 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
 
                 {/* Ranked Table */}
                 <div className="overflow-x-auto max-h-[520px] rounded-xl border border-slate-200">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full text-left text-xs min-w-[620px]">
                     <thead className="bg-slate-50 sticky top-0 text-slate-600 font-semibold border-b border-slate-200 font-mono">
                       <tr>
-                        <th className="py-2.5 px-3">#</th>
-                        <th className="py-2.5 px-3 font-sans">Compound</th>
-                        <th className="py-2.5 px-3 font-sans">Putative Target</th>
-                        <th className="py-2.5 px-3 font-sans">Pathway</th>
-                        <th className="py-2.5 px-3 text-right">ln(IC50)</th>
-                        <th className="py-2.5 px-3 text-right">IC50 (µM)</th>
-                        <th className="py-2.5 px-3 text-center font-sans">Tier</th>
+                        <th className="py-2.5 px-3 w-8">#</th>
+                        <th className="py-2.5 px-3 font-sans min-w-[110px]">Compound</th>
+                        <th className="py-2.5 px-3 font-sans min-w-[110px]">Putative Target</th>
+                        <th className="py-2.5 px-3 font-sans min-w-[100px]">Pathway</th>
+                        <th className="py-2.5 px-3 text-right min-w-[70px]">ln(IC50)</th>
+                        <th className="py-2.5 px-3 text-right min-w-[85px]">IC50 (µM)</th>
+                        <th className="py-2.5 px-3 text-center font-sans min-w-[100px]">Tier</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-mono text-[11px]">

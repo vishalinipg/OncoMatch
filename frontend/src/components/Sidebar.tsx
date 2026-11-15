@@ -9,12 +9,13 @@ import {
   Layers
 } from 'lucide-react';
 import { SampleTypeBadge } from './SampleTypeBadge';
+import { Sample } from '../types';
 
 interface SidebarProps {
   currentPage: string;
   onPageChange: (page: string) => void;
   selectedSampleId: string;
-  samples: Array<{ sample_id: string; name: string; sample_type: string; tcga_desc: string }>;
+  samples: Sample[];
   onSampleChange: (id: string) => void;
 }
 
@@ -37,7 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const activeSample = samples.find(s => s.sample_id === selectedSampleId);
 
   return (
-    <aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0 select-none z-20 shadow-xs shrink-0">
+    <aside className="w-80 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0 select-none z-20 shadow-xs shrink-0">
       {/* Brand Header */}
       <div className="p-5 border-b border-slate-100 flex items-center space-x-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center shadow-sm shadow-teal-500/20 shrink-0">
@@ -67,7 +68,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           {samples.map((s) => (
             <option key={s.sample_id} value={s.sample_id}>
-              {s.name} ({s.tcga_desc})
+              {s.cell_line_name ? `${s.cell_line_name} (${s.tcga_desc})` : s.name}
             </option>
           ))}
         </select>
@@ -118,7 +119,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <div className="flex items-center justify-between font-medium">
           <span>Benchmarked Drugs</span>
-          <span className="font-mono text-slate-700 font-bold">286</span>
+          <span className="font-mono text-slate-700 font-bold">286 (295 Regimens)</span>
         </div>
         <div className="flex items-center justify-between font-medium">
           <span>TCGA Lineages</span>

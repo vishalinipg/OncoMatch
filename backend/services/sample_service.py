@@ -39,12 +39,12 @@ class SampleService:
 
         # Default high-impact reference cancer lines across distinct tissues
         ref_keys = [
-            ("MCF7", "BRCA", 905946, "MCF7 Breast Adenocarcinoma", "ER+/PR+ luminal breast adenocarcinoma"),
-            ("A549", "LUAD", 905949, "A549 Lung Carcinoma", "KRAS G12S mutant non-small cell lung carcinoma"),
-            ("K-562", "LCML", 905940, "K-562 Chronic Myelogenous Leukemia", "BCR-ABL1 fusion positive leukemia"),
-            ("HCT-116", "COREAD", 905936, "HCT-116 Colorectal Carcinoma", "KRAS G13D mutant colorectal carcinoma"),
-            ("A375", "SKCM", 906793, "A375 Malignant Melanoma", "BRAF V600E mutant metastatic melanoma"),
-            ("MDA-MB-231", "BRCA", 905960, "MDA-MB-231 Triple-Negative Breast", "Triple-negative basal breast adenocarcinoma")
+            ("MCF7", "BRCA", 905946, "MCF7 (BRCA) Breast", "ER+/PR+ luminal breast adenocarcinoma"),
+            ("A549", "LUAD", 905949, "A549 (LUAD) Lung", "KRAS G12S mutant non-small cell lung carcinoma"),
+            ("K-562", "LCML", 905940, "K-562 (LCML) Leukemia", "BCR-ABL1 fusion positive leukemia"),
+            ("HCT-116", "COREAD", 905936, "HCT-116 (COREAD) Colon", "KRAS G13D mutant colorectal carcinoma"),
+            ("A375", "SKCM", 906793, "A375 (SKCM) Melanoma", "BRAF V600E mutant metastatic melanoma"),
+            ("MDA-MB-231", "BRCA", 905960, "MDA-MB-231 (BRCA) TNBC", "Triple-negative basal breast adenocarcinoma")
         ]
 
         for name, tissue, cosmic_id, display_name, desc in ref_keys:

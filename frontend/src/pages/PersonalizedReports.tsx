@@ -160,32 +160,35 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
 
         {filteredHistory.length > 0 ? (
           <div className="overflow-x-auto rounded-xl border border-slate-200">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 sticky top-0 text-slate-700 font-semibold border-b border-slate-200 font-mono">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead className="bg-slate-100/80 sticky top-0 text-slate-700 font-semibold border-b border-slate-200 font-mono">
                 <tr>
-                  <th className="py-3 px-4 min-w-[130px] whitespace-nowrap">Report ID</th>
-                  <th className="py-3 px-4 font-sans">Target Profile</th>
-                  <th className="py-3 px-4 font-sans">Top Sensitive Agent</th>
-                  <th className="py-3 px-4">Generated Timestamp</th>
+                  <th className="py-3 px-4 min-w-[130px] whitespace-nowrap border-r border-slate-200">Report ID</th>
+                  <th className="py-3 px-4 font-sans border-r border-slate-200">Target Profile</th>
+                  <th className="py-3 px-4 font-sans border-r border-slate-200">Top Sensitive Agent</th>
+                  <th className="py-3 px-4 border-r border-slate-200">Generated Timestamp</th>
                   <th className="py-3 px-4 text-right font-sans">Downloads</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
+              <tbody className="divide-y divide-slate-200/80 font-mono text-[11px]">
                 {filteredHistory.map((rep) => (
-                  <tr key={rep.report_id} className="hover:bg-slate-50/70 transition-colors">
-                    {/* Report ID with whitespace-nowrap & min-w-[130px] so it never line breaks */}
-                    <td className="py-3 px-4 font-bold text-teal-800 whitespace-nowrap min-w-[130px]">
+                  <tr key={rep.report_id} className="even:bg-slate-50/60 odd:bg-white hover:bg-teal-50/40 transition-colors border-b border-slate-200/80">
+                    <td className="py-3.5 px-4 font-bold text-teal-800 whitespace-nowrap min-w-[130px] border-r border-slate-100">
                       {rep.report_id}
                     </td>
-                    <td className="py-3 px-4 font-sans">
-                      <div className="font-semibold text-slate-900">{rep.sample_name}</div>
-                      <div className="text-[10px] text-slate-500 font-mono">{rep.tissue}</div>
+                    <td className="py-3.5 px-4 font-sans border-r border-slate-100">
+                      <div className="flex flex-col items-start gap-1">
+                        <span className="font-semibold text-slate-900">{rep.sample_name}</span>
+                        <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-teal-50 text-teal-800 border border-teal-200">
+                          {rep.tissue}
+                        </span>
+                      </div>
                     </td>
-                    <td className="py-3 px-4 text-emerald-800 font-sans font-semibold">
+                    <td className="py-3.5 px-4 text-emerald-800 font-sans font-semibold border-r border-slate-100">
                       {rep.top_sensitive_drug}
                     </td>
-                    <td className="py-3 px-4 text-slate-600 whitespace-nowrap">{rep.timestamp}</td>
-                    <td className="py-3 px-4 text-right font-sans">
+                    <td className="py-3.5 px-4 text-slate-600 whitespace-nowrap border-r border-slate-100">{rep.timestamp}</td>
+                    <td className="py-3.5 px-4 text-right font-sans">
                       <div className="inline-flex items-center space-x-2">
                         <a
                           href={api.getDownloadUrl(rep.pdf_file)}

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional, List, Dict, Any
+import pandas as pd
 
 try:
     from services.ml_service import MLService
@@ -16,7 +17,7 @@ _heatmap_cache: Dict[int, Any] = {}
 @router.get("/pca")
 def get_pca_analytics(sample_id: Optional[str] = None):
     """
-    Retrieve Pharmacogenomic PCA landscape across 969 cell lines x 295 drugs.
+    Retrieve Pharmacogenomic PCA landscape across 969 cell lines x 286 drugs.
     If sample_id is provided, projects or highlights the sample in the reference space.
     """
     pca_data = ml_service.get_pca_landscape()
@@ -81,10 +82,10 @@ def get_probe_assay_analytics(tissue: Optional[str] = None):
         raise HTTPException(status_code=500, detail="Probe assay benchmark data not available.")
 
     probe_drugs = data.get("probe_drugs", [])
+    probe_ids = data.get("probe_ids", [p["drug_id"] for p in probe_drugs])
     
     if tissue and tissue.upper() != "ALL":
         t_clean = tissue.upper()
-        # Return probe drugs with specific tissue metric highlighted
         out = []
         for pdrug in probe_drugs:
             t_data = pdrug.get("tissue_distribution", {}).get(t_clean, {
@@ -101,13 +102,14 @@ def get_probe_assay_analytics(tissue: Optional[str] = None):
             })
         return {
             "probe_drugs": out,
+            "probe_ids": probe_ids,
             "tissue": t_clean,
             "total_probes": len(out)
         }
 
     return {
         "probe_drugs": probe_drugs,
-        "probe_ids": data.get("probe_ids", []),
+        "probe_ids": probe_ids,
         "total_probes": len(probe_drugs)
     }
 
@@ -116,14 +118,16 @@ def get_heatmap_matrix(top_n_drugs: int = Query(15, ge=5, le=50)):
     """
     Generate a cross-tissue drug sensitivity matrix for key chemotherapy drugs.
     Returns matrix of tissues x drugs with predicted ln(IC50) values.
+    Optimized with batch inference for high-speed response.
     """
     if top_n_drugs in _heatmap_cache:
         return _heatmap_cache[top_n_drugs]
+
     target_drugs = [
-        "Cisplatin", "Paclitaxel", "Doxorubicin", "5-Fluorouracil", 
-        "Gemcitabine", "Docetaxel", "Etoposide", "Methotrexate", 
-        "Olaparib", "Erlotinib", "Gefitinib", "Tamoxifen", 
-        "Bortezomib", "Vorinostat", "Trametinib"
+        "Cisplatin", "Paclitaxel", "5-Fluorouracil", "Gemcitabine", 
+        "Docetaxel", "Methotrexate", "Olaparib", "Erlotinib", 
+        "Gefitinib", "Tamoxifen", "Bortezomib", "Vorinostat", 
+        "Trametinib", "Camptothecin", "Vinblastine"
     ]
     catalog = ml_service.get_drug_catalog()
     matched_drugs = []
@@ -139,12 +143,32 @@ def get_heatmap_matrix(top_n_drugs: int = Query(15, ge=5, le=50)):
 
     key_tissues = ["BRCA", "LUAD", "SKCM", "COREAD", "PAAD", "OV", "GBM", "LAML", "PRAD", "KIRC"]
     
+    # Fast vectorized batch prediction for all (tissue, drug) pairs
+    batch_rows = []
+    for tissue in key_tissues:
+        for drug in matched_drugs:
+            batch_rows.append({
+                "DRUG_ID": int(drug["DRUG_ID"]),
+                "PUTATIVE_TARGET": str(drug["PUTATIVE_TARGET"]),
+                "PATHWAY_NAME": str(drug["PATHWAY_NAME"]),
+                "TCGA_DESC": tissue,
+                "MIN_CONC": float(drug["MIN_CONC"]),
+                "MAX_CONC": float(drug["MAX_CONC"]),
+                "_tissue": tissue,
+                "_drug_name": str(drug["DRUG_NAME"])
+            })
+
+    df_all = pd.DataFrame(batch_rows)
+    scored = ml_service.predict_response(df_all[["DRUG_ID", "PUTATIVE_TARGET", "PATHWAY_NAME", "TCGA_DESC", "MIN_CONC", "MAX_CONC"]])
+    df_all["PRED_LN_IC50"] = scored["PRED_LN_IC50"]
+
     matrix = []
     for tissue in key_tissues:
-        tissue_row = {"tissue": tissue, "scores": {}}
-        for drug in matched_drugs:
-            pred = ml_service.predict_single(drug_id=drug["DRUG_ID"], tissue=tissue)
-            tissue_row["scores"][drug["DRUG_NAME"]] = pred["predicted_ln_ic50"]
+        sub = df_all[df_all["_tissue"] == tissue]
+        tissue_row = {
+            "tissue": tissue,
+            "scores": {row["_drug_name"]: round(float(row["PRED_LN_IC50"]), 4) for _, row in sub.iterrows()}
+        }
         matrix.append(tissue_row)
 
     res = {

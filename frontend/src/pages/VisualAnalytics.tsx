@@ -12,7 +12,8 @@ import {
   Filter,
   CheckCircle2,
   TrendingDown,
-  Info
+  Info,
+  Loader2
 } from 'lucide-react';
 import { 
   Scatter, 
@@ -98,9 +99,9 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
   }, [pcaData, selectedTissueFilter]);
 
   const getHeatmapColor = (score: number | undefined) => {
-    if (score === undefined || score === null) return 'bg-slate-50 text-slate-400';
-    if (score < 2.2) return 'bg-emerald-100 text-emerald-950 font-bold border-r border-emerald-200/60';
-    if (score <= 4.2) return 'bg-amber-100 text-amber-950 font-medium border-r border-amber-200/60';
+    if (score === undefined || score === null || isNaN(score)) return 'bg-slate-50 text-slate-400';
+    if (score < 2.19) return 'bg-emerald-100 text-emerald-950 font-bold border-r border-emerald-200/60';
+    if (score <= 4.22) return 'bg-amber-100 text-amber-950 font-medium border-r border-amber-200/60';
     return 'bg-rose-100 text-rose-950 font-medium border-r border-rose-200/60';
   };
 
@@ -114,7 +115,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
             <span>High-Dimensional Response Analytics</span>
           </div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Visual Analytics & Reference Benchmarks
+            Visual Analytics
           </h1>
           <p className="text-slate-600 text-xs sm:text-sm mt-1">
             Explore pharmacogenomic response landscapes across 969 cancer cell lines, cross-tissue sensitivity matrices, and the GDSC2 15 reference probe-drug benchmark panel.
@@ -347,15 +348,15 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
             <div className="flex items-center space-x-3 text-xs bg-slate-50 p-2 rounded-xl border border-slate-200">
               <span className="flex items-center">
                 <span className="w-3 h-3 rounded bg-emerald-200 border border-emerald-300 mr-1.5"></span>
-                Sensitive (&lt; 2.2)
+                Sensitive (&lt; 2.19)
               </span>
               <span className="flex items-center">
                 <span className="w-3 h-3 rounded bg-amber-200 border border-amber-300 mr-1.5"></span>
-                Intermediate (2.2 - 4.2)
+                Intermediate (2.19 – 4.22)
               </span>
               <span className="flex items-center">
                 <span className="w-3 h-3 rounded bg-rose-200 border border-rose-300 mr-1.5"></span>
-                Resistant (&gt; 4.2)
+                Resistant (&gt; 4.22)
               </span>
             </div>
           </div>
@@ -448,33 +449,50 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
-                {probeData.map((pb, idx) => {
-                  const tMean = pb.tissue_mean_ln_ic50 !== undefined ? pb.tissue_mean_ln_ic50 : pb.overall_mean_ln_ic50;
-                  return (
-                    <tr key={pb.drug_id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-2.5 px-4 text-slate-400 font-bold">{idx + 1}</td>
-                      <td className="py-2.5 px-4 font-sans font-bold text-slate-900">
-                        {pb.drug_name}
-                        <span className="ml-2 font-mono text-[10px] text-slate-400 font-normal">#{pb.drug_id}</span>
-                      </td>
-                      <td className="py-2.5 px-4 font-sans text-slate-700 font-medium">
-                        {pb.putative_target}
-                      </td>
-                      <td className="py-2.5 px-4 font-sans text-slate-500">
-                        {pb.pathway_name}
-                      </td>
-                      <td className="py-2.5 px-4 text-right font-bold text-slate-800">
-                        {pb.cell_lines_tested} / 969
-                      </td>
-                      <td className="py-2.5 px-4 text-right text-slate-700">
-                        {pb.overall_mean_ln_ic50.toFixed(2)}
-                      </td>
-                      <td className="py-2.5 px-4 text-right font-bold text-teal-700">
-                        {tMean !== null ? Number(tMean).toFixed(2) : '-'}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {probeLoading ? (
+                  <tr>
+                    <td colSpan={7} className="py-12 text-center text-xs text-slate-500 font-sans">
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <Loader2 className="w-5 h-5 animate-spin text-teal-600 mb-1" />
+                        <span>Loading 15 reference probe assays...</span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : probeData.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="py-12 text-center text-xs text-slate-500 font-sans">
+                      No reference probe assay data available.
+                    </td>
+                  </tr>
+                ) : (
+                  probeData.map((pb, idx) => {
+                    const tMean = pb.tissue_mean_ln_ic50 !== undefined ? pb.tissue_mean_ln_ic50 : pb.overall_mean_ln_ic50;
+                    return (
+                      <tr key={pb.drug_id} className="hover:bg-slate-50/80 transition-colors">
+                        <td className="py-2.5 px-4 text-slate-400 font-bold">{idx + 1}</td>
+                        <td className="py-2.5 px-4 font-sans font-bold text-slate-900">
+                          {pb.drug_name}
+                          <span className="ml-2 font-mono text-[10px] text-slate-400 font-normal">#{pb.drug_id}</span>
+                        </td>
+                        <td className="py-2.5 px-4 font-sans text-slate-700 font-medium">
+                          {pb.putative_target}
+                        </td>
+                        <td className="py-2.5 px-4 font-sans text-slate-500">
+                          {pb.pathway_name}
+                        </td>
+                        <td className="py-2.5 px-4 text-right font-bold text-slate-800">
+                          {pb.cell_lines_tested} / 969
+                        </td>
+                        <td className="py-2.5 px-4 text-right text-slate-700">
+                          {pb.overall_mean_ln_ic50.toFixed(2)}
+                        </td>
+                        <td className="py-2.5 px-4 text-right font-bold text-teal-700">
+                          {tMean !== null ? Number(tMean).toFixed(2) : '-'}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

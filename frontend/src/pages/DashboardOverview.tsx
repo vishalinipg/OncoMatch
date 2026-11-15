@@ -45,11 +45,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
 
   // Pan-cancer sensitivity distribution overview for the fitted curves in GDSC2
   const sensitivityDistribution = [
-    { bin: '< 0.0 (Potent / Sensitive)', count: 24, fill: '#059669', label: 'Lower Tertile (High Sensitivity)' },
-    { bin: '0.0 - 1.5 (High Sensitive)', count: 58, fill: '#10b981', label: 'Sensitive' },
-    { bin: '1.5 - 3.0 (Moderate Response)', count: 96, fill: '#0d9488', label: 'Moderate' },
+    { bin: '< 0.0 (Potent)', count: 24, fill: '#059669', label: 'Lower Tertile (High Sensitivity)' },
+    { bin: '0.0 - 1.5 (Sensitive)', count: 58, fill: '#10b981', label: 'Sensitive' },
+    { bin: '1.5 - 3.0 (Moderate)', count: 96, fill: '#0d9488', label: 'Moderate' },
     { bin: '3.0 - 4.5 (Intermediate)', count: 72, fill: '#f59e0b', label: 'Intermediate' },
-    { bin: '4.5 - 6.0 (Low Sensitivity)', count: 32, fill: '#f43f5e', label: 'Upper Tertile (Resistant)' },
+    { bin: '4.5 - 6.0 (Resistant)', count: 32, fill: '#f43f5e', label: 'Upper Tertile (Resistant)' },
     { bin: '> 6.0 (Refractory)', count: 13, fill: '#e11d48', label: 'Refractory' },
   ];
 
@@ -106,7 +106,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
               className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold transition-all shadow-2xs hover:border-slate-300 cursor-pointer"
             >
               <BarChart3 className="w-4 h-4 text-emerald-600" />
-              <span>Visual Analytics & Probes</span>
+              <span>Visual Analytics</span>
             </button>
           </div>
         </div>
@@ -181,11 +181,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             <table className="w-full text-xs text-left">
               <thead>
                 <tr className="border-b border-slate-100 text-slate-500 text-[11px]">
-                  <th className="pb-2 font-semibold">Model Architecture</th>
-                  <th className="pb-2 font-semibold">Scenario</th>
-                  <th className="pb-2 font-semibold text-right">Holdout MAE</th>
-                  <th className="pb-2 font-semibold text-right">RMSE</th>
-                  <th className="pb-2 font-semibold text-right">R² Score</th>
+                  <th className="pb-2.5 px-3 font-semibold">Model Architecture</th>
+                  <th className="pb-2.5 px-3 font-semibold">Scenario</th>
+                  <th className="pb-2.5 px-4 font-semibold text-right min-w-[100px]">Holdout MAE</th>
+                  <th className="pb-2.5 px-4 font-semibold text-right min-w-[90px]">RMSE</th>
+                  <th className="pb-2.5 px-4 font-semibold text-right min-w-[90px]">R² Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono">
@@ -194,16 +194,16 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
                     key={idx} 
                     className={m.name.includes('HistGradientBoosting') ? 'bg-teal-50/60 font-bold text-teal-950' : 'text-slate-700'}
                   >
-                    <td className="py-2.5 font-sans flex items-center">
+                    <td className="py-2.5 px-3 font-sans flex items-center">
                       {m.name.includes('HistGradientBoosting') && (
                         <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-teal-600 shrink-0" />
                       )}
                       <span>{m.name}</span>
                     </td>
-                    <td className="py-2.5 text-slate-500 font-sans text-[11px]">{m.status}</td>
-                    <td className="py-2.5 text-right">{m.testMae}</td>
-                    <td className="py-2.5 text-right text-slate-500">{m.rmse}</td>
-                    <td className="py-2.5 text-right">{m.r2}</td>
+                    <td className="py-2.5 px-3 text-slate-500 font-sans text-[11px]">{m.status}</td>
+                    <td className="py-2.5 px-4 text-right">{m.testMae}</td>
+                    <td className="py-2.5 px-4 text-right text-slate-500">{m.rmse}</td>
+                    <td className="py-2.5 px-4 text-right">{m.r2}</td>
                   </tr>
                 ))}
               </tbody>
@@ -231,7 +231,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
 
           <div className="h-56 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={sensitivityDistribution} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
+              <BarChart data={sensitivityDistribution} margin={{ top: 15, right: 15, left: 0, bottom: 35 }}>
                 <XAxis 
                   dataKey="bin" 
                   tick={{ fontSize: 10, fill: '#64748b' }} 
@@ -333,7 +333,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-emerald-900 flex items-center">
-                <BarChart3 className="w-3.5 h-3.5 mr-1.5 text-emerald-600" /> 4. Visual Analytics & Probes
+                <BarChart3 className="w-3.5 h-3.5 mr-1.5 text-emerald-600" /> 4. Visual Analytics
               </span>
               <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
             </div>

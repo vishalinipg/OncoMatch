@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   FlaskConical, 
   Search, 
@@ -44,7 +44,10 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
     ]).then(([drugList, tissueList, probeData]) => {
       setDrugs(drugList);
       setTissues(tissueList);
-      setProbeIds(probeData.probe_ids || []);
+      const extractedIds = (probeData.probe_ids && probeData.probe_ids.length > 0)
+        ? probeData.probe_ids
+        : (probeData.probe_drugs ? probeData.probe_drugs.map(p => p.drug_id) : []);
+      setProbeIds(extractedIds);
       if (drugList.length > 0) {
         setSelectedDrug(drugList[0]);
       }
@@ -56,20 +59,36 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
   }, []);
 
   // Distinct pathways
-  const pathways = Array.from(new Set(drugs.map(d => d.PATHWAY_NAME).filter(Boolean))).sort();
+  const pathways = useMemo(() => {
+    return Array.from(new Set(drugs.map(d => d.PATHWAY_NAME).filter(Boolean))).sort();
+  }, [drugs]);
+
+  const probeSet = useMemo(() => new Set(probeIds.map(Number)), [probeIds]);
+
+  // Clean concentration bounds formatter to remove floating-point artifacts
+  const formatConcVal = (val: number | undefined): string => {
+    if (val === undefined || val === null || isNaN(val)) return '-';
+    if (val < 0.001) return Number(val.toFixed(5)).toString();
+    if (val < 0.01) return Number(val.toFixed(4)).toString();
+    if (val < 1.0) return Number(val.toFixed(3)).toString();
+    return Number(val.toFixed(2)).toString();
+  };
 
   // Filter logic
-  const filteredDrugs = drugs.filter(d => {
-    const matchSearch = searchQuery === '' ||
-      d.DRUG_NAME.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      d.PUTATIVE_TARGET.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      d.DRUG_ID.toString().includes(searchQuery);
-    
-    const matchPathway = selectedPathway === 'ALL' || d.PATHWAY_NAME === selectedPathway;
-    const matchProbe = !probeFilterOnly || probeIds.includes(d.DRUG_ID);
+  const filteredDrugs = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return drugs.filter(d => {
+      const matchSearch = q === '' ||
+        (d.DRUG_NAME || '').toLowerCase().includes(q) ||
+        (d.PUTATIVE_TARGET || '').toLowerCase().includes(q) ||
+        String(d.DRUG_ID).includes(q);
+      
+      const matchPathway = selectedPathway === 'ALL' || d.PATHWAY_NAME === selectedPathway;
+      const matchProbe = !probeFilterOnly || probeSet.has(Number(d.DRUG_ID));
 
-    return matchSearch && matchPathway && matchProbe;
-  });
+      return matchSearch && matchPathway && matchProbe;
+    });
+  }, [drugs, searchQuery, selectedPathway, probeFilterOnly, probeSet]);
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
@@ -84,7 +103,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
             Drug & Tissue Lineage Explorer
           </h1>
           <p className="text-slate-600 text-xs sm:text-sm mt-1">
-            Explore the complete 286-chemotherapy catalogue, putative molecular targets, signaling pathways, screening concentration ranges, and 15 benchmark probe assays across 33 TCGA tissue lineages.
+            Explore 286 unique anticancer compounds across 295 screening regimens with putative molecular targets, signaling pathways, screening concentration ranges, and 15 benchmark probe assays across 33 TCGA tissue lineages.
           </p>
         </div>
 
@@ -142,7 +161,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span>15 Reference Probe Panel Only</span>
-              {probeFilterOnly && <span className="text-[10px] bg-amber-200 px-1.5 py-0.2 rounded">Active</span>}
+              {probeFilterOnly && <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-1.5 py-0.5 rounded ml-1">Active</span>}
             </button>
           </div>
         </div>
@@ -150,7 +169,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
         {/* Catalog Summary Counter */}
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <div>
-            Showing <strong className="text-slate-900">{filteredDrugs.length}</strong> of {drugs.length} screened compounds
+            Showing <strong className="text-slate-900">{filteredDrugs.length}</strong> of {drugs.length} regimens (286 unique compounds)
           </div>
           <div className="flex items-center space-x-2 font-mono text-[11px]">
             <span className="text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
@@ -169,7 +188,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[11px]">
                 <tr>
                   <th className="py-3 px-4">Drug Compound</th>
                   <th className="py-3 px-4">Putative Target</th>
@@ -181,13 +200,13 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
               <tbody className="divide-y divide-slate-100">
                 {filteredDrugs.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-8 text-center text-slate-500">
+                    <td colSpan={5} className="py-12 text-center text-slate-500">
                       No chemotherapy compounds found matching your filter criteria.
                     </td>
                   </tr>
                 ) : (
                   filteredDrugs.slice(0, 50).map(d => {
-                    const isProbe = probeIds.includes(d.DRUG_ID);
+                    const isProbe = probeSet.has(Number(d.DRUG_ID));
                     const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
                     return (
                       <tr
@@ -211,7 +230,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                           {d.PATHWAY_NAME || 'Unclassified'}
                         </td>
                         <td className="py-3 px-4 text-right font-mono text-slate-700 text-[11px]">
-                          {d.MIN_CONC} – {d.MAX_CONC}
+                          {formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM
                         </td>
                         <td className="py-3 px-4 text-center">
                           {isProbe ? (
@@ -245,7 +264,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                 <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
                   Compound Specification
                 </span>
-                {probeIds.includes(selectedDrug.DRUG_ID) && (
+                {probeSet.has(Number(selectedDrug.DRUG_ID)) && (
                   <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded flex items-center">
                     <Sparkles className="w-3 h-3 mr-1 text-amber-600" /> Scenario C Probe
                   </span>
@@ -279,7 +298,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                 <div className="pt-2">
                   <div className="text-slate-500 font-medium text-[11px]">Screening Concentration Bounds</div>
                   <div className="font-mono text-slate-800 mt-0.5">
-                    Min: <strong>{selectedDrug.MIN_CONC} µM</strong> — Max: <strong>{selectedDrug.MAX_CONC} µM</strong>
+                    Min: <strong>{formatConcVal(selectedDrug.MIN_CONC)} µM</strong> — Max: <strong>{formatConcVal(selectedDrug.MAX_CONC)} µM</strong>
                   </div>
                 </div>
 

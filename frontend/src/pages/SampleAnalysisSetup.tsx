@@ -12,7 +12,8 @@ import {
   ShieldCheck,
   PlusCircle,
   Database,
-  Sliders
+  Sliders,
+  Loader2
 } from 'lucide-react';
 import { api } from '../services/api';
 import { Sample, CellLine, Drug } from '../types';
@@ -270,7 +271,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   </p>
                 </div>
                 <div className="text-xs font-mono font-semibold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">
-                  {filteredCellLines.length} of 969 Lines
+                  {loadingCatalog ? 'Loading cell lines...' : `${filteredCellLines.length} of ${cellLines.length || 969} Lines`}
                 </div>
               </div>
 
@@ -302,10 +303,15 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
               </div>
 
               {/* Cell Line List Box */}
-              <div className="border border-slate-200 rounded-xl overflow-hidden max-h-72 overflow-y-auto divide-y divide-slate-100">
-                {filteredCellLines.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-slate-500">
-                    No cancer cell lines matching "{cellLineSearch}".
+              <div className="border border-slate-200 rounded-xl overflow-hidden max-h-72 overflow-y-auto divide-y divide-slate-100 min-h-[160px]">
+                {loadingCatalog ? (
+                  <div className="py-16 text-center text-xs text-slate-500 flex flex-col items-center justify-center space-y-2">
+                    <Loader2 className="w-5 h-5 animate-spin text-teal-600 mb-1" />
+                    <span>Loading 969 GDSC2 cancer cell lines...</span>
+                  </div>
+                ) : filteredCellLines.length === 0 ? (
+                  <div className="py-12 text-center text-xs text-slate-500">
+                    {cellLineSearch.trim() ? `No cancer cell lines matching "${cellLineSearch}".` : 'No cell lines found for the selected lineage filter.'}
                   </div>
                 ) : (
                   filteredCellLines.slice(0, 50).map(cl => {
@@ -493,7 +499,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   Target Drug Compound
                 </label>
                 <select
-                  value={selectedDrugId || ''}
+                  value={selectedDrugId || (drugs.length > 0 ? drugs[0].DRUG_ID : '')}
                   onChange={(e) => handleDrugChange(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 text-xs rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer"
                 >
@@ -507,7 +513,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Min Concentration (µM)
+                  Minimum Bound (µM)
                 </label>
                 <input
                   type="number"
@@ -520,7 +526,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Max Concentration (µM)
+                  Maximum Bound (µM)
                 </label>
                 <input
                   type="number"
@@ -640,19 +646,17 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                         : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                     }`}
                   >
-                    <div>
-                      <div className="font-bold text-slate-900">{s.name}</div>
-                      <div className="text-[10px] text-slate-500">
+                    <div className="flex-1 min-w-0 pr-3">
+                      <div className="font-bold text-slate-900 truncate">{s.name}</div>
+                      <div className="text-[10px] text-slate-500 truncate">
                         {s.cancer_type} • {s.tcga_desc}
                       </div>
                     </div>
-                    {isActive ? (
-                      <span className="text-[10px] font-bold text-teal-700 bg-teal-100/80 px-2 py-0.5 rounded">
-                        Active
-                      </span>
-                    ) : (
-                      <span className="text-[10px] text-slate-400">Select</span>
-                    )}
+                    <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded ${
+                      isActive ? 'text-teal-700 bg-teal-100/80' : 'text-slate-500 bg-slate-100'
+                    }`}>
+                      {isActive ? 'Active' : 'Select'}
+                    </span>
                   </button>
                 );
               })}
