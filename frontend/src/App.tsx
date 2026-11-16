@@ -11,7 +11,7 @@ import { DrugResponsePrediction } from './pages/DrugResponsePrediction';
 import { VisualAnalytics } from './pages/VisualAnalytics';
 import { PersonalizedReports } from './pages/PersonalizedReports';
 import { api } from './services/api';
-import { Sample, Drug, ComparisonItem } from './types';
+import { Sample, Drug, ComparisonItem, CalibrationSettings } from './types';
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState('dashboard');
@@ -22,6 +22,7 @@ export const App: React.FC = () => {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [pinnedItems, setPinnedItems] = useState<ComparisonItem[]>([]);
+  const [calibration, setCalibration] = useState<CalibrationSettings | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -144,7 +145,16 @@ export const App: React.FC = () => {
         pinnedItems={pinnedItems}
         onRemoveItem={handleRemovePin}
         onClearAll={handleClearPins}
-        onNavigateToPrediction={() => setCurrentPage('prediction')}
+        onNavigateToPrediction={(drugId) => {
+          if (drugId) {
+            setCalibration(prev => ({
+              drugId,
+              minConc: prev?.minConc ?? 0.0039,
+              maxConc: prev?.maxConc ?? 1.0,
+            }));
+          }
+          setCurrentPage('prediction');
+        }}
       />
 
       {/* Collapsible Sidebar */}
@@ -192,6 +202,8 @@ export const App: React.FC = () => {
               onNavigate={setCurrentPage}
               pinnedItems={pinnedItems}
               onTogglePin={handleTogglePin}
+              calibration={calibration}
+              onApplyCalibration={setCalibration}
             />
           )}
 
@@ -212,6 +224,8 @@ export const App: React.FC = () => {
               onNavigate={setCurrentPage}
               pinnedItems={pinnedItems}
               onTogglePin={handleTogglePin}
+              calibration={calibration}
+              onClearCalibration={() => setCalibration(null)}
             />
           )}
 

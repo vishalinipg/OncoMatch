@@ -19,7 +19,7 @@ import {
   Info
 } from 'lucide-react';
 import { api } from '../services/api';
-import { Sample, CellLine, Drug, ComparisonItem } from '../types';
+import { Sample, CellLine, Drug, ComparisonItem, CalibrationSettings } from '../types';
 import { SampleTypeBadge } from '../components/SampleTypeBadge';
 import { CheckSquare, Square } from 'lucide-react';
 
@@ -31,6 +31,8 @@ interface SampleAnalysisSetupProps {
   onNavigate: (page: string) => void;
   pinnedItems?: ComparisonItem[];
   onTogglePin?: (item: ComparisonItem) => void;
+  calibration?: CalibrationSettings | null;
+  onApplyCalibration?: (calib: CalibrationSettings) => void;
 }
 
 const INITIAL_CELL_LINES: CellLine[] = [
@@ -55,7 +57,9 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   onSampleCreated,
   onNavigate,
   pinnedItems = [],
-  onTogglePin
+  onTogglePin,
+  calibration,
+  onApplyCalibration
 }) => {
   // Cell lines & drugs catalog initialized with verified baseline lines
   const [cellLines, setCellLines] = useState<CellLine[]>(INITIAL_CELL_LINES);
@@ -80,9 +84,9 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   const [projectId, setProjectId] = useState('PROJ-ONCO-01');
 
   // Target Drug Calibration
-  const [selectedDrugId, setSelectedDrugId] = useState<number | undefined>(undefined);
-  const [minConc, setMinConc] = useState<number>(0.0039);
-  const [maxConc, setMaxConc] = useState<number>(1.0);
+  const [selectedDrugId, setSelectedDrugId] = useState<number | undefined>(calibration?.drugId);
+  const [minConc, setMinConc] = useState<number>(calibration?.minConc ?? 0.0039);
+  const [maxConc, setMaxConc] = useState<number>(calibration?.maxConc ?? 1.0);
 
   // Status
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -104,10 +108,14 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
       
       // Default to MCF7 if available
       const mcf = clData.cell_lines.find(c => c.name === 'MCF7');
-      if (mcf) {
+      if (mcf && !selectedCellLine) {
         setSelectedCellLine(mcf);
       }
-      if (drugList.length > 0) {
+      if (calibration?.drugId) {
+        setSelectedDrugId(calibration.drugId);
+        setMinConc(calibration.minConc);
+        setMaxConc(calibration.maxConc);
+      } else if (drugList.length > 0 && !selectedDrugId) {
         const cisplatin = drugList.find(d => d.DRUG_NAME.toLowerCase().includes('cisplatin')) || drugList[0];
         setSelectedDrugId(cisplatin.DRUG_ID);
         setMinConc(cisplatin.MIN_CONC);
@@ -130,13 +138,38 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
     }
   };
 
-  const handleSelectCellLine = (cl: CellLine) => {
+  // Immediate selection and activation of a cell line
+  const handleSelectCellLine = async (cl: CellLine) => {
     setSelectedCellLine(cl);
     setErrorMessage(null);
+
+    // Look for matching sample in existing samples list
+    const existing = samples.find(s => s.cosmic_id === cl.cosmic_id || s.cell_line_name === cl.name || s.name.startsWith(cl.name));
+    if (existing) {
+      onSampleSelect(existing.sample_id);
+      setSuccessMessage(`Activated '${existing.name}' as the current target model.`);
+    } else {
+      try {
+        const createdProfile = await api.createSample({
+          name: `${cl.name} (${cl.tcga_desc})`,
+          cell_line_name: cl.name,
+          cosmic_id: cl.cosmic_id,
+          tcga_desc: cl.tcga_desc,
+          sample_type: 'Established cancer cell line',
+          cancer_type: `${cl.tcga_desc} Lineage`,
+          description: `GDSC2 screened cell line ${cl.name}. COSMIC ID: ${cl.cosmic_id}. Tested across ${cl.tested_drugs} compounds.`,
+          research_project_id: projectId
+        });
+        onSampleCreated(createdProfile);
+        setSuccessMessage(`Activated '${createdProfile.name}' as the current target model.`);
+      } catch (err: any) {
+        console.error("Auto-activation error:", err);
+      }
+    }
   };
 
-  const handleCreateOrActivateSetup = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCreateOrActivateSetup = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -147,16 +180,23 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
         if (!selectedCellLine) {
           throw new Error("Please select a cancer cell line from the catalogue.");
         }
-        createdProfile = await api.createSample({
-          name: `${selectedCellLine.name} (${selectedCellLine.tcga_desc})`,
-          cell_line_name: selectedCellLine.name,
-          cosmic_id: selectedCellLine.cosmic_id,
-          tcga_desc: selectedCellLine.tcga_desc,
-          sample_type: 'Established cancer cell line',
-          cancer_type: `${selectedCellLine.tcga_desc} Lineage`,
-          description: `GDSC2 screened cell line ${selectedCellLine.name}. COSMIC ID: ${selectedCellLine.cosmic_id}. Tested across ${selectedCellLine.tested_drugs} compounds.`,
-          research_project_id: projectId
-        });
+        const existing = samples.find(s => s.cosmic_id === selectedCellLine.cosmic_id || s.cell_line_name === selectedCellLine.name);
+        if (existing) {
+          onSampleSelect(existing.sample_id);
+          createdProfile = existing;
+        } else {
+          createdProfile = await api.createSample({
+            name: `${selectedCellLine.name} (${selectedCellLine.tcga_desc})`,
+            cell_line_name: selectedCellLine.name,
+            cosmic_id: selectedCellLine.cosmic_id,
+            tcga_desc: selectedCellLine.tcga_desc,
+            sample_type: 'Established cancer cell line',
+            cancer_type: `${selectedCellLine.tcga_desc} Lineage`,
+            description: `GDSC2 screened cell line ${selectedCellLine.name}. COSMIC ID: ${selectedCellLine.cosmic_id}. Tested across ${selectedCellLine.tested_drugs} compounds.`,
+            research_project_id: projectId
+          });
+          onSampleCreated(createdProfile);
+        }
       } else {
         if (!customName.trim()) {
           throw new Error("Please specify a sample name for the custom profile.");
@@ -170,15 +210,56 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
           description: customDescription.trim() || 'Custom oncology research isolate.',
           research_project_id: projectId
         });
+        onSampleCreated(createdProfile);
       }
 
-      onSampleCreated(createdProfile);
       setSuccessMessage(`Analysis profile '${createdProfile.name}' configured and set as active.`);
     } catch (err: any) {
       setErrorMessage(err.message || "Failed to configure analysis profile.");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Calibration helper handlers
+  const handleResetCalibrationToDefaults = () => {
+    const curDrug = drugs.find(d => d.DRUG_ID === selectedDrugId);
+    if (curDrug) {
+      setMinConc(curDrug.MIN_CONC);
+      setMaxConc(curDrug.MAX_CONC);
+      setSuccessMessage(`Reset concentration bounds for ${curDrug.DRUG_NAME} to Sanger GDSC2 standard (${Number(curDrug.MIN_CONC.toFixed(4))} – ${Number(curDrug.MAX_CONC.toFixed(2))} µM).`);
+    }
+  };
+
+  const handleSaveCalibration = () => {
+    if (!selectedDrugId) return;
+    const curDrug = drugs.find(d => d.DRUG_ID === selectedDrugId);
+    if (onApplyCalibration) {
+      onApplyCalibration({
+        drugId: selectedDrugId,
+        drugName: curDrug?.DRUG_NAME,
+        minConc,
+        maxConc
+      });
+    }
+    setSuccessMessage(`Screening calibration saved: ${curDrug?.DRUG_NAME || 'Drug'} (${minConc} – ${maxConc} µM) stored.`);
+  };
+
+  const handleApplyAndPredict = async () => {
+    if (!selectedDrugId) return;
+    const curDrug = drugs.find(d => d.DRUG_ID === selectedDrugId);
+    if (onApplyCalibration) {
+      onApplyCalibration({
+        drugId: selectedDrugId,
+        drugName: curDrug?.DRUG_NAME,
+        minConc,
+        maxConc
+      });
+    }
+    if (selectedCellLine) {
+      await handleSelectCellLine(selectedCellLine);
+    }
+    onNavigate('prediction');
   };
 
   // Filtered cell lines for selection
@@ -328,7 +409,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   </div>
                 ) : (
                   filteredCellLines.slice(0, 50).map(cl => {
-                    const isSelected = selectedCellLine?.cosmic_id === cl.cosmic_id;
+                    const isSelected = selectedCellLine?.cosmic_id === cl.cosmic_id || activeSample?.cosmic_id === cl.cosmic_id;
                     const isPinned = pinnedItems.some(p => p.id === cl.cosmic_id);
                     return (
                       <div
@@ -339,29 +420,19 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                         }`}
                       >
                         <div className="flex items-center space-x-3">
+                          {/* Dedicated Selection Tick Box */}
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (onTogglePin) {
-                                onTogglePin({
-                                  id: cl.cosmic_id,
-                                  type: 'cell_line',
-                                  title: cl.name,
-                                  subtitle: `COSMIC ${cl.cosmic_id}`,
-                                  tissue: cl.tcga_desc,
-                                  predicted_ln_ic50: cl.median_ln_ic50,
-                                  predicted_ic50_uM: Math.exp(cl.median_ln_ic50),
-                                  sensitivity_category: cl.median_ln_ic50 < 2.19 ? 'Sensitive' : cl.median_ln_ic50 <= 4.22 ? 'Intermediate' : 'Resistant',
-                                  color: '#10b981'
-                                });
-                              }
+                              handleSelectCellLine(cl);
                             }}
-                            className={`p-1 rounded-md transition-colors ${
-                              isPinned ? 'text-teal-600 bg-teal-100' : 'text-slate-300 hover:text-slate-500'
+                            className={`p-1 rounded-md transition-colors cursor-pointer ${
+                              isSelected ? 'text-teal-600 bg-teal-100' : 'text-slate-300 hover:text-teal-600'
                             }`}
-                            title={isPinned ? "Remove from comparison drawer" : "Add to comparison pinboard"}
+                            title={isSelected ? `Currently active target: ${cl.name}` : `Click to select and activate ${cl.name}`}
                           >
-                            {isPinned ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
+                            {isSelected ? <CheckSquare className="w-4 h-4 text-teal-600" /> : <Square className="w-4 h-4" />}
                           </button>
 
                           <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-[11px] shrink-0 ${
@@ -375,6 +446,11 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                               <span className="font-mono text-[10px] text-slate-500 font-normal">
                                 COSMIC {cl.cosmic_id}
                               </span>
+                              {isSelected && (
+                                <span className="text-[10px] font-bold text-teal-800 bg-teal-100/90 px-1.5 py-0.2 rounded border border-teal-200">
+                                  Active Target
+                                </span>
+                              )}
                             </div>
                             <div className="text-[11px] text-slate-500">
                               Lineage: <span className="font-semibold text-slate-700">{cl.tcga_desc}</span> • Tested on <span className="font-semibold text-slate-700">{cl.tested_drugs}</span> drugs
@@ -382,9 +458,36 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                           </div>
                         </div>
 
-                        <div className="text-right shrink-0">
-                          <div className="text-[10px] text-slate-500 uppercase font-semibold">Baseline ln(IC50)</div>
-                          <div className="font-mono font-bold text-slate-800 tabular-nums">{cl.median_ln_ic50.toFixed(2)}</div>
+                        <div className="flex items-center space-x-3 shrink-0">
+                          <div className="text-right shrink-0">
+                            <div className="text-[10px] text-slate-500 uppercase font-semibold">Baseline ln(IC50)</div>
+                            <div className="font-mono font-bold text-slate-800 tabular-nums">{cl.median_ln_ic50.toFixed(2)}</div>
+                          </div>
+                          {onTogglePin && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onTogglePin({
+                                  id: cl.cosmic_id,
+                                  type: 'cell_line',
+                                  title: cl.name,
+                                  subtitle: `COSMIC ${cl.cosmic_id}`,
+                                  tissue: cl.tcga_desc,
+                                  predicted_ln_ic50: cl.median_ln_ic50,
+                                  predicted_ic50_uM: Math.exp(cl.median_ln_ic50),
+                                  sensitivity_category: cl.median_ln_ic50 < 2.19 ? 'Sensitive' : cl.median_ln_ic50 <= 4.22 ? 'Intermediate' : 'Resistant',
+                                  color: '#10b981'
+                                });
+                              }}
+                              className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
+                                isPinned ? 'text-teal-700 bg-teal-100/80 border-teal-300' : 'text-slate-400 bg-white border-slate-200 hover:text-slate-600 hover:bg-slate-100'
+                              }`}
+                              title={isPinned ? "Remove from comparison pinboard" : "Pin to compare side-by-side"}
+                            >
+                              <Sparkles className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
                       </div>
                     );
@@ -528,7 +631,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
 
           {/* Section: Screening Concentration Calibration */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-subtle space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h2 className="text-sm font-bold text-slate-900 flex items-center">
                   <Sliders className="w-4 h-4 mr-2 text-teal-600" /> Target Drug & Concentration Calibration
@@ -537,7 +640,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   Calibrate screening concentration bounds for downstream prediction and 4PL sigmoidal response curves.
                 </p>
               </div>
-              <span className="text-xs font-mono font-bold text-teal-800 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full shadow-2xs">
+              <span className="text-xs font-mono font-bold text-teal-800 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full shadow-2xs shrink-0 whitespace-nowrap">
                 GDSC2 Calibrated
               </span>
             </div>
@@ -568,7 +671,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   type="number"
                   step="0.0001"
                   value={minConc}
-                  onChange={(e) => setMinConc(parseFloat(e.target.value))}
+                  onChange={(e) => setMinConc(parseFloat(e.target.value) || 0.0001)}
                   className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
                 />
               </div>
@@ -581,7 +684,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   type="number"
                   step="0.1"
                   value={maxConc}
-                  onChange={(e) => setMaxConc(parseFloat(e.target.value))}
+                  onChange={(e) => setMaxConc(parseFloat(e.target.value) || 1.0)}
                   className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
                 />
               </div>
@@ -600,6 +703,41 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                 </div>
               </div>
             )}
+
+            {/* Active Calibration Action Bar */}
+            <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center space-x-2 text-xs">
+                <span className="text-slate-500">Preset:</span>
+                <button
+                  type="button"
+                  onClick={handleResetCalibrationToDefaults}
+                  className="text-teal-700 hover:text-teal-900 font-semibold underline cursor-pointer"
+                >
+                  Reset to GDSC2 Defaults
+                </button>
+              </div>
+
+              <div className="flex items-center space-x-2.5">
+                <button
+                  type="button"
+                  onClick={handleSaveCalibration}
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-200 transition-all cursor-pointer flex items-center space-x-1.5"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
+                  <span>Save Calibration</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleApplyAndPredict}
+                  className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-all shadow-md shadow-teal-600/20 cursor-pointer flex items-center space-x-1.5 active:scale-98"
+                >
+                  <Pill className="w-3.5 h-3.5" />
+                  <span>Apply & Run Prediction</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

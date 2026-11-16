@@ -296,7 +296,7 @@ export const ComparisonDrawer: React.FC<ComparisonDrawerProps> = ({
                               {item.pathway_name || '-'}
                             </td>
                             <td className="py-3 px-4 text-right">
-                              {onNavigateToPrediction && typeof item.id === 'number' && (
+                              {onNavigateToPrediction && item.type === 'drug' && typeof item.id === 'number' && (
                                 <button
                                   onClick={() => {
                                     onNavigateToPrediction(Number(item.id));
@@ -306,6 +306,9 @@ export const ComparisonDrawer: React.FC<ComparisonDrawerProps> = ({
                                 >
                                   Inspect Curve
                                 </button>
+                              )}
+                              {item.type === 'cell_line' && (
+                                <span className="text-[11px] text-slate-400 font-mono">Cell Line Model</span>
                               )}
                             </td>
                           </tr>

@@ -214,6 +214,13 @@ export interface ReportRecord {
   csv_file: string;
 }
 
+export interface CalibrationSettings {
+  drugId: number;
+  drugName?: string;
+  minConc: number;
+  maxConc: number;
+}
+
 export interface ComparisonItem {
   id: string | number;
   type: 'drug' | 'cell_line';

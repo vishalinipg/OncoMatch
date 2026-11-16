@@ -32,7 +32,7 @@ import {
   CartesianGrid 
 } from 'recharts';
 import { api } from '../services/api';
-import { Drug, Sample, SinglePredictionResult, BatchPredictionItem, ModelInfo, ComparisonItem } from '../types';
+import { Drug, Sample, SinglePredictionResult, BatchPredictionItem, ModelInfo, ComparisonItem, CalibrationSettings } from '../types';
 import { SensitivityBadge } from '../components/SensitivityBadge';
 
 interface DrugResponsePredictionProps {
@@ -42,6 +42,8 @@ interface DrugResponsePredictionProps {
   onNavigate: (page: string) => void;
   pinnedItems?: ComparisonItem[];
   onTogglePin?: (item: ComparisonItem) => void;
+  calibration?: CalibrationSettings | null;
+  onClearCalibration?: () => void;
 }
 
 export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
@@ -50,10 +52,12 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
   onSampleChange,
   onNavigate,
   pinnedItems = [],
-  onTogglePin
+  onTogglePin,
+  calibration,
+  onClearCalibration
 }) => {
   const [drugs, setDrugs] = useState<Drug[]>([]);
-  const [selectedDrugId, setSelectedDrugId] = useState<number | null>(null);
+  const [selectedDrugId, setSelectedDrugId] = useState<number | null>(calibration?.drugId ?? null);
   const [singleResult, setSingleResult] = useState<SinglePredictionResult | null>(null);
   const [batchResults, setBatchResults] = useState<BatchPredictionItem[]>([]);
   const [isBatchRunning, setIsBatchRunning] = useState(false);
@@ -80,32 +84,45 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
         setDrugs(drugList);
         setModelInfo(info);
         if (drugList.length > 0) {
-          const cis = drugList.find(d => d.DRUG_NAME.toLowerCase() === 'cisplatin');
-          const defDrug = cis || drugList[0];
-          setSelectedDrugId(defDrug.DRUG_ID);
-          runSinglePrediction(defDrug.DRUG_ID, tissue);
+          const initDrugId = calibration?.drugId || (drugList.find(d => d.DRUG_NAME.toLowerCase() === 'cisplatin')?.DRUG_ID) || drugList[0].DRUG_ID;
+          setSelectedDrugId(initDrugId);
+          runSinglePrediction(initDrugId, tissue, calibration?.minConc, calibration?.maxConc);
         }
       })
       .catch(err => setErrorMsg("Failed to initialize drug catalog: " + err.message));
   }, []);
 
+  // When calibration changes dynamically, sync selected drug & concentration bounds
+  useEffect(() => {
+    if (calibration?.drugId && drugs.length > 0) {
+      setSelectedDrugId(calibration.drugId);
+      runSinglePrediction(calibration.drugId, tissue, calibration.minConc, calibration.maxConc);
+    }
+  }, [calibration]);
+
   // Whenever sample changes, re-run prediction
   useEffect(() => {
     if (selectedDrugId && activeSample) {
-      runSinglePrediction(selectedDrugId, activeSample.tcga_desc);
+      runSinglePrediction(selectedDrugId, activeSample.tcga_desc, calibration?.minConc, calibration?.maxConc);
       if (batchResults.length > 0) {
         runBatchPrediction(activeSample.tcga_desc);
       }
     }
   }, [sampleId]);
 
-  const runSinglePrediction = async (drugId: number, targetTissue: string) => {
+  const runSinglePrediction = async (drugId: number, targetTissue: string, customMin?: number, customMax?: number) => {
     setIsSingleRunning(true);
     setErrorMsg(null);
     try {
+      const isTargetCalib = calibration?.drugId === drugId;
+      const effectiveMin = customMin !== undefined ? customMin : (isTargetCalib ? calibration?.minConc : undefined);
+      const effectiveMax = customMax !== undefined ? customMax : (isTargetCalib ? calibration?.maxConc : undefined);
+
       const res = await api.predictSingle({
         drug_id: drugId,
-        tissue: targetTissue
+        tissue: targetTissue,
+        min_conc: effectiveMin,
+        max_conc: effectiveMax
       });
       setSingleResult(res);
     } catch (err: any) {
@@ -325,6 +342,38 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
           <p className="text-[11px] text-slate-600 leading-relaxed">
             Strictly evaluates pre-exposure chemical descriptors, drug putative targets, and TCGA lineage. Excludes post-hoc leaky curve metrics (AUC/Z-Score).
           </p>
+        </div>
+      )}
+
+      {/* Active Screening Calibration Notice Banner */}
+      {calibration && (
+        <div className="p-3.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-950 text-xs flex items-center justify-between shadow-2xs animate-slideDown">
+          <div className="flex items-center space-x-2">
+            <Sliders className="w-4 h-4 text-teal-600 shrink-0" />
+            <span>
+              <strong>Screening Calibration Applied from Setup:</strong> Calibrated bounds active for{' '}
+              <span className="font-bold font-mono text-teal-900">
+                {drugs.find(d => d.DRUG_ID === calibration.drugId)?.DRUG_NAME || calibration.drugName || 'Selected Drug'}
+              </span>{' '}
+              ({calibration.minConc} – {calibration.maxConc} µM).
+            </span>
+          </div>
+          {onClearCalibration && (
+            <button
+              onClick={onClearCalibration}
+              className="text-xs text-teal-700 hover:text-teal-950 font-bold underline ml-3 shrink-0 cursor-pointer"
+            >
+              Reset to GDSC2 Defaults
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Error Banner */}
+      {errorMsg && (
+        <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs flex items-center justify-between shadow-2xs">
+          <span>{errorMsg}</span>
+          <button onClick={() => setErrorMsg(null)} className="text-rose-700 hover:text-rose-900 font-bold ml-3">✕</button>
         </div>
       )}
 
