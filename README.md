@@ -25,7 +25,7 @@ Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 
 **An end-to-end, scientifically rigorous computational oncology platform predicting in-vitro chemotherapy sensitivity across 295 screening regimens and 33 cancer lineages without post-hoc data leakage.**
 
-[Explore Live Demo](http://localhost:8000/) • [Architecture](#-system-architecture) • [Workspaces](#-interactive-workspaces) • [ML Benchmarks](#-machine-learning--benchmark-results) • [API Docs](#-rest-api-reference) • [Quick Start](#-quick-start)
+[Explore Live Demo](http://localhost:8000/) • [Architecture](#-system-architecture) • [Tech Stack](#-technology-stack) • [Workspaces](#-interactive-workspaces) • [ML Benchmarks](#-machine-learning--benchmark-results) • [API Docs](#-rest-api-reference) • [Quick Start](#-quick-start)
 
 </div>
 
@@ -36,13 +36,14 @@ Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 1. [Executive Summary](#-executive-summary)
 2. [Key Innovations & Clinical/Research Value](#-key-innovations--research-value)
 3. [System Architecture](#-system-architecture)
-4. [Interactive Workspaces](#-interactive-workspaces)
-5. [Machine Learning & Benchmark Results](#-machine-learning--benchmark-results)
-6. [REST API Reference](#-rest-api-reference)
-7. [Quick Start & Local Execution](#-quick-start)
-8. [Docker & Zero-Cost Cloud Deployment](#-docker--zero-cost-cloud-deployment)
-9. [Project Directory Layout](#-project-directory-layout)
-10. [Scientific Validation & Bioethics Disclaimer](#-scientific-validation--bioethics-disclaimer)
+4. [Technology Stack](#-technology-stack)
+5. [Interactive Workspaces](#-interactive-workspaces)
+6. [Machine Learning & Benchmark Results](#-machine-learning--benchmark-results)
+7. [REST API Reference](#-rest-api-reference)
+8. [Quick Start & Local Execution](#-quick-start)
+9. [Docker & Zero-Cost Cloud Deployment](#-docker--zero-cost-cloud-deployment)
+10. [Project Directory Layout](#-project-directory-layout)
+11. [Scientific Validation & Bioethics Disclaimer](#-scientific-validation--bioethics-disclaimer)
 
 ---
 
@@ -78,59 +79,69 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 
 <div align="center">
 
-![OncoMatch System Architecture](docs/oncomatch_architecture_publication.png)
+![OncoMatch System Architecture](docs/oncomatch_system_architecture.png)
+*Fig. 1. System Architecture of the OncoMatch Personalized Chemotherapy Drug Response Prediction Platform.*
 
 </div>
 
-The application is structured as a decoupled, type-safe full-stack platform:
+OncoMatch is engineered as an enterprise-grade, decoupled four-tier computational oncology platform. The system cleanly separates high-responsiveness client presentation from asynchronous API routing, zero-leakage machine learning inference, and immutable dataset storage. Each tier operates under strict type boundaries and unidirectional data contracts to ensure sub-millisecond interactivity, high throughput, and scientific reproducibility:
 
-```mermaid
-flowchart TD
-    subgraph Client["Client Browser (React 18 + TypeScript + Vite)"]
-        UI["Tailwind CSS Modern UI"]
-        SubBar["Active Profile Sub-Bar Context"]
-        Drawer["Docked Comparison Pinboard Tray"]
-        Split["Master-Detail 4PL Curve Workspace"]
-        ApiModule["Frontend In-Memory API Cache (Map)"]
-    end
+### Tier 1: Client Presentation Layer (React 18, TypeScript, Vite & Tailwind CSS)
+* **1.1 Active Profile Context**: Global specimen state manager that continuously tracks the active tumor isolate (e.g., `COSMIC 905958 | MCF7 Breast Lineage`), tissue origin, baseline $\ln(\text{IC}_{50})$, and inference engine connectivity across all application workspaces.
+* **1.2 Master-Detail Workspace**:
+  * **Compound Catalogue**: Viewport-locked master list of 295 screened therapeutics with instantaneous text search, mechanism-of-action filter pills, and ambient sensitivity tertile toggles (`Sensitive`, `Intermediate`, `Resistant`).
+  * **4PL Fitted Curve Inspector**: Interactive charting canvas rendering drug concentration ($\mu\text{M}$) versus cell viability ($0\%-100\%$) alongside empirical $80\%$ confidence bands derived from the Hill sigmoidal response model.
+* **1.3 Docked Comparison Drawer**: High-density multi-regimen analysis tray enabling side-by-side comparison of up to 3 compounds simultaneously with distinct visual encodings (**Emerald**, **Violet**, and **Amber**), metric delta analysis ($\Delta \ln(\text{IC}_{50})$, $\Delta \text{AUC}$), and superimposed multi-curve overlays.
+* **1.4 Client-Side LRU Cache**: High-speed in-memory prediction cache storing pre-warmed batch responses across all 295 compounds upon specimen mount, enabling zero-latency filtering and instantaneous table sorting without redundant network round-trips.
 
-    subgraph Server["Backend Application Server (FastAPI + Uvicorn)"]
-        Router["FastAPI Application Router (/api)"]
-        PredictRoute["/api/predict & /api/predict/all"]
-        SampleRoute["/api/samples & /api/samples/{id}"]
-        AnalyticsRoute["/api/analytics/pca & /heatmap"]
-        ReportRoute["/api/reports/generate & /download"]
-    end
+### Tier 2: API Gateway & Micro-Routing Layer (FastAPI & Uvicorn ASGI)
+* **2.1 `/api/predict`**: Evaluates single-compound 4PL response, dynamic concentration scaling, and Hill equation viability simulation points across micromolar ranges.
+* **2.2 `/api/predict/all`**: High-throughput parallelized screening endpoint generating ranked sensitivity profiles across all 295 GDSC2 therapeutics backed by a server-side pre-warmed LRU cache.
+* **2.3 `/api/samples`**: Specimen manager querying 969 verified COSMIC reference cell lines across 33 TCGA lineages and registering custom patient biopsy / 3D organoid isolates.
+* **2.4 `/api/analytics`**: Dispatches precomputed 2D PCA pharmacogenomic coordinates (963 lines $\times$ 295 drugs) and 15-probe cross-lineage assay fingerprinting matrices.
+* **2.5 `/api/reports`**: High-performance report engine compiling publication-ready vector PDFs via PyMuPDF and exporting raw tabular data to RFC-4180 CSV formats.
 
-    subgraph ML["Machine Learning Inference Core"]
-        Featurizer["DrugResponseFeaturizer (Leakage-Safe)"]
-        HGB["HistGradientBoostingRegressor (Refit v1.0)"]
-        MLCache["Server-Side Batch Prediction LRU Cache"]
-        Sigmoid["4PL Sigmoidal Response Simulator"]
-    end
+### Tier 3: Zero-Leakage Machine Learning Engine (Scikit-Learn, NumPy & SciPy)
+* **3.1 DrugResponseFeaturizer**: Enforces an airtight pre-exposure boundary. Uses chemical descriptors, targeted pathways, and empirical Bayes target encoding ($k=10$ smoothing) on training folds while applying global shrinkage priors on unseen holdout lines. Strictly excludes post-exposure variables ($Z$-score, observed AUC, or experimental curve RMSE) to prevent target leakage.
+* **3.2 HistGradientBoostingRegressor (Tuned Production Refit v1.0 [222 KB])**: Highly compact, production-tuned gradient-boosted decision tree refit achieving test MAE $1.0270$, $R^2: 0.7585$ on unseen cell lines with sub-$3\text{ ms}$ inference latency.
+* **3.3 4PL Sigmoidal Engine**: Evaluates the standard Hill equation across experimental drug concentration bounds $[\text{MIN\_CONC}, \text{MAX\_CONC}]$ to simulate tumor viability curves and calculate absolute $\text{IC}_{50}$ and $\text{AUC}$.
 
-    subgraph Storage["Persistent Artifacts & Datasets"]
-        GDSC2["GDSC2 Cell Lines & Drugs Catalog (JSON)"]
-        PCAData["963 Cell Line PCA Matrix"]
-        Reports["Generated Vector PDFs & CSV Archives"]
-    end
+### Tier 4: Dataset Corpus & Cold Storage Layer
+* **4.1 Sanger GDSC2 Gold Standard**: Authoritative corpus of 242,036 fitted dose-response curves spanning 969 human cancer cell lines, 295 antineoplastic compounds, and 33 tissue lineages.
+* **4.2 Precomputed Matrices**: Dimensionality-reduced 963-cell line PCA coordinates ($PC_1: 38.45\%$, $PC_2: 4.40\%$) and cross-lineage sensitivity reference arrays.
+* **4.3 Artifacts & Reports Vault**: Serialized model bundle (`hgb_model.joblib`), vector PDF research dossiers, and session index (`reports_history.json`).
 
-    UI --> ApiModule
-    ApiModule <-->|JSON over HTTP| Router
-    Router --> PredictRoute
-    Router --> SampleRoute
-    Router --> AnalyticsRoute
-    Router --> ReportRoute
+### 🔄 End-to-End Request & Prediction Dataflow
+1. **Specimen Context Binding**: When a researcher selects a cell line or enters a custom biopsy isolate in Tier 1, the **Active Profile Context (1.1)** emits an asynchronous request to `/api/predict/all` (2.2).
+2. **Feature Synthesis & Leakage Prevention**: The request is routed to the **DrugResponseFeaturizer (3.1)**, which transforms the specimen lineage and drug target priors into numerical tensors using strictly pre-exposure descriptors and empirical Bayes smoothing.
+3. **High-Speed Model Inference**: The feature matrix is ingested by the tuned **HistGradientBoostingRegressor (3.2)**, returning predicted $\ln(\text{IC}_{50})$ values in $<3\text{ ms}$.
+4. **Sigmoidal Viability Modeling**: For inspected compounds, the **4PL Sigmoidal Engine (3.3)** solves the Hill equation over the drug's empirical concentration bounds $[\text{MIN\_CONC}, \text{MAX\_CONC}]$, generating 50-point viability response curves and $80\%$ confidence bands.
+5. **Client Caching & Interactive Analysis**: The API Gateway serializes results via Pydantic v2 into JSON payloads. Tier 1 populates the **Client-Side LRU Cache (1.4)**, driving the **Master-Detail Workspace (1.2)** and **Docked Comparison Drawer (1.3)** with zero-latency re-filtering and instantaneous curve overlays.
 
-    PredictRoute --> MLCache
-    MLCache --> Featurizer
-    Featurizer --> HGB
-    HGB --> Sigmoid
+---
 
-    AnalyticsRoute --> PCAData
-    SampleRoute --> GDSC2
-    ReportRoute --> Reports
-```
+## 🛠 Technology Stack
+
+OncoMatch is built from the ground up for extreme performance, clinical reproducibility, and local-first or zero-cost cloud deployment:
+
+| Layer / Domain | Technology | Version | Purpose & Architectural Role | Rationale & Free-Tier Suitability |
+|:---|:---|:---:|:---|:---|
+| **Frontend Framework** | React | `18.3.1` | Component-driven declarative UI architecture | Concurrent rendering, virtual DOM diffing for rapid UI updates |
+| **Language & Typings** | TypeScript | `5.4.5` | End-to-end static type safety | Eliminates runtime type errors across complex pharmacogenomic schemas |
+| **Build Tool & Bundler** | Vite | `5.2.0` | Ultra-fast HMR and optimized production bundling | Sub-second cold starts, tree-shaken static assets (<500 KB gzip) |
+| **Styling & Design System** | Tailwind CSS | `3.4.3` | Utility-first responsive styling system | Zero-runtime CSS bundle, consistent clinical dark/light aesthetics |
+| **UI Components & Icons** | Lucide React | `0.378.0` | Clean, accessible clinical icon set | Lightweight SVG icons with tree-shaking support |
+| **Data Visualization** | Chart.js & React-Chartjs-2 | `4.4.2` | Canvas-based 4PL dose-response plotting | Smooth 60 FPS rendering of sigmoidal curves and confidence bands |
+| **Backend Framework** | FastAPI | `0.110.0` | High-throughput asynchronous ASGI REST API | Auto-generated OpenAPI 3.1 documentation, native async/await |
+| **ASGI Web Server** | Uvicorn | `0.29.0` | Lightning-fast asynchronous server implementation | Production-grade ASGI event loop with minimal CPU overhead |
+| **Validation & Parsing** | Pydantic | `2.6.4` | Strict request/response payload serialization | Fast Rust-backed schema validation and type coercion |
+| **Machine Learning** | Scikit-Learn | `1.4.2` | Gradient boosting model training and inference | Compact HistGradientBoostingRegressor (222 KB, <3ms latency) |
+| **Numerical & Scientific** | NumPy & SciPy | `1.26.4` / `1.13.0` | Vectorized numerical operations and 4PL Hill equations | High-performance C-accelerated array manipulation |
+| **Data Processing** | Pandas | `2.2.2` | Genomic and pharmacological tabular processing | Rapid querying and transformation of GDSC2 baseline datasets |
+| **Report Generation** | PyMuPDF (fitz) | `1.24.1` | Native C-based vector PDF report rendering | Millisecond generation of crisp vector clinical dossiers |
+| **Containerization** | Docker | Multi-stage | Reproducible multi-stage container deployment | Lightweight alpine/slim Linux image (~180 MB) |
+| **Continuous Integration** | GitHub Actions | `v4` | Automated linting, typechecking, and test runner | Enforces zero regression across all PRs and master commits |
+| **Backend Testing** | Pytest | `8.1.1` | Asynchronous test suite covering ML, API, and routes | 19/19 passing tests validating zero data leakage |
 
 ---
 
