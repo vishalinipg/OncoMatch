@@ -3,13 +3,13 @@
 <div align="center">
 
 ```
-   ____                      __  __       _       _     
-  / __ \____  _________     / / / /____ _(_)___  (_)___ 
- / / / / __ \/ ___/ __ \   / / / / ___/ / / __ \/ / __ \
-/ /_/ / / / / /__/ /_/ /  / /_/ / /  / / / / / / / /_/ /
-\____/_/ /_/\___/\____/   \____/_/  /_/_/_/ /_/_/\____/ 
-                                             
-   Precision Oncology AI & Pharmacogenomic Sensitivity Platform
+   ____                                 __  ___      __       __  
+  / __ \____  _________                /  |/  /___ _/ /______/ /_ 
+ / / / / __ \/ ___/ __ \   ______     / /|_/ / __ `/ __/ ___/ __ \
+/ /_/ / / / / /__/ /_/ /  /_____/    / /  / / /_/ / /_/ /__/ / / /
+\____/_/ /_/\___/\____/             /_/  /_/\__,_/\__/\___/_/ /_/ 
+
+        Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 ```
 
 [![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Passing-success?logo=githubactions&logoColor=white)](.github/workflows/ci_cd.yml)
