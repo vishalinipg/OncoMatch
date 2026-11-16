@@ -34,20 +34,20 @@ Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 ## 📑 Table of Contents
 
 1. [Executive Summary](#-executive-summary)
-2. [Key Innovations & Clinical/Research Value](#-key-innovations--research-value)
+2. [Key Innovations & Research Value](#-key-innovations--research-value)
 3. [System Architecture](#-system-architecture)
 4. [Technology Stack](#-technology-stack)
 5. [Interactive Workspaces](#-interactive-workspaces)
 6. [Machine Learning & Benchmark Results](#-machine-learning--benchmark-results)
 7. [REST API Reference](#-rest-api-reference)
-8. [Quick Start & Local Execution](#-quick-start)
+8. [Quick Start](#-quick-start)
 9. [Docker & Zero-Cost Cloud Deployment](#-docker--zero-cost-cloud-deployment)
 10. [Project Directory Layout](#-project-directory-layout)
 11. [Scientific Validation & Bioethics Disclaimer](#-scientific-validation--bioethics-disclaimer)
 
 ---
 
-## 🔬 Executive Summary
+## 🔬 Executive Summary <a id="-executive-summary"></a><a id="executive-summary"></a>
 
 **OncoMatch** bridges the translational gap between genomic characterization and precision chemotherapy selection. Trained on the Sanger Institute's authoritative **Genomics of Drug Sensitivity in Cancer (GDSC2)** corpus (242,036 fitted dose-response curves across 969 cancer cell lines and 295 anticancer compounds), OncoMatch delivers real-time sensitivity predictions, four-parameter logistic (4PL) dose-response curves, confidence intervals, and vector research reports.
 
@@ -63,7 +63,7 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 
 ---
 
-## ⚡ Key Innovations & Research Value
+## ⚡ Key Innovations & Research Value <a id="-key-innovations--research-value"></a><a id="key-innovations-research-value"></a>
 
 * **Zero-Leakage Gradient-Boosted Featurization**: Custom `DrugResponseFeaturizer` incorporates empirical Bayes target encoding ($k=10$ smoothing) on training folds while utilizing global shrinkage priors on unseen holdout cell lines.
 * **4-Parameter Logistic (4PL) Dose-Response Simulation**: Derives synthetic sigmoidal survival profiles across micromolar concentration bounds $[\text{MIN\_CONC}, \text{MAX\_CONC}]$ with modeled $80\%$ confidence bands.
@@ -75,7 +75,7 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 
 ---
 
-## 🏗 System Architecture
+## 🏗 System Architecture <a id="-system-architecture"></a><a id="system-architecture"></a>
 
 <div align="center">
 
@@ -109,7 +109,7 @@ OncoMatch is engineered as an enterprise-grade, decoupled four-tier computationa
 ### Tier 4: Dataset Corpus & Cold Storage Layer
 * **4.1 Sanger GDSC2 Gold Standard**: Authoritative corpus of 242,036 fitted dose-response curves spanning 969 human cancer cell lines, 295 antineoplastic compounds, and 33 tissue lineages.
 * **4.2 Precomputed Matrices**: Dimensionality-reduced 963-cell line PCA coordinates ($PC_1: 38.45\%$, $PC_2: 4.40\%$) and cross-lineage sensitivity reference arrays.
-* **4.3 Artifacts & Reports Vault**: Serialized model bundle (`hgb_model.joblib`), vector PDF research dossiers, and session index (`reports_history.json`).
+* **4.3 Artifacts & Reports Vault**: Serialized model bundle (`oncomatch_pbl3_bundle.joblib` / `hgb_model.joblib`), vector PDF research dossiers, and session index (`reports_history.json`).
 
 ### 🔄 End-to-End Request & Prediction Dataflow
 1. **Specimen Context Binding**: When a researcher selects a cell line or enters a custom biopsy isolate in Tier 1, the **Active Profile Context (1.1)** emits an asynchronous request to `/api/predict/all` (2.2).
@@ -120,7 +120,7 @@ OncoMatch is engineered as an enterprise-grade, decoupled four-tier computationa
 
 ---
 
-## 🛠 Technology Stack
+## 🛠 Technology Stack <a id="-technology-stack"></a><a id="technology-stack"></a>
 
 OncoMatch is built from the ground up for extreme performance, clinical reproducibility, and local-first or zero-cost cloud deployment:
 
@@ -145,7 +145,7 @@ OncoMatch is built from the ground up for extreme performance, clinical reproduc
 
 ---
 
-## 🖥 Interactive Workspaces
+## 🖥 Interactive Workspaces <a id="-interactive-workspaces"></a><a id="interactive-workspaces"></a>
 
 OncoMatch provides six purpose-built clinical and translational bioinformatics workspaces:
 
@@ -239,7 +239,7 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 
 ---
 
-## 📊 Machine Learning & Benchmark Results
+## 📊 Machine Learning & Benchmark Results <a id="-machine-learning--benchmark-results"></a><a id="machine-learning-benchmark-results"></a>
 
 ### Feature Engineering & Pre-Exposure Modeling
 * **Target Metric**: Natural log of half-maximal inhibitory concentration: $\ln(\text{IC}_{50})$.
@@ -264,7 +264,7 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 
 ---
 
-## 📡 REST API Reference
+## 📡 REST API Reference <a id="-rest-api-reference"></a><a id="rest-api-reference"></a>
 
 The backend exposes an OpenAPI 3.1 REST interface. Interactive documentation is available at `http://localhost:8000/docs`.
 
@@ -325,7 +325,7 @@ curl -X POST "http://localhost:8000/api/predict" \
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start <a id="-quick-start"></a><a id="quick-start"></a>
 
 ### Prerequisites
 * **Python**: `3.11+`
@@ -385,7 +385,7 @@ Open your browser at **[http://localhost:8000](http://localhost:8000)**. The Fas
 
 ---
 
-## 🐳 Docker & Zero-Cost Cloud Deployment
+## 🐳 Docker & Zero-Cost Cloud Deployment <a id="-docker--zero-cost-cloud-deployment"></a><a id="docker-zero-cost-cloud-deployment"></a>
 
 ### Local Docker Execution
 
@@ -415,7 +415,7 @@ Hugging Face Spaces provides a permanent free-tier environment (2 vCPU, 16 GB RA
 
 ---
 
-## 📁 Project Directory Layout
+## 📁 Project Directory Layout <a id="-project-directory-layout"></a><a id="project-directory-layout"></a>
 
 ```
 OncoMatch/
@@ -460,7 +460,8 @@ OncoMatch/
 │           └── api.ts             # REST client with in-memory batch caching
 ├── ml/
 │   ├── artifacts/                 # Production model card, weights & metrics
-│   │   ├── hgb_model.joblib       # Tuned HistGradientBoosting model (222 KB)
+│   │   ├── oncomatch_pbl3_bundle.joblib # Tuned HistGradientBoosting model bundle (222 KB)
+│   │   ├── hgb_model.joblib       # Standalone refit weights alias (222 KB)
 │   │   ├── model_card.json        # Verified parameters & holdout performance
 │   │   ├── pca_landscape.json     # Precomputed 963-line coordinate matrix
 │   │   └── probe_assays.json      # 15 reference compound fingerprints
@@ -470,12 +471,13 @@ OncoMatch/
 │   └── test_ml.py                 # 6 ML determinism & feature integrity tests
 ├── Dockerfile                     # Multi-stage production container manifest
 ├── requirements.txt               # Backend Python dependencies
+├── LICENSE                        # MIT Open Source License
 └── README.md                      # Comprehensive platform documentation
 ```
 
 ---
 
-## ⚖ Scientific Validation & Bioethics Disclaimer
+## ⚖ Scientific Validation & Bioethics Disclaimer <a id="-scientific-validation--bioethics-disclaimer"></a><a id="scientific-validation-bioethics-disclaimer"></a>
 
 > [!WARNING]
 > **RESEARCH USE ONLY (RUO):** OncoMatch is engineered strictly as a translational bioinformatics exploration tool for academic and preclinical research.
