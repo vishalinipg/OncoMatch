@@ -113,7 +113,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
     });
   }, [drugs, searchQuery, selectedPathway, probeFilterOnly, probeSet]);
 
-  const isCurrentPinned = selectedDrug ? pinnedItems.some(p => p.id === selectedDrug.DRUG_ID) : false;
+  const isCurrentPinned = selectedDrug ? pinnedItems.some(p => String(p.id) === String(selectedDrug.DRUG_ID)) : false;
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 animate-fadeIn">
@@ -263,7 +263,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                       filteredDrugs.map(d => {
                         const isProbe = probeSet.has(Number(d.DRUG_ID));
                         const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
-                        const isPinned = pinnedItems.some(p => p.id === d.DRUG_ID);
+                        const isPinned = pinnedItems.some(p => String(p.id) === String(d.DRUG_ID));
                         return (
                           <tr
                             key={d.DRUG_ID}
@@ -306,12 +306,12 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                                       id: d.DRUG_ID,
                                       type: 'drug',
                                       title: d.DRUG_NAME,
-                                      subtitle: d.PUTATIVE_TARGET,
+                                      subtitle: d.PUTATIVE_TARGET || 'Broad Cytotoxic',
                                       tissue: activeSample?.tcga_desc || 'PANCAN',
                                       min_conc_uM: d.MIN_CONC,
                                       max_conc_uM: d.MAX_CONC,
-                                      putative_target: d.PUTATIVE_TARGET,
-                                      pathway_name: d.PATHWAY_NAME,
+                                      putative_target: d.PUTATIVE_TARGET || 'Cytotoxic Mechanism',
+                                      pathway_name: d.PATHWAY_NAME || 'Other',
                                       color: '#10b981'
                                     });
                                   }
@@ -338,7 +338,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                 {filteredDrugs.map(d => {
                   const isProbe = probeSet.has(Number(d.DRUG_ID));
                   const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
-                  const isPinned = pinnedItems.some(p => p.id === d.DRUG_ID);
+                  const isPinned = pinnedItems.some(p => String(p.id) === String(d.DRUG_ID));
                   return (
                     <div
                       key={d.DRUG_ID}
@@ -368,12 +368,12 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                                   id: d.DRUG_ID,
                                   type: 'drug',
                                   title: d.DRUG_NAME,
-                                  subtitle: d.PUTATIVE_TARGET,
+                                  subtitle: d.PUTATIVE_TARGET || 'Broad Cytotoxic',
                                   tissue: activeSample?.tcga_desc || 'PANCAN',
                                   min_conc_uM: d.MIN_CONC,
                                   max_conc_uM: d.MAX_CONC,
-                                  putative_target: d.PUTATIVE_TARGET,
-                                  pathway_name: d.PATHWAY_NAME,
+                                  putative_target: d.PUTATIVE_TARGET || 'Cytotoxic Mechanism',
+                                  pathway_name: d.PATHWAY_NAME || 'Other',
                                   color: '#10b981'
                                 });
                               }
@@ -463,12 +463,12 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                         id: selectedDrug.DRUG_ID,
                         type: 'drug',
                         title: selectedDrug.DRUG_NAME,
-                        subtitle: selectedDrug.PUTATIVE_TARGET,
+                        subtitle: selectedDrug.PUTATIVE_TARGET || 'Broad Cytotoxic',
                         tissue: activeSample?.tcga_desc || 'PANCAN',
                         min_conc_uM: selectedDrug.MIN_CONC,
                         max_conc_uM: selectedDrug.MAX_CONC,
-                        putative_target: selectedDrug.PUTATIVE_TARGET,
-                        pathway_name: selectedDrug.PATHWAY_NAME,
+                        putative_target: selectedDrug.PUTATIVE_TARGET || 'Cytotoxic Mechanism',
+                        pathway_name: selectedDrug.PATHWAY_NAME || 'Other',
                         color: '#10b981'
                       });
                     }

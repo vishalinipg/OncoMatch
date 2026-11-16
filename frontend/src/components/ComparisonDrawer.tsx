@@ -35,19 +35,16 @@ interface ComparisonDrawerProps {
 }
 
 export const ComparisonDrawer: React.FC<ComparisonDrawerProps> = ({
-  pinnedItems,
+  pinnedItems = [],
   onRemoveItem,
   onClearAll,
   onNavigateToPrediction
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // If no pinned items, don't render
-  if (pinnedItems.length === 0) return null;
-
-  // Generate multi-curve data on the SAME axis for all pinned items
+  // Generate multi-curve data on the SAME axis for all pinned items (Hook must always run unconditionally)
   const multiCurveData = useMemo(() => {
-    if (pinnedItems.length === 0) return [];
+    if (!pinnedItems || pinnedItems.length === 0) return [];
 
     // Find the global min and max concentration across all items
     const allMin = Math.min(...pinnedItems.map(p => p.min_conc_uM || 0.001));
@@ -68,9 +65,9 @@ export const ComparisonDrawer: React.FC<ComparisonDrawerProps> = ({
       };
 
       pinnedItems.forEach((item, idx) => {
-        const ic50 = item.predicted_ic50_uM || 1.0;
+        const ic50 = item.predicted_ic50_uM || (item.predicted_ln_ic50 !== undefined ? Math.exp(item.predicted_ln_ic50) : Math.sqrt((item.min_conc_uM || 0.001) * (item.max_conc_uM || 1.0)));
         const hill = 1.15;
-        const viability = 100 / (1 + Math.pow(c / ic50, hill));
+        const viability = 100 / (1 + Math.pow(c / Math.max(0.0001, ic50), hill));
         point[`item_${idx}`] = Number(viability.toFixed(1));
       });
 
@@ -78,6 +75,9 @@ export const ComparisonDrawer: React.FC<ComparisonDrawerProps> = ({
     }
     return points;
   }, [pinnedItems]);
+
+  // If no pinned items, don't render (Unconditionally placed AFTER all hooks)
+  if (!pinnedItems || pinnedItems.length === 0) return null;
 
   const baseItem = pinnedItems[0];
 

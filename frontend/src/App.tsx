@@ -141,21 +141,23 @@ export const App: React.FC = () => {
       />
 
       {/* Docked Side-by-Side Comparison Drawer */}
-      <ComparisonDrawer
-        pinnedItems={pinnedItems}
-        onRemoveItem={handleRemovePin}
-        onClearAll={handleClearPins}
-        onNavigateToPrediction={(drugId) => {
-          if (drugId) {
-            setCalibration(prev => ({
-              drugId,
-              minConc: prev?.minConc ?? 0.0039,
-              maxConc: prev?.maxConc ?? 1.0,
-            }));
-          }
-          setCurrentPage('prediction');
-        }}
-      />
+      {pinnedItems && pinnedItems.length > 0 && (
+        <ComparisonDrawer
+          pinnedItems={pinnedItems}
+          onRemoveItem={handleRemovePin}
+          onClearAll={handleClearPins}
+          onNavigateToPrediction={(drugId) => {
+            if (drugId) {
+              setCalibration(prev => ({
+                drugId,
+                minConc: prev?.minConc ?? 0.0039,
+                maxConc: prev?.maxConc ?? 1.0,
+              }));
+            }
+            setCurrentPage('prediction');
+          }}
+        />
+      )}
 
       {/* Collapsible Sidebar */}
       <Sidebar
