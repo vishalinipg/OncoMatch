@@ -281,7 +281,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
         <div>
           <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[11px] font-semibold mb-2 shadow-2xs">
             <Settings2 className="w-3.5 h-3.5 text-teal-600 mr-1" />
-            <span>Workflow Stage 1 — Model & Assay Calibration</span>
+            <span>Model & Assay Calibration</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             Sample & Analysis Setup

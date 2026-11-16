@@ -86,7 +86,7 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
         <div>
           <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[11px] font-semibold mb-2 shadow-2xs">
             <FileText className="w-3.5 h-3.5 text-teal-600 mr-1" />
-            <span>Workflow Stage 5 — Clinical Pharmacogenomic Reports</span>
+            <span>Clinical Pharmacogenomic Reports</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             Personalized Oncology Report Generation & Export
