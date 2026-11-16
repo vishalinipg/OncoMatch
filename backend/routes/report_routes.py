@@ -31,13 +31,13 @@ def generate_report(req: GenerateReportRequest):
 @router.get("/download/{filename}")
 def download_report(filename: str):
     """Download a generated PDF or CSV file."""
-    file_path = report_service.get_report_file_path(filename)
+    file_path = report_service.get_report_file(filename)
     if not file_path:
         raise HTTPException(status_code=404, detail="Requested report file not found.")
 
     media_type = "application/pdf" if filename.lower().endswith(".pdf") else "text/csv"
     return FileResponse(
-        path=file_path,
+        path=str(file_path),
         media_type=media_type,
         filename=filename
     )

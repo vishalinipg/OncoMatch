@@ -248,3 +248,5 @@ class ReportService:
         if p.exists() and p.is_file():
             return p
         return None
+
+    get_report_file_path = get_report_file

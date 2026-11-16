@@ -146,3 +146,15 @@ def test_report_generation():
     assert "report_id" in data
     assert "pdf_filename" in data
     assert "csv_filename" in data
+
+    # Test downloading PDF
+    pdf_resp = client.get(f"/api/reports/download/{data['pdf_filename']}")
+    assert pdf_resp.status_code == 200
+    assert "application/pdf" in pdf_resp.headers["content-type"]
+    assert len(pdf_resp.content) > 1000
+
+    # Test downloading CSV
+    csv_resp = client.get(f"/api/reports/download/{data['csv_filename']}")
+    assert csv_resp.status_code == 200
+    assert "text/csv" in csv_resp.headers["content-type"]
+    assert len(csv_resp.content) > 1000
