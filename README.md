@@ -21,7 +21,7 @@ Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.3-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.4.2-F7931E.svg?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](Dockerfile)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: All Rights Reserved](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](LICENSE)
 
 **An end-to-end, scientifically rigorous computational oncology platform predicting in-vitro chemotherapy sensitivity across 295 screening regimens and 33 cancer lineages without post-hoc data leakage.**
 
@@ -475,7 +475,7 @@ OncoMatch/
 │   └── test_ml.py                 # 6 ML determinism & feature integrity tests
 ├── Dockerfile                     # Multi-stage production container manifest
 ├── requirements.txt               # Backend Python dependencies
-├── LICENSE                        # MIT Open Source License
+├── LICENSE                        # Academic Research & Copyright Notice (All Rights Reserved)
 └── README.md                      # Comprehensive platform documentation
 ```
 
@@ -496,6 +496,6 @@ OncoMatch/
 
 **Developed with scientific rigor for the precision oncology research community.**
 
-Licensed under the [MIT License](LICENSE).
+Copyright © 2026 Vishalini P. G. All Rights Reserved. [Academic Notice](LICENSE).
 
 </div>
