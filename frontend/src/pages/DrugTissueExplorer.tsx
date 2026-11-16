@@ -242,7 +242,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                 <table className="w-full text-left text-xs border-collapse min-w-[650px]">
                   <thead className="sticky top-0 z-20 bg-slate-100 shadow-2xs text-slate-700 font-semibold text-[11px]">
                     <tr>
-                      <th className="py-3 px-4 bg-slate-100 sticky top-0 left-0 z-30 min-w-[200px] shadow-sm font-bold text-slate-900">
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 left-0 z-30 min-w-[200px] shadow-sm font-bold text-slate-900 border-l-4 border-l-transparent">
                         Drug Compound
                       </th>
                       <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[150px]">Putative Target</th>
@@ -268,36 +268,58 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                           <tr
                             key={d.DRUG_ID}
                             onClick={() => setSelectedDrug(d)}
-                            className={`transition-colors cursor-pointer ${
-                              isSelected ? 'bg-indigo-50/80 font-semibold' : 'hover:bg-slate-50/80'
+                            className={`transition-colors cursor-pointer group ${
+                              isSelected ? 'bg-teal-50/90 font-semibold' : 'hover:bg-slate-50/80'
                             }`}
                           >
-                            <td className="py-3 px-4 font-bold text-slate-900 font-sans sticky left-0 z-10 bg-white group-hover:bg-slate-50 min-w-[200px] flex items-center space-x-2">
-                              <Pill className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                              <span className="font-bold text-slate-900">{d.DRUG_NAME}</span>
-                              <span className="font-mono text-[10px] text-slate-500 font-normal shrink-0">
+                            <td className={`py-3 px-4 font-bold font-sans sticky left-0 z-10 min-w-[200px] flex items-center space-x-2 transition-colors border-l-4 ${
+                              isSelected 
+                                ? 'bg-teal-50 text-teal-950 border-l-teal-600 shadow-xs' 
+                                : 'bg-white text-slate-900 group-hover:bg-slate-50 border-l-transparent'
+                            }`}>
+                              <Pill className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                                isSelected ? 'text-teal-700' : 'text-teal-600'
+                              }`} />
+                              <span className={`font-bold transition-colors ${
+                                isSelected ? 'text-teal-950 font-extrabold' : 'text-slate-900'
+                              }`}>{d.DRUG_NAME}</span>
+                              <span className={`font-mono text-[10px] font-normal shrink-0 ${
+                                isSelected ? 'text-teal-700 font-semibold' : 'text-slate-500'
+                              }`}>
                                 #{d.DRUG_ID}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-slate-800 font-sans font-medium min-w-[150px]">
+                            <td className={`py-3 px-4 font-sans font-medium min-w-[150px] transition-colors ${
+                              isSelected ? 'text-slate-900 bg-teal-50/90' : 'text-slate-800'
+                            }`}>
                               {d.PUTATIVE_TARGET || 'Unspecified'}
                             </td>
-                            <td className="py-3 px-4 text-slate-600 font-sans text-[11px] min-w-[130px]">
+                            <td className={`py-3 px-4 font-sans text-[11px] min-w-[130px] transition-colors ${
+                              isSelected ? 'text-slate-700 bg-teal-50/90 font-medium' : 'text-slate-600'
+                            }`}>
                               {d.PATHWAY_NAME || 'Unclassified'}
                             </td>
-                            <td className="py-3 px-4 text-right font-mono text-slate-700 tabular-nums">
+                            <td className={`py-3 px-4 text-right font-mono tabular-nums transition-colors ${
+                              isSelected ? 'text-teal-950 font-bold bg-teal-50/90' : 'text-slate-700'
+                            }`}>
                               {formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM
                             </td>
-                            <td className="py-3 px-4 text-center font-sans">
+                            <td className={`py-3 px-4 text-center font-sans transition-colors ${
+                              isSelected ? 'bg-teal-50/90' : ''
+                            }`}>
                               {isProbe ? (
                                 <span className="inline-flex items-center text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
                                   Probe
                                 </span>
                               ) : (
-                                <span className="text-[10px] text-slate-400 font-mono">Screen</span>
+                                <span className={`text-[10px] font-mono ${
+                                  isSelected ? 'text-slate-600 font-medium' : 'text-slate-400'
+                                }`}>Screen</span>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-center">
+                            <td className={`py-3 px-4 text-center transition-colors ${
+                              isSelected ? 'bg-teal-50/90' : ''
+                            }`}>
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -345,7 +367,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                       onClick={() => setSelectedDrug(d)}
                       className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 card-hover-effect ${
                         isSelected
-                          ? 'bg-indigo-50/80 border-indigo-300 shadow-subtle ring-2 ring-indigo-500/20'
+                          ? 'bg-teal-50/90 border-teal-300 shadow-subtle ring-2 ring-teal-500/20'
                           : 'bg-white border-slate-200 hover:border-slate-300'
                       }`}
                     >
@@ -409,9 +431,9 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-subtle space-y-4 sticky top-32">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center">
-                <Tag className="w-3.5 h-3.5 mr-1.5 text-indigo-600" /> Pharmacological Dossier
+                <Tag className="w-3.5 h-3.5 mr-1.5 text-teal-600" /> Pharmacological Dossier
               </span>
-              <span className="text-xs font-mono font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+              <span className="text-xs font-mono font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
                 #{selectedDrug?.DRUG_ID}
               </span>
             </div>
