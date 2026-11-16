@@ -143,15 +143,33 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 * **Held-Out Model Performance Metrics**: Live benchmark comparison displaying test-set MAE ($1.0270$), $R^2$ ($0.7585$), and RMSE ($1.361$).
 * **Rapid Specimen Status Bar**: Global context tracking the active tumor isolate, lineage category, baseline $\ln(\text{IC}_{50})$, and engine status.
 
+<div align="center">
+
+![Dashboard Overview](docs/screenshots/dashboard_overview.png)
+
+</div>
+
 ### 2. Sample & Analysis Setup
 * **969 Verified COSMIC Reference Cell Lines**: Searchable, filterable catalogue across 33 TCGA tissue lineages (e.g. `MCF7` BRCA, `A549` LUAD, `HepG2` LIHC, `HCT-116` COREAD).
 * **Primary / Patient-Derived Isolate Builder**: Register custom biopsy isolates, patient-derived cell lines, or 3D organoids with pharmacokinetic shift warnings.
 * **Target Drug & Concentration Bounds Calibration**: Fine-tune experimental screening concentrations ($\mu\text{M}$) or reset to GDSC2 empirical assay bounds in one click.
 
+<div align="center">
+
+![Sample & Analysis Setup](docs/screenshots/sample_analysis_setup.png)
+
+</div>
+
 ### 3. Drug & Tissue Explorer
 * **286 Screened Chemotherapy Therapeutics**: Master list of FDA-approved and investigational compounds annotated with putative targets (e.g. `TOP1`, `EGFR`, `PARP1`) and targeted pathways.
 * **External Cross-Linking**: Direct links to Sanger GDSC2 pharmacogenomic profiles and PubChem chemical structure records.
 * **Dynamic Mechanism Filter**: Segment drugs by pathway (DNA replication, Mitosis, RTK signaling, Chromatin histone acetylation, PI3K/MTOR).
+
+<div align="center">
+
+![Drug & Tissue Lineage Explorer](docs/screenshots/drug_tissue_explorer.png)
+
+</div>
 
 ### 4. Drug Response Prediction & 4PL Inspector
 * **Master-Detail Dual-Pane Workspace**: Left master list displays ranked regimens with sticky search and instantaneous sensitivity filtering; right inspector card renders the active compound details.
@@ -160,15 +178,33 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 * **Instant Ambient Tier Filtering**: Filter between `Sensitive`, `Intermediate`, and `Resistant` tiers instantly without requiring manual pre-ranking.
 * **Split vs. Full Table View Toggle**: Seamlessly switch between the split-pane workspace and an Excel-like full 295-compound matrix with frozen headers and sticky columns.
 
+<div align="center">
+
+![Drug Response Prediction & 4PL Inspector](docs/screenshots/drug_response_prediction.png)
+
+</div>
+
 ### 5. Visual Analytics & PCA Landscape
 * **2D PCA Landscape (963 Cell Lines $\times$ 295 Regimens)**: Interactive scatter plot with coordinate zoom, lineage coloring, and specimen projection.
 * **Top Loading Regimens**: Quantifies highest variance contributors along $PC_1$ ($38.45\%$) and $PC_2$ ($4.40\%$).
 * **15-Probe Assay Sensitivity Fingerprinting**: Profiles cross-compound drug fingerprints across established reference cell lines.
 
+<div align="center">
+
+![Visual Analytics & PCA Landscape](docs/screenshots/pca_visual_analytics.png)
+
+</div>
+
 ### 6. Personalized Reports & Reproducibility Archive
 * **One-Click Vector PDF Generation**: Compiles publication-ready PDF reports with color-coded sensitivity tiers, dosage bounds, and research caveats.
 * **Full CSV Dataset Export**: Export the complete 295-compound prediction table for external bioinformatics workflows (R, Bioconductor, Python).
 * **Session Reproducibility Archive**: Browse historical runs with unique report IDs (`REP-XXXXXXXX`), timestamps, and instant redownloads.
+
+<div align="center">
+
+![Personalized Reports & Reproducibility Archive](docs/screenshots/personalized_reports_archive.png)
+
+</div>
 
 ---
 
