@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
+import { ActiveSampleSubBar } from './components/ActiveSampleSubBar';
 import { CommandPalette } from './components/CommandPalette';
+import { ComparisonDrawer } from './components/ComparisonDrawer';
 import { DashboardOverview } from './pages/DashboardOverview';
 import { SampleAnalysisSetup } from './pages/SampleAnalysisSetup';
 import { DrugTissueExplorer } from './pages/DrugTissueExplorer';
@@ -9,7 +11,7 @@ import { DrugResponsePrediction } from './pages/DrugResponsePrediction';
 import { VisualAnalytics } from './pages/VisualAnalytics';
 import { PersonalizedReports } from './pages/PersonalizedReports';
 import { api } from './services/api';
-import { Sample, Drug } from './types';
+import { Sample, Drug, ComparisonItem } from './types';
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState('dashboard');
@@ -18,6 +20,8 @@ export const App: React.FC = () => {
   const [drugs, setDrugs] = useState<Drug[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [pinnedItems, setPinnedItems] = useState<ComparisonItem[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -35,13 +39,20 @@ export const App: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  // Keyboard Shortcuts (⌘K for command palette, ⌘1-⌘6 for page switching)
+  // Keyboard Shortcuts (⌘K for command palette, ⌘B for sidebar toggle, ⌘1-⌘6 for page switching)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // ⌘K or Ctrl+K
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsCommandPaletteOpen(prev => !prev);
+        return;
+      }
+
+      // ⌘B or Ctrl+B to toggle sidebar
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        setIsSidebarCollapsed(prev => !prev);
         return;
       }
 
@@ -65,6 +76,31 @@ export const App: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Pin / Compare handlers
+  const handleTogglePin = (item: ComparisonItem) => {
+    setPinnedItems(prev => {
+      const exists = prev.some(p => String(p.id) === String(item.id));
+      if (exists) {
+        return prev.filter(p => String(p.id) !== String(item.id));
+      }
+      const palette = ['#10b981', '#8b5cf6', '#f59e0b'];
+      const newItem = { ...item, color: palette[prev.length % 3] };
+      if (prev.length >= 3) {
+        // Shift out oldest
+        return [...prev.slice(1), newItem];
+      }
+      return [...prev, newItem];
+    });
+  };
+
+  const handleRemovePin = (id: string | number) => {
+    setPinnedItems(prev => prev.filter(p => String(p.id) !== String(id)));
+  };
+
+  const handleClearPins = () => {
+    setPinnedItems([]);
+  };
 
   const handleSampleCreated = (newSample: Sample) => {
     setSamples(prev => {
@@ -103,13 +139,23 @@ export const App: React.FC = () => {
         drugs={drugs}
       />
 
-      {/* Sidebar */}
+      {/* Docked Side-by-Side Comparison Drawer */}
+      <ComparisonDrawer
+        pinnedItems={pinnedItems}
+        onRemoveItem={handleRemovePin}
+        onClearAll={handleClearPins}
+        onNavigateToPrediction={() => setCurrentPage('prediction')}
+      />
+
+      {/* Collapsible Sidebar */}
       <Sidebar
         currentPage={currentPage}
         onPageChange={setCurrentPage}
         selectedSampleId={selectedSampleId}
         samples={samples}
         onSampleChange={setSelectedSampleId}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed(prev => !prev)}
       />
 
       {/* Main Content Area */}
@@ -118,6 +164,15 @@ export const App: React.FC = () => {
           currentPageTitle={getPageTitle(currentPage)} 
           activeSample={activeSample}
           onOpenSearch={() => setIsCommandPaletteOpen(true)}
+        />
+
+        {/* Sticky Top Sub-Header for Active Sample Context */}
+        <ActiveSampleSubBar
+          samples={samples}
+          selectedSampleId={selectedSampleId}
+          onSampleChange={setSelectedSampleId}
+          isSidebarCollapsed={isSidebarCollapsed}
+          onToggleSidebar={() => setIsSidebarCollapsed(prev => !prev)}
         />
 
         <main className="flex-1 pb-16">
@@ -135,6 +190,8 @@ export const App: React.FC = () => {
               onSampleSelect={setSelectedSampleId}
               onSampleCreated={handleSampleCreated}
               onNavigate={setCurrentPage}
+              pinnedItems={pinnedItems}
+              onTogglePin={handleTogglePin}
             />
           )}
 
@@ -142,6 +199,8 @@ export const App: React.FC = () => {
             <DrugTissueExplorer
               onNavigate={setCurrentPage}
               activeSample={activeSample}
+              pinnedItems={pinnedItems}
+              onTogglePin={handleTogglePin}
             />
           )}
 
@@ -151,6 +210,8 @@ export const App: React.FC = () => {
               samples={samples}
               onSampleChange={setSelectedSampleId}
               onNavigate={setCurrentPage}
+              pinnedItems={pinnedItems}
+              onTogglePin={handleTogglePin}
             />
           )}
 
@@ -160,6 +221,7 @@ export const App: React.FC = () => {
               samples={samples}
               onSampleChange={setSelectedSampleId}
               onNavigate={setCurrentPage}
+              onTogglePin={handleTogglePin}
             />
           )}
 

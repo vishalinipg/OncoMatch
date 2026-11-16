@@ -19,8 +19,9 @@ import {
   Info
 } from 'lucide-react';
 import { api } from '../services/api';
-import { Sample, CellLine, Drug } from '../types';
+import { Sample, CellLine, Drug, ComparisonItem } from '../types';
 import { SampleTypeBadge } from '../components/SampleTypeBadge';
+import { CheckSquare, Square } from 'lucide-react';
 
 interface SampleAnalysisSetupProps {
   samples: Sample[];
@@ -28,6 +29,8 @@ interface SampleAnalysisSetupProps {
   onSampleSelect: (id: string) => void;
   onSampleCreated: (sample: Sample) => void;
   onNavigate: (page: string) => void;
+  pinnedItems?: ComparisonItem[];
+  onTogglePin?: (item: ComparisonItem) => void;
 }
 
 export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
@@ -35,7 +38,9 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   selectedSampleId,
   onSampleSelect,
   onSampleCreated,
-  onNavigate
+  onNavigate,
+  pinnedItems = [],
+  onTogglePin
 }) => {
   // Cell lines & drugs catalog
   const [cellLines, setCellLines] = useState<CellLine[]>([]);
@@ -341,6 +346,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                 ) : (
                   filteredCellLines.slice(0, 50).map(cl => {
                     const isSelected = selectedCellLine?.cosmic_id === cl.cosmic_id;
+                    const isPinned = pinnedItems.some(p => p.id === cl.cosmic_id);
                     return (
                       <div
                         key={cl.cosmic_id}
@@ -350,6 +356,31 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                         }`}
                       >
                         <div className="flex items-center space-x-3">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onTogglePin) {
+                                onTogglePin({
+                                  id: cl.cosmic_id,
+                                  type: 'cell_line',
+                                  title: cl.name,
+                                  subtitle: `COSMIC ${cl.cosmic_id}`,
+                                  tissue: cl.tcga_desc,
+                                  predicted_ln_ic50: cl.median_ln_ic50,
+                                  predicted_ic50_uM: Math.exp(cl.median_ln_ic50),
+                                  sensitivity_category: cl.median_ln_ic50 < 2.19 ? 'Sensitive' : cl.median_ln_ic50 <= 4.22 ? 'Intermediate' : 'Resistant',
+                                  color: '#10b981'
+                                });
+                              }
+                            }}
+                            className={`p-1 rounded-md transition-colors ${
+                              isPinned ? 'text-teal-600 bg-teal-100' : 'text-slate-300 hover:text-slate-500'
+                            }`}
+                            title={isPinned ? "Remove from comparison drawer" : "Add to comparison pinboard"}
+                          >
+                            {isPinned ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
+                          </button>
+
                           <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-[11px] shrink-0 ${
                             isSelected ? 'bg-teal-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700'
                           }`}>

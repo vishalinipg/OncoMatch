@@ -213,3 +213,19 @@ export interface ReportRecord {
   pdf_file: string;
   csv_file: string;
 }
+
+export interface ComparisonItem {
+  id: string | number;
+  type: 'drug' | 'cell_line';
+  title: string;
+  subtitle: string;
+  tissue: string;
+  predicted_ln_ic50?: number;
+  predicted_ic50_uM?: number;
+  sensitivity_category?: string;
+  putative_target?: string;
+  pathway_name?: string;
+  min_conc_uM?: number;
+  max_conc_uM?: number;
+  color: string;
+}

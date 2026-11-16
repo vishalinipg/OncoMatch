@@ -220,15 +220,15 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             Evaluated on held-out cancer cell lines. Once out-of-fold target encodings are added (<code className="text-slate-800 font-mono">k=10</code> smoothing), HistGradientBoosting achieves high predictive power without leaky curve parameters.
           </p>
 
-          <div className="overflow-x-auto rounded-xl border border-slate-100">
-            <table className="w-full text-xs text-left">
-              <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 text-[11px]">
-                  <th className="py-2.5 px-3 font-semibold">Model Architecture</th>
-                  <th className="py-2.5 px-3 font-semibold">Scenario</th>
-                  <th className="py-2.5 px-3 font-semibold text-right min-w-[95px]">Holdout MAE</th>
-                  <th className="py-2.5 px-3 font-semibold text-right min-w-[85px]">RMSE</th>
-                  <th className="py-2.5 px-3 font-semibold text-right min-w-[85px]">R² Score</th>
+          <div className="overflow-x-auto max-h-72 overflow-y-auto rounded-xl border border-slate-200">
+            <table className="w-full text-xs text-left border-collapse">
+              <thead className="sticky top-0 z-20 bg-slate-100 shadow-2xs">
+                <tr className="border-b border-slate-200 text-slate-700 text-[11px]">
+                  <th className="py-2.5 px-3 font-semibold bg-slate-100 sticky left-0 z-30">Model Architecture</th>
+                  <th className="py-2.5 px-3 font-semibold bg-slate-100">Scenario</th>
+                  <th className="py-2.5 px-3 font-semibold text-right min-w-[95px] bg-slate-100">Holdout MAE</th>
+                  <th className="py-2.5 px-3 font-semibold text-right min-w-[85px] bg-slate-100">RMSE</th>
+                  <th className="py-2.5 px-3 font-semibold text-right min-w-[85px] bg-slate-100">R² Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono">
@@ -237,11 +237,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
                     key={idx} 
                     className={`transition-colors ${
                       m.highlight 
-                        ? 'bg-teal-50/70 font-bold text-teal-950 hover:bg-teal-50' 
+                        ? 'bg-teal-50/80 font-bold text-teal-950 hover:bg-teal-50' 
                         : 'text-slate-700 hover:bg-slate-50/60'
                     }`}
                   >
-                    <td className="py-2.5 px-3 font-sans flex items-center">
+                    <td className={`py-2.5 px-3 font-sans flex items-center sticky left-0 z-10 ${m.highlight ? 'bg-teal-50/90' : 'bg-white'}`}>
                       {m.highlight && (
                         <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-teal-600 shrink-0" />
                       )}

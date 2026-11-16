@@ -14,19 +14,25 @@ import {
   Tag,
   LayoutGrid,
   List,
-  CheckCircle2
+  CheckCircle2,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import { api } from '../services/api';
-import { Drug, Sample } from '../types';
+import { Drug, Sample, ComparisonItem } from '../types';
 
 interface DrugTissueExplorerProps {
   onNavigate: (page: string) => void;
   activeSample?: Sample;
+  pinnedItems?: ComparisonItem[];
+  onTogglePin?: (item: ComparisonItem) => void;
 }
 
 export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
   onNavigate,
-  activeSample
+  activeSample,
+  pinnedItems = [],
+  onTogglePin
 }) => {
   const [drugs, setDrugs] = useState<Drug[]>([]);
   const [tissues, setTissues] = useState<string[]>([]);
@@ -71,7 +77,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
 
   const probeSet = useMemo(() => new Set(probeIds.map(Number)), [probeIds]);
 
-  // Clean concentration bounds formatter to remove floating-point artifacts
+  // Clean concentration bounds formatter
   const formatConcVal = (val: number | undefined): string => {
     if (val === undefined || val === null || isNaN(val)) return '-';
     if (val < 0.001) return Number(val.toFixed(5)).toString();
@@ -96,20 +102,22 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
     });
   }, [drugs, searchQuery, selectedPathway, probeFilterOnly, probeSet]);
 
+  const isCurrentPinned = selectedDrug ? pinnedItems.some(p => p.id === selectedDrug.DRUG_ID) : false;
+
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 animate-fadeIn">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
         <div>
-          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-semibold mb-2 shadow-2xs">
+          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-semibold mb-1 shadow-2xs">
             <FlaskConical className="w-3.5 h-3.5 text-indigo-600 mr-1" />
-            <span>Workflow Stage 2 — Comprehensive GDSC2 Pharmacopeia</span>
+            <span>Comprehensive GDSC2 Pharmacopeia (286 Compounds)</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
             Drug & Tissue Lineage Explorer
           </h1>
-          <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-3xl">
-            Explore 286 unique anticancer therapeutics across 295 screening regimens. Inspect putative molecular targets, signaling pathways, screening concentration ranges, and 15 benchmark probe assays.
+          <p className="text-slate-500 text-xs mt-0.5 max-w-3xl">
+            Explore 286 unique anticancer therapeutics across 295 screening regimens with putative molecular targets, signaling pathways, screening concentration ranges, and 15 benchmark probe assays.
           </p>
         </div>
 
@@ -127,7 +135,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-subtle space-y-4">
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-subtle space-y-3">
         {/* Quick Pathway Filter Pills */}
         <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-2">Top Pathways:</span>
@@ -139,7 +147,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                 onClick={() => setSelectedPathway(pw)}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all border cursor-pointer ${
                   isSelected
-                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
                 }`}
               >
@@ -234,58 +242,63 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
       </div>
 
       {/* Main Content Grid: Drug Table / Cards & Selected Drug Inspector */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left 2 Cols: Table or Cards */}
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left 7-8 Cols: Viewport-Locked Table or Cards (Requirement 3) */}
+        <div className="lg:col-span-8">
           {viewMode === 'table' ? (
             <div className="bg-white rounded-2xl border border-slate-200 shadow-subtle overflow-hidden flex flex-col">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 border-b border-slate-200/80 text-slate-600 font-semibold text-[11px]">
+              {/* Viewport-locked container with frozen header and sticky left column */}
+              <div className="h-[calc(100vh-270px)] min-h-[460px] overflow-auto relative">
+                <table className="w-full text-left text-xs border-collapse min-w-[650px]">
+                  <thead className="sticky top-0 z-20 bg-slate-100 shadow-2xs text-slate-700 font-semibold text-[11px]">
                     <tr>
-                      <th className="py-3 px-4">Drug Compound</th>
-                      <th className="py-3 px-4">Putative Target</th>
-                      <th className="py-3 px-4">Signaling Pathway</th>
-                      <th className="py-3 px-4 text-right">Tested Bounds (µM)</th>
-                      <th className="py-3 px-4 text-center">Type</th>
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 left-0 z-30 min-w-[150px] shadow-sm">
+                        Drug Compound
+                      </th>
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[140px]">Putative Target</th>
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[120px]">Signaling Pathway</th>
+                      <th className="py-3 px-4 text-right bg-slate-100 sticky top-0 min-w-[110px]">Tested Bounds (µM)</th>
+                      <th className="py-3 px-4 text-center bg-slate-100 sticky top-0 w-20">Type</th>
+                      <th className="py-3 px-4 text-center bg-slate-100 sticky top-0 w-20">Compare</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
                     {filteredDrugs.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="py-12 text-center text-slate-500">
+                        <td colSpan={6} className="py-12 text-center text-slate-500 font-sans">
                           No chemotherapy compounds found matching your filter criteria.
                         </td>
                       </tr>
                     ) : (
-                      filteredDrugs.slice(0, 50).map(d => {
+                      filteredDrugs.map(d => {
                         const isProbe = probeSet.has(Number(d.DRUG_ID));
                         const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
+                        const isPinned = pinnedItems.some(p => p.id === d.DRUG_ID);
                         return (
                           <tr
                             key={d.DRUG_ID}
                             onClick={() => setSelectedDrug(d)}
                             className={`transition-colors cursor-pointer ${
-                              isSelected ? 'bg-indigo-50/70 font-semibold' : 'hover:bg-slate-50/80'
+                              isSelected ? 'bg-indigo-50/80 font-semibold' : 'hover:bg-slate-50/80'
                             }`}
                           >
-                            <td className="py-3 px-4 font-bold text-slate-900 flex items-center space-x-2">
+                            <td className="py-3 px-4 font-bold text-slate-900 font-sans sticky left-0 z-10 bg-white group-hover:bg-slate-50 truncate max-w-[150px] flex items-center space-x-2">
                               <Pill className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                              <span>{d.DRUG_NAME}</span>
+                              <span className="truncate">{d.DRUG_NAME}</span>
                               <span className="font-mono text-[10px] text-slate-400 font-normal">
                                 #{d.DRUG_ID}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-slate-700 font-medium">
+                            <td className="py-3 px-4 text-slate-700 font-sans font-medium truncate max-w-[140px]">
                               {d.PUTATIVE_TARGET || 'Unspecified'}
                             </td>
-                            <td className="py-3 px-4 text-slate-500 text-[11px]">
+                            <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-[120px]">
                               {d.PATHWAY_NAME || 'Unclassified'}
                             </td>
-                            <td className="py-3 px-4 text-right font-mono text-slate-700 text-[11px] tabular-nums">
+                            <td className="py-3 px-4 text-right font-mono text-slate-700 tabular-nums">
                               {formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM
                             </td>
-                            <td className="py-3 px-4 text-center">
+                            <td className="py-3 px-4 text-center font-sans">
                               {isProbe ? (
                                 <span className="inline-flex items-center text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
                                   Probe
@@ -294,6 +307,32 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                                 <span className="text-[10px] text-slate-400 font-mono">Screen</span>
                               )}
                             </td>
+                            <td className="py-3 px-4 text-center">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (onTogglePin) {
+                                    onTogglePin({
+                                      id: d.DRUG_ID,
+                                      type: 'drug',
+                                      title: d.DRUG_NAME,
+                                      subtitle: d.PUTATIVE_TARGET,
+                                      tissue: activeSample?.tcga_desc || 'PANCAN',
+                                      min_conc_uM: d.MIN_CONC,
+                                      max_conc_uM: d.MAX_CONC,
+                                      putative_target: d.PUTATIVE_TARGET,
+                                      pathway_name: d.PATHWAY_NAME,
+                                      color: '#10b981'
+                                    });
+                                  }
+                                }}
+                                className={`p-1 rounded-md transition-colors ${
+                                  isPinned ? 'text-teal-600 bg-teal-100' : 'text-slate-300 hover:text-slate-500'
+                                }`}
+                              >
+                                {isPinned ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                              </button>
+                            </td>
                           </tr>
                         );
                       })
@@ -301,63 +340,86 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                   </tbody>
                 </table>
               </div>
-
-              {filteredDrugs.length > 50 && (
-                <div className="p-3 text-center text-[11px] text-slate-500 bg-slate-50/60 border-t border-slate-100">
-                  Showing top 50 of {filteredDrugs.length} matched therapeutics. Use search to refine.
-                </div>
-              )}
             </div>
           ) : (
-            /* Cards View */
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {filteredDrugs.slice(0, 30).map(d => {
-                const isProbe = probeSet.has(Number(d.DRUG_ID));
-                const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
-                return (
-                  <div
-                    key={d.DRUG_ID}
-                    onClick={() => setSelectedDrug(d)}
-                    className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 card-hover-effect ${
-                      isSelected
-                        ? 'bg-indigo-50/80 border-indigo-300 shadow-subtle ring-2 ring-indigo-500/20'
-                        : 'bg-white border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="font-bold text-slate-900 text-sm flex items-center space-x-1.5">
-                        <Pill className="w-4 h-4 text-teal-600" />
-                        <span>{d.DRUG_NAME}</span>
+            /* Cards View with Viewport Lock */
+            <div className="h-[calc(100vh-270px)] min-h-[460px] overflow-auto pr-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {filteredDrugs.map(d => {
+                  const isProbe = probeSet.has(Number(d.DRUG_ID));
+                  const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
+                  const isPinned = pinnedItems.some(p => p.id === d.DRUG_ID);
+                  return (
+                    <div
+                      key={d.DRUG_ID}
+                      onClick={() => setSelectedDrug(d)}
+                      className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 card-hover-effect ${
+                        isSelected
+                          ? 'bg-indigo-50/80 border-indigo-300 shadow-subtle ring-2 ring-indigo-500/20'
+                          : 'bg-white border-slate-200 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="font-bold text-slate-900 text-sm flex items-center space-x-1.5 truncate pr-2">
+                          <Pill className="w-4 h-4 text-teal-600 shrink-0" />
+                          <span className="truncate">{d.DRUG_NAME}</span>
+                        </div>
+                        <div className="flex items-center space-x-1 shrink-0">
+                          {isProbe && (
+                            <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                              Probe
+                            </span>
+                          )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onTogglePin) {
+                                onTogglePin({
+                                  id: d.DRUG_ID,
+                                  type: 'drug',
+                                  title: d.DRUG_NAME,
+                                  subtitle: d.PUTATIVE_TARGET,
+                                  tissue: activeSample?.tcga_desc || 'PANCAN',
+                                  min_conc_uM: d.MIN_CONC,
+                                  max_conc_uM: d.MAX_CONC,
+                                  putative_target: d.PUTATIVE_TARGET,
+                                  pathway_name: d.PATHWAY_NAME,
+                                  color: '#10b981'
+                                });
+                              }
+                            }}
+                            className={`p-1 rounded-md transition-colors ${
+                              isPinned ? 'text-teal-600 bg-teal-100' : 'text-slate-300 hover:text-slate-500'
+                            }`}
+                          >
+                            {isPinned ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
+                          </button>
+                        </div>
                       </div>
-                      {isProbe && (
-                        <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
-                          Probe
-                        </span>
-                      )}
-                    </div>
 
-                    <div className="text-xs text-slate-600 space-y-1">
-                      <div>Target: <strong className="text-slate-800">{d.PUTATIVE_TARGET || 'Cytotoxic'}</strong></div>
-                      <div>Pathway: <span className="text-slate-500">{d.PATHWAY_NAME}</span></div>
-                    </div>
+                      <div className="text-xs text-slate-600 space-y-1">
+                        <div>Target: <strong className="text-slate-800">{d.PUTATIVE_TARGET || 'Cytotoxic'}</strong></div>
+                        <div>Pathway: <span className="text-slate-500">{d.PATHWAY_NAME}</span></div>
+                      </div>
 
-                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
-                      <span>ID #{d.DRUG_ID}</span>
-                      <span className="text-teal-800 font-semibold">{formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM</span>
+                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                        <span>ID #{d.DRUG_ID}</span>
+                        <span className="text-teal-800 font-semibold">{formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM</span>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
 
-        {/* Right Column: Selected Drug Pharmacological Inspector */}
-        <div className="space-y-6">
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-subtle space-y-5 sticky top-20">
+        {/* Right 4-5 Cols: Pinned Selected Drug Inspector */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-subtle space-y-4 sticky top-32">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center">
-                <Tag className="w-3.5 h-3.5 mr-1.5 text-indigo-600" /> Pharmacological Profile
+                <Tag className="w-3.5 h-3.5 mr-1.5 text-indigo-600" /> Pharmacological Dossier
               </span>
               <span className="text-xs font-mono font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
                 #{selectedDrug?.DRUG_ID}
@@ -402,6 +464,34 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {/* Compare / Pin button */}
+                <button
+                  onClick={() => {
+                    if (onTogglePin && selectedDrug) {
+                      onTogglePin({
+                        id: selectedDrug.DRUG_ID,
+                        type: 'drug',
+                        title: selectedDrug.DRUG_NAME,
+                        subtitle: selectedDrug.PUTATIVE_TARGET,
+                        tissue: activeSample?.tcga_desc || 'PANCAN',
+                        min_conc_uM: selectedDrug.MIN_CONC,
+                        max_conc_uM: selectedDrug.MAX_CONC,
+                        putative_target: selectedDrug.PUTATIVE_TARGET,
+                        pathway_name: selectedDrug.PATHWAY_NAME,
+                        color: '#10b981'
+                      });
+                    }
+                  }}
+                  className={`w-full flex items-center justify-center space-x-1.5 py-2.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                    isCurrentPinned 
+                      ? 'bg-teal-50 text-teal-800 border-teal-300' 
+                      : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+                  <span>{isCurrentPinned ? "Pinned in Comparison Tray" : "Pin to Comparison Tray"}</span>
+                </button>
 
                 {/* Direct Action: Predict for this Drug */}
                 <button
