@@ -77,11 +77,10 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 ## 🏗 System Architecture
 
 <div align="center">
-  <img src="docs/oncomatch_architecture_fixed.png" alt="OncoMatch System Architecture" width="100%" />
-  <p><em>Fig. 1. System Architecture of the OncoMatch Personalized Chemotherapy Drug Response Prediction Platform.</em></p>
-</div>
 
-The application is structured as a decoupled, type-safe full-stack platform across four specialized tiers:
+![OncoMatch System Architecture](docs/oncomatch_architecture_ultra_clarity.png)
+
+</div>
 
 ```mermaid
 flowchart TD
