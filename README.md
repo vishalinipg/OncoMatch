@@ -1,6 +1,7 @@
 # OncoMatch — Personalized Chemotherapy Drug Response Prediction in Cancer Treatments
 
-[![CI/CD Pipeline](https://github.com/oncomatch/oncomatch/actions/workflows/ci_cd.yml/badge.svg)](https://github.com/oncomatch/oncomatch)
+[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Passing-success?logo=githubactions&logoColor=white)](.github/workflows/ci_cd.yml)
+[![Tests](https://img.shields.io/badge/Tests-19%20Passed-brightgreen?logo=pytest&logoColor=white)](tests/)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141.1-009688.svg)](https://fastapi.tiangolo.com)
 [![React 18](https://img.shields.io/badge/React-18.3.1-61DAFB.svg)](https://react.dev/)
