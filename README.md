@@ -76,14 +76,16 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 
 ## 🏗 System Architecture
 
-The application is structured as a decoupled, type-safe full-stack computational oncology platform:
+The application is structured as a decoupled, type-safe full-stack platform:
 
-<p align="center">
-  <img src="docs/images/system_architecture.svg" alt="OncoMatch System Architecture" width="100%" />
-</p>
+<div align="center">
+
+![OncoMatch System Architecture](docs/images/system_architecture.png)
+
+</div>
 
 <details>
-<summary><b>View Mermaid Diagram Specification</b></summary>
+<summary><b>View Raw Mermaid Source</b></summary>
 
 ```mermaid
 flowchart TD
