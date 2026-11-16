@@ -19,7 +19,8 @@ import {
   Square,
   Columns,
   Table as TableIcon,
-  Maximize2
+  Maximize2,
+  Loader2
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -87,6 +88,8 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
           const initDrugId = calibration?.drugId || (drugList.find(d => d.DRUG_NAME.toLowerCase() === 'cisplatin')?.DRUG_ID) || drugList[0].DRUG_ID;
           setSelectedDrugId(initDrugId);
           runSinglePrediction(initDrugId, tissue, calibration?.minConc, calibration?.maxConc);
+          // Automatically run batch ranking on mount so all compounds in the catalogue are ranked with Sensitivity tiers
+          runBatchPrediction(tissue);
         }
       })
       .catch(err => setErrorMsg("Failed to initialize drug catalog: " + err.message));
@@ -100,13 +103,11 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
     }
   }, [calibration]);
 
-  // Whenever sample changes, re-run prediction
+  // Whenever sample changes, re-run prediction & batch ranking
   useEffect(() => {
     if (selectedDrugId && activeSample) {
       runSinglePrediction(selectedDrugId, activeSample.tcga_desc, calibration?.minConc, calibration?.maxConc);
-      if (batchResults.length > 0) {
-        runBatchPrediction(activeSample.tcga_desc);
-      }
+      runBatchPrediction(activeSample.tcga_desc);
     }
   }, [sampleId]);
 
@@ -164,29 +165,50 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
       });
     }
 
-    // Default drugs list before batch prediction
-    return drugs.filter(d => {
+    // Default drugs list before batch prediction completes
+    const defaultList = drugs.map((d, index) => {
+      let cat = 'Intermediate';
+      let predLn = 3.25;
+      let predIc50 = 25.8;
+
+      if (singleResult && singleResult.drug_id === d.DRUG_ID) {
+        cat = singleResult.sensitivity.category;
+        predLn = singleResult.predicted_ln_ic50;
+        predIc50 = singleResult.predicted_ic50_uM;
+      } else {
+        const midConc = Math.sqrt((d.MIN_CONC || 0.0039) * (d.MAX_CONC || 1.0));
+        const estLn = Math.log(midConc);
+        if (estLn < 2.19) cat = 'Sensitive';
+        else if (estLn > 4.22) cat = 'Resistant';
+        else cat = 'Intermediate';
+      }
+
+      return {
+        drug_id: d.DRUG_ID,
+        drug_name: d.DRUG_NAME,
+        putative_target: d.PUTATIVE_TARGET,
+        pathway_name: d.PATHWAY_NAME,
+        tissue,
+        predicted_ln_ic50: predLn,
+        predicted_ic50_uM: predIc50,
+        sensitivity_category: cat,
+        badge: 'Tier',
+        rank: index + 1
+      };
+    });
+
+    return defaultList.filter(item => {
       if (searchTerm.trim()) {
         const q = searchTerm.trim().toLowerCase();
-        const match = d.DRUG_NAME.toLowerCase().includes(q) || 
-                      d.PUTATIVE_TARGET.toLowerCase().includes(q) || 
-                      d.PATHWAY_NAME.toLowerCase().includes(q);
+        const match = item.drug_name.toLowerCase().includes(q) || 
+                      item.putative_target.toLowerCase().includes(q) || 
+                      item.pathway_name.toLowerCase().includes(q);
         if (!match) return false;
       }
-      if (pathwayFilter !== 'ALL' && d.PATHWAY_NAME !== pathwayFilter) return false;
+      if (pathwayFilter !== 'ALL' && item.pathway_name !== pathwayFilter) return false;
+      if (sensitivityFilter !== 'ALL' && item.sensitivity_category !== sensitivityFilter) return false;
       return true;
-    }).map((d, index) => ({
-      drug_id: d.DRUG_ID,
-      drug_name: d.DRUG_NAME,
-      putative_target: d.PUTATIVE_TARGET,
-      pathway_name: d.PATHWAY_NAME,
-      tissue,
-      predicted_ln_ic50: singleResult && singleResult.drug_id === d.DRUG_ID ? singleResult.predicted_ln_ic50 : 3.25,
-      predicted_ic50_uM: singleResult && singleResult.drug_id === d.DRUG_ID ? singleResult.predicted_ic50_uM : 25.8,
-      sensitivity_category: singleResult && singleResult.drug_id === d.DRUG_ID ? singleResult.sensitivity.category : 'Intermediate',
-      badge: 'Tier',
-      rank: index + 1
-    }));
+    });
   }, [batchResults, drugs, searchTerm, pathwayFilter, sensitivityFilter, singleResult, tissue]);
 
   // Format concentration cleanly
@@ -389,9 +411,17 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                   <TrendingDown className="w-3.5 h-3.5 mr-1.5 text-teal-600" />
                   Therapeutics Catalogue
                 </span>
-                <span className="font-mono text-[10px] text-slate-500 font-semibold bg-white border border-slate-200 px-2 py-0.5 rounded-full">
-                  {displayedItems.length} Compounds
-                </span>
+                <div className="flex items-center space-x-1.5">
+                  {isBatchRunning && (
+                    <span className="flex items-center text-[10px] text-teal-600 font-medium">
+                      <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                      Ranking...
+                    </span>
+                  )}
+                  <span className="font-mono text-[10px] text-slate-500 font-semibold bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                    {displayedItems.length} Compounds
+                  </span>
+                </div>
               </div>
 
               {/* Compact Search */}
@@ -433,7 +463,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               ) : (
                 displayedItems.map((item) => {
                   const isSelected = selectedDrugId === item.drug_id;
-                  const isPinned = pinnedItems.some(p => p.id === item.drug_id);
+                  const isPinned = pinnedItems.some(p => String(p.id) === String(item.drug_id));
                   return (
                     <div
                       key={item.drug_id}
@@ -676,13 +706,53 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
       ) : (
         /* FULL DATA TABLE VIEW WITH FROZEN HEADERS & STICKY FIRST COLUMN (Requirement 3) */
         <div className="bg-white rounded-2xl border border-slate-200 shadow-subtle p-5 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
-              <TrendingDown className="w-4 h-4 mr-2 text-teal-600" />
-              Full 295-Compound Response Ranking Matrix
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-center space-x-2">
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
+                <TrendingDown className="w-4 h-4 mr-2 text-teal-600" />
+                Full 295-Compound Response Ranking Matrix
+              </div>
+              <span className="font-mono text-[10px] text-slate-500 font-semibold bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">
+                {displayedItems.length} Compounds
+              </span>
+              {isBatchRunning && (
+                <span className="flex items-center text-[10px] text-teal-600 font-medium">
+                  <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                  Ranking...
+                </span>
+              )}
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Filter Pills in Table View */}
+              <div className="flex items-center space-x-1 text-[10px]">
+                {['ALL', 'Sensitive', 'Intermediate', 'Resistant'].map((tier) => (
+                  <button
+                    key={tier}
+                    onClick={() => setSensitivityFilter(tier)}
+                    className={`px-2 py-0.5 rounded-lg font-semibold border transition-all cursor-pointer ${
+                      sensitivityFilter === tier
+                        ? 'bg-teal-600 text-white border-teal-600 shadow-2xs'
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                    }`}
+                  >
+                    {tier}
+                  </button>
+                ))}
+              </div>
+
+              {/* Compact Search */}
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 absolute left-2.5 top-2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Filter compounds..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-white border border-slate-200 rounded-xl pl-8 pr-2.5 py-1 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 font-medium w-44"
+                />
+              </div>
+
               <button
                 onClick={handleExportCSV}
                 className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-colors cursor-pointer"
@@ -713,7 +783,7 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
               <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
                 {displayedItems.map((item) => {
                   const isSelected = selectedDrugId === item.drug_id;
-                  const isPinned = pinnedItems.some(p => p.id === item.drug_id);
+                  const isPinned = pinnedItems.some(p => String(p.id) === String(item.drug_id));
                   return (
                     <tr
                       key={item.drug_id}
