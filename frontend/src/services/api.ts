@@ -13,6 +13,8 @@ import {
 
 const API_BASE = '/api';
 
+const batchPredictionCache = new Map<string, { tissue: string; total_drugs: number; predictions: BatchPredictionItem[] }>();
+
 export const api = {
   // Model info
   async getModelInfo(): Promise<ModelInfo> {
@@ -89,14 +91,25 @@ export const api = {
   },
 
   // Batch Prediction
-  async predictAllDrugs(tissue: string): Promise<{ tissue: string; total_drugs: number; predictions: BatchPredictionItem[] }> {
+  async predictAllDrugs(tissue: string, forceRefresh = false): Promise<{ tissue: string; total_drugs: number; predictions: BatchPredictionItem[] }> {
+    const key = (tissue || 'BRCA').trim().toUpperCase();
+    if (!forceRefresh && batchPredictionCache.has(key)) {
+      return batchPredictionCache.get(key)!;
+    }
     const res = await fetch(`${API_BASE}/predict/all`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tissue }),
+      body: JSON.stringify({ tissue: key }),
     });
     if (!res.ok) throw new Error('Failed to run batch prediction');
-    return res.json();
+    const data = await res.json();
+    batchPredictionCache.set(key, data);
+    return data;
+  },
+
+  getCachedBatchPredictions(tissue: string): BatchPredictionItem[] | null {
+    const key = (tissue || 'BRCA').trim().toUpperCase();
+    return batchPredictionCache.get(key)?.predictions || null;
   },
 
   // Samples & Analysis Profiles

@@ -27,7 +27,8 @@ export const App: React.FC = () => {
   useEffect(() => {
     Promise.all([
       api.getSamples(),
-      api.getDrugs()
+      api.getDrugs(),
+      api.predictAllDrugs('BRCA')
     ])
       .then(([sList, drugList]) => {
         setSamples(sList);

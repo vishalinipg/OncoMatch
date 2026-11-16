@@ -25,6 +25,7 @@ NEED_COLUMNS = ["DRUG_ID", "PUTATIVE_TARGET", "PATHWAY_NAME", "TCGA_DESC", "MIN_
 
 class MLService:
     _instance = None
+    _batch_cache: Dict[str, List[Dict[str, Any]]] = {}
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -120,6 +121,11 @@ class MLService:
 
         self.tissues = self.meta["tissues"]
         self.median_threshold = self.meta["train_median_ln_ic50"]
+        self._batch_cache: Dict[str, List[Dict[str, Any]]] = {}
+        try:
+            self.predict_all_drugs("BRCA")
+        except Exception as e:
+            logger.warning(f"Could not pre-warm BRCA predictions: {e}")
 
     def build_query(self, drug: Union[int, str], tissue: str) -> pd.DataFrame:
         """
@@ -297,9 +303,16 @@ class MLService:
         """
         Batch prediction for all drugs in GDSC2 catalog for a given tissue.
         Returns ranked list ordered from highest sensitivity (lowest ln IC50) to lowest.
+        Results are cached in memory for sub-millisecond response latency.
         """
         if tissue not in self.tissues:
             tissue = "UNKNOWN"
+
+        if not hasattr(self, "_batch_cache"):
+            self._batch_cache = {}
+
+        if tissue in self._batch_cache:
+            return self._batch_cache[tissue]
 
         rows = []
         for d in self.drug_list:
@@ -339,6 +352,7 @@ class MLService:
         for rank, item in enumerate(results, start=1):
             item["rank"] = rank
 
+        self._batch_cache[tissue] = results
         return results
 
     def get_pca_landscape(self) -> Dict[str, Any]:

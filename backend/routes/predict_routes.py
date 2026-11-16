@@ -1,4 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
+from fastapi.responses import Response
+import json
 from typing import Optional, List, Dict, Any
 
 try:
@@ -51,10 +53,11 @@ def predict_all_drugs(req: BatchPredictRequest):
     """Predict and rank all 295 GDSC2 drugs for a specified tissue type."""
     try:
         results = ml_service.predict_all_drugs(tissue=req.tissue)
-        return {
+        payload = json.dumps({
             "tissue": req.tissue,
             "total_drugs": len(results),
             "predictions": results
-        }
+        })
+        return Response(content=payload, media_type="application/json")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Batch prediction error: {str(e)}")

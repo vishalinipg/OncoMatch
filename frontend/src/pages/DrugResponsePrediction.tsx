@@ -20,7 +20,8 @@ import {
   Columns,
   Table as TableIcon,
   Maximize2,
-  Loader2
+  Loader2,
+  RefreshCw
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -57,10 +58,15 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
   calibration,
   onClearCalibration
 }) => {
+  // Active sample context (default to BRCA for MCF7 reference)
+  const activeSample = samples.find(s => s.sample_id === sampleId);
+  const tissue = activeSample?.tcga_desc || 'BRCA';
+
   const [drugs, setDrugs] = useState<Drug[]>([]);
   const [selectedDrugId, setSelectedDrugId] = useState<number | null>(calibration?.drugId ?? null);
   const [singleResult, setSingleResult] = useState<SinglePredictionResult | null>(null);
-  const [batchResults, setBatchResults] = useState<BatchPredictionItem[]>([]);
+  // Initialize with cached predictions if available for instant display
+  const [batchResults, setBatchResults] = useState<BatchPredictionItem[]>(() => api.getCachedBatchPredictions(tissue) || []);
   const [isBatchRunning, setIsBatchRunning] = useState(false);
   const [isSingleRunning, setIsSingleRunning] = useState(false);
   const [modelInfo, setModelInfo] = useState<ModelInfo | null>(null);
@@ -70,46 +76,6 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showModelCard, setShowModelCard] = useState(false);
   const [layoutMode, setLayoutMode] = useState<'split' | 'table'>('split');
-
-  // Active sample
-  const activeSample = samples.find(s => s.sample_id === sampleId);
-  const tissue = activeSample?.tcga_desc || 'PANCAN';
-
-  // Load drugs and model info on mount
-  useEffect(() => {
-    Promise.all([
-      api.getDrugs(),
-      api.getModelInfo()
-    ])
-      .then(([drugList, info]) => {
-        setDrugs(drugList);
-        setModelInfo(info);
-        if (drugList.length > 0) {
-          const initDrugId = calibration?.drugId || (drugList.find(d => d.DRUG_NAME.toLowerCase() === 'cisplatin')?.DRUG_ID) || drugList[0].DRUG_ID;
-          setSelectedDrugId(initDrugId);
-          runSinglePrediction(initDrugId, tissue, calibration?.minConc, calibration?.maxConc);
-          // Automatically run batch ranking on mount so all compounds in the catalogue are ranked with Sensitivity tiers
-          runBatchPrediction(tissue);
-        }
-      })
-      .catch(err => setErrorMsg("Failed to initialize drug catalog: " + err.message));
-  }, []);
-
-  // When calibration changes dynamically, sync selected drug & concentration bounds
-  useEffect(() => {
-    if (calibration?.drugId && drugs.length > 0) {
-      setSelectedDrugId(calibration.drugId);
-      runSinglePrediction(calibration.drugId, tissue, calibration.minConc, calibration.maxConc);
-    }
-  }, [calibration]);
-
-  // Whenever sample changes, re-run prediction & batch ranking
-  useEffect(() => {
-    if (selectedDrugId && activeSample) {
-      runSinglePrediction(selectedDrugId, activeSample.tcga_desc, calibration?.minConc, calibration?.maxConc);
-      runBatchPrediction(activeSample.tcga_desc);
-    }
-  }, [sampleId]);
 
   const runSinglePrediction = async (drugId: number, targetTissue: string, customMin?: number, customMax?: number) => {
     setIsSingleRunning(true);
@@ -133,11 +99,12 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
     }
   };
 
-  const runBatchPrediction = async (targetTissue?: string) => {
+  const runBatchPrediction = async (targetTissue?: string, forceRefresh = false) => {
+    const effTissue = targetTissue || tissue || 'BRCA';
     setIsBatchRunning(true);
     setErrorMsg(null);
     try {
-      const res = await api.predictAllDrugs(targetTissue || tissue);
+      const res = await api.predictAllDrugs(effTissue, forceRefresh);
       setBatchResults(res.predictions);
     } catch (err: any) {
       setErrorMsg("Batch prediction failed: " + err.message);
@@ -146,9 +113,50 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
     }
   };
 
+  // Load drugs and model info on mount
+  useEffect(() => {
+    Promise.all([
+      api.getDrugs(),
+      api.getModelInfo()
+    ])
+      .then(([drugList, info]) => {
+        setDrugs(drugList);
+        setModelInfo(info);
+        if (drugList.length > 0) {
+          const initDrugId = calibration?.drugId || (drugList.find(d => d.DRUG_NAME.toLowerCase() === 'cisplatin')?.DRUG_ID) || drugList[0].DRUG_ID;
+          setSelectedDrugId(initDrugId);
+          runSinglePrediction(initDrugId, tissue, calibration?.minConc, calibration?.maxConc);
+        }
+      })
+      .catch(err => setErrorMsg("Failed to initialize drug catalog: " + err.message));
+  }, []);
+
+  // Ensure batch predictions and single prediction are up-to-date whenever sample or tissue changes
+  useEffect(() => {
+    const effectiveTissue = activeSample?.tcga_desc || 'BRCA';
+    const cached = api.getCachedBatchPredictions(effectiveTissue);
+    if (cached && cached.length > 0) {
+      setBatchResults(cached);
+    } else {
+      runBatchPrediction(effectiveTissue);
+    }
+
+    if (selectedDrugId) {
+      runSinglePrediction(selectedDrugId, effectiveTissue, calibration?.minConc, calibration?.maxConc);
+    }
+  }, [sampleId, activeSample?.tcga_desc]);
+
+  // When calibration changes dynamically, sync selected drug & concentration bounds
+  useEffect(() => {
+    if (calibration?.drugId && drugs.length > 0) {
+      setSelectedDrugId(calibration.drugId);
+      runSinglePrediction(calibration.drugId, tissue, calibration.minConc, calibration.maxConc);
+    }
+  }, [calibration]);
+
   const pathways = Array.from(new Set(drugs.map(d => d.PATHWAY_NAME))).filter(Boolean).sort();
 
-  // Combine batch items or drugs list when batch not yet run
+  // Filter batch ranked items
   const displayedItems = useMemo(() => {
     if (batchResults.length > 0) {
       return batchResults.filter(item => {
@@ -165,51 +173,8 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
       });
     }
 
-    // Default drugs list before batch prediction completes
-    const defaultList = drugs.map((d, index) => {
-      let cat = 'Intermediate';
-      let predLn = 3.25;
-      let predIc50 = 25.8;
-
-      if (singleResult && singleResult.drug_id === d.DRUG_ID) {
-        cat = singleResult.sensitivity.category;
-        predLn = singleResult.predicted_ln_ic50;
-        predIc50 = singleResult.predicted_ic50_uM;
-      } else {
-        const midConc = Math.sqrt((d.MIN_CONC || 0.0039) * (d.MAX_CONC || 1.0));
-        const estLn = Math.log(midConc);
-        if (estLn < 2.19) cat = 'Sensitive';
-        else if (estLn > 4.22) cat = 'Resistant';
-        else cat = 'Intermediate';
-      }
-
-      return {
-        drug_id: d.DRUG_ID,
-        drug_name: d.DRUG_NAME,
-        putative_target: d.PUTATIVE_TARGET,
-        pathway_name: d.PATHWAY_NAME,
-        tissue,
-        predicted_ln_ic50: predLn,
-        predicted_ic50_uM: predIc50,
-        sensitivity_category: cat,
-        badge: 'Tier',
-        rank: index + 1
-      };
-    });
-
-    return defaultList.filter(item => {
-      if (searchTerm.trim()) {
-        const q = searchTerm.trim().toLowerCase();
-        const match = item.drug_name.toLowerCase().includes(q) || 
-                      item.putative_target.toLowerCase().includes(q) || 
-                      item.pathway_name.toLowerCase().includes(q);
-        if (!match) return false;
-      }
-      if (pathwayFilter !== 'ALL' && item.pathway_name !== pathwayFilter) return false;
-      if (sensitivityFilter !== 'ALL' && item.sensitivity_category !== sensitivityFilter) return false;
-      return true;
-    });
-  }, [batchResults, drugs, searchTerm, pathwayFilter, sensitivityFilter, singleResult, tissue]);
+    return [];
+  }, [batchResults, searchTerm, pathwayFilter, sensitivityFilter]);
 
   // Format concentration cleanly
   const formatConc = (val: number | undefined, includeUnit = true) => {
@@ -308,12 +273,13 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
         {/* View Mode & Batch Run Buttons */}
         <div className="flex items-center space-x-2 shrink-0">
           <button
-            onClick={() => runBatchPrediction()}
+            onClick={() => runBatchPrediction(tissue, true)}
             disabled={isBatchRunning}
             className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-xs transition-all shadow-md shadow-teal-600/20 active:scale-98 disabled:opacity-50 cursor-pointer"
+            title="Re-run batch response inference across all 295 compounds"
           >
-            <Zap className="w-3.5 h-3.5" />
-            <span>{isBatchRunning ? "Ranking 295 Drugs..." : "Rank All 295 Regimens"}</span>
+            {isBatchRunning ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
+            <span>{isBatchRunning ? "Ranking 295 Regimens..." : "Re-rank 295 Regimens"}</span>
           </button>
 
           {/* Layout Mode Toggle */}
@@ -456,7 +422,13 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
 
             {/* Scrollable List Body (Preserves scroll position when selecting items) */}
             <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
-              {displayedItems.length === 0 ? (
+              {isBatchRunning && batchResults.length === 0 ? (
+                <div className="py-24 text-center space-y-3 px-4">
+                  <Loader2 className="w-6 h-6 animate-spin text-teal-600 mx-auto" />
+                  <p className="text-xs font-semibold text-slate-700">Predicting GDSC2 Chemotherapy Response...</p>
+                  <p className="text-[11px] text-slate-400">Evaluating 295 regimens for {tissue} lineage</p>
+                </div>
+              ) : displayedItems.length === 0 ? (
                 <div className="py-16 text-center text-xs text-slate-400">
                   No matching chemotherapy therapeutics found.
                 </div>
@@ -781,7 +753,21 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
-                {displayedItems.map((item) => {
+                {isBatchRunning && batchResults.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-20 text-center text-xs text-slate-500">
+                      <Loader2 className="w-5 h-5 animate-spin text-teal-600 mx-auto mb-2" />
+                      Evaluating 295 regimens for {tissue} lineage...
+                    </td>
+                  </tr>
+                ) : displayedItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-16 text-center text-xs text-slate-400">
+                      No matching chemotherapy therapeutics found.
+                    </td>
+                  </tr>
+                ) : (
+                  displayedItems.map((item) => {
                   const isSelected = selectedDrugId === item.drug_id;
                   const isPinned = pinnedItems.some(p => String(p.id) === String(item.drug_id));
                   return (
@@ -839,7 +825,8 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                       </td>
                     </tr>
                   );
-                })}
+                })
+              )}
               </tbody>
             </table>
           </div>
