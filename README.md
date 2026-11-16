@@ -78,9 +78,11 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 
 <div align="center">
 
-![OncoMatch System Architecture](docs/oncomatch_architecture_ultra_clarity.png)
+![OncoMatch System Architecture](docs/oncomatch_architecture_publication.png)
 
 </div>
+
+The application is structured as a decoupled, type-safe full-stack platform:
 
 ```mermaid
 flowchart TD
