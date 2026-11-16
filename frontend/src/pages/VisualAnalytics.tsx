@@ -47,6 +47,27 @@ interface VisualAnalyticsProps {
   onTogglePin?: (item: ComparisonItem) => void;
 }
 
+const INITIAL_HEATMAP_DATA: HeatmapData = {
+  tissues: ["BRCA", "LUAD", "SKCM", "COREAD", "PAAD", "OV", "GBM", "LAML", "PRAD", "KIRC"],
+  drugs: [
+    "Cisplatin", "Paclitaxel", "5-Fluorouracil", "Gemcitabine", "Docetaxel",
+    "Methotrexate", "Olaparib", "Erlotinib", "Gefitinib", "Tamoxifen",
+    "Bortezomib", "Vorinostat", "Trametinib", "Camptothecin", "Vinblastine"
+  ],
+  matrix: [
+    { tissue: "BRCA", scores: { "Cisplatin": 4.45, "Paclitaxel": -2.60, "5-Fluorouracil": 4.98, "Gemcitabine": 0.96, "Docetaxel": -4.40, "Methotrexate": 0.72, "Olaparib": 4.80, "Erlotinib": 3.43, "Gefitinib": 3.48, "Tamoxifen": 4.10, "Bortezomib": -4.78, "Vorinostat": 1.57, "Trametinib": 1.11, "Camptothecin": -1.47, "Vinblastine": -3.50 } },
+    { tissue: "LUAD", scores: { "Cisplatin": 4.09, "Paclitaxel": -2.41, "5-Fluorouracil": 4.97, "Gemcitabine": -0.25, "Docetaxel": -4.32, "Methotrexate": 0.47, "Olaparib": 4.82, "Erlotinib": 2.68, "Gefitinib": 2.87, "Tamoxifen": 4.59, "Bortezomib": -4.56, "Vorinostat": 1.99, "Trametinib": -0.31, "Camptothecin": -1.79, "Vinblastine": -3.50 } },
+    { tissue: "SKCM", scores: { "Cisplatin": 4.05, "Paclitaxel": -2.31, "5-Fluorouracil": 5.09, "Gemcitabine": 0.81, "Docetaxel": -4.18, "Methotrexate": 0.80, "Olaparib": 4.84, "Erlotinib": 3.82, "Gefitinib": 3.96, "Tamoxifen": 4.39, "Bortezomib": -4.53, "Vorinostat": 1.52, "Trametinib": -1.22, "Camptothecin": -1.33, "Vinblastine": -3.29 } },
+    { tissue: "COREAD", scores: { "Cisplatin": 4.33, "Paclitaxel": -2.25, "5-Fluorouracil": 4.58, "Gemcitabine": 0.73, "Docetaxel": -4.01, "Methotrexate": 0.74, "Olaparib": 4.82, "Erlotinib": 3.73, "Gefitinib": 3.79, "Tamoxifen": 4.56, "Bortezomib": -4.61, "Vorinostat": 1.97, "Trametinib": 0.76, "Camptothecin": -1.53, "Vinblastine": -3.29 } },
+    { tissue: "PAAD", scores: { "Cisplatin": 4.49, "Paclitaxel": -2.57, "5-Fluorouracil": 4.84, "Gemcitabine": 0.54, "Docetaxel": -4.24, "Methotrexate": 0.54, "Olaparib": 4.88, "Erlotinib": 3.51, "Gefitinib": 3.65, "Tamoxifen": 4.67, "Bortezomib": -4.68, "Vorinostat": 1.83, "Trametinib": 0.44, "Camptothecin": -1.51, "Vinblastine": -3.54 } },
+    { tissue: "OV", scores: { "Cisplatin": 3.86, "Paclitaxel": -2.71, "5-Fluorouracil": 4.98, "Gemcitabine": 0.43, "Docetaxel": -4.52, "Methotrexate": 0.72, "Olaparib": 4.65, "Erlotinib": 3.42, "Gefitinib": 3.55, "Tamoxifen": 4.41, "Bortezomib": -4.66, "Vorinostat": 1.49, "Trametinib": 0.58, "Camptothecin": -1.59, "Vinblastine": -3.61 } },
+    { tissue: "GBM", scores: { "Cisplatin": 4.51, "Paclitaxel": -2.04, "5-Fluorouracil": 4.97, "Gemcitabine": 0.81, "Docetaxel": -3.76, "Methotrexate": 0.65, "Olaparib": 4.86, "Erlotinib": 3.52, "Gefitinib": 3.69, "Tamoxifen": 4.38, "Bortezomib": -4.43, "Vorinostat": 1.82, "Trametinib": 0.35, "Camptothecin": -1.33, "Vinblastine": -3.22 } },
+    { tissue: "LAML", scores: { "Cisplatin": 3.62, "Paclitaxel": -3.22, "5-Fluorouracil": 4.67, "Gemcitabine": -1.24, "Docetaxel": -4.89, "Methotrexate": -0.89, "Olaparib": 4.37, "Erlotinib": 3.19, "Gefitinib": 3.32, "Tamoxifen": 4.30, "Bortezomib": -5.23, "Vorinostat": 0.58, "Trametinib": -0.91, "Camptothecin": -2.14, "Vinblastine": -4.21 } },
+    { tissue: "PRAD", scores: { "Cisplatin": 4.58, "Paclitaxel": -2.39, "5-Fluorouracil": 4.98, "Gemcitabine": 0.88, "Docetaxel": -4.21, "Methotrexate": 0.80, "Olaparib": 4.86, "Erlotinib": 3.59, "Gefitinib": 3.73, "Tamoxifen": 4.51, "Bortezomib": -4.68, "Vorinostat": 1.76, "Trametinib": 0.65, "Camptothecin": -1.41, "Vinblastine": -3.42 } },
+    { tissue: "KIRC", scores: { "Cisplatin": 4.57, "Paclitaxel": -2.28, "5-Fluorouracil": 5.03, "Gemcitabine": 0.94, "Docetaxel": -4.08, "Methotrexate": 0.91, "Olaparib": 4.88, "Erlotinib": 3.76, "Gefitinib": 3.91, "Tamoxifen": 4.62, "Bortezomib": -4.62, "Vorinostat": 1.90, "Trametinib": 0.82, "Camptothecin": -1.38, "Vinblastine": -3.27 } }
+  ]
+};
+
 export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
   sampleId,
   samples,
@@ -56,20 +77,24 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'pca' | 'heatmap' | 'probes'>('heatmap');
   const [pcaData, setPcaData] = useState<PCALandscape | null>(null);
-  const [heatmapData, setHeatmapData] = useState<HeatmapData | null>(null);
+  const [heatmapData, setHeatmapData] = useState<HeatmapData>(INITIAL_HEATMAP_DATA);
   const [probeData, setProbeData] = useState<ProbeDrug[]>([]);
   const [selectedTissueFilter, setSelectedTissueFilter] = useState('ALL');
   
   const [pcaLoading, setPcaLoading] = useState(true);
-  const [heatmapLoading, setHeatmapLoading] = useState(true);
+  const [heatmapLoading, setHeatmapLoading] = useState(false);
   const [probeLoading, setProbeLoading] = useState(true);
 
-  // Requirement 4: Interactive Matrix Inspector Popover State
+  // Requirement 4: Interactive Matrix Inspector Popover State (Pre-populated by default)
   const [inspectCell, setInspectCell] = useState<{
     tissue: string;
     drug: string;
     score: number;
-  } | null>(null);
+  }>({
+    tissue: 'BRCA',
+    drug: 'Olaparib',
+    score: 4.80
+  });
 
   const activeSample = samples.find(s => s.sample_id === sampleId);
 
@@ -239,17 +264,17 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                 </div>
 
                 {/* Heatmap Legend */}
-                <div className="flex items-center space-x-3 text-[10px] bg-slate-50 px-2.5 py-1 rounded-xl border border-slate-200 font-medium">
+                <div className="flex items-center space-x-2.5 text-[10px] bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 font-medium shrink-0 mr-2 shadow-2xs">
                   <span className="flex items-center">
-                    <span className="w-2.5 h-2.5 rounded bg-emerald-200 mr-1"></span>
+                    <span className="w-2.5 h-2.5 rounded bg-emerald-200 mr-1.5 border border-emerald-300"></span>
                     &lt; 2.19 Sensitive
                   </span>
                   <span className="flex items-center">
-                    <span className="w-2.5 h-2.5 rounded bg-amber-200 mr-1"></span>
+                    <span className="w-2.5 h-2.5 rounded bg-amber-200 mr-1.5 border border-amber-300"></span>
                     2.19–4.22 Intermediate
                   </span>
                   <span className="flex items-center">
-                    <span className="w-2.5 h-2.5 rounded bg-rose-200 mr-1"></span>
+                    <span className="w-2.5 h-2.5 rounded bg-rose-200 mr-1.5 border border-rose-300"></span>
                     &gt; 4.22 Resistant
                   </span>
                 </div>

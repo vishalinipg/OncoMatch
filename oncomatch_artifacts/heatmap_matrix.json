@@ -1,0 +1,233 @@
+{
+  "tissues": [
+    "BRCA",
+    "LUAD",
+    "SKCM",
+    "COREAD",
+    "PAAD",
+    "OV",
+    "GBM",
+    "LAML",
+    "PRAD",
+    "KIRC"
+  ],
+  "drugs": [
+    "Cisplatin",
+    "Paclitaxel",
+    "5-Fluorouracil",
+    "Gemcitabine",
+    "Docetaxel",
+    "Methotrexate",
+    "Olaparib",
+    "Erlotinib",
+    "Gefitinib",
+    "Tamoxifen",
+    "Bortezomib",
+    "Vorinostat",
+    "Trametinib",
+    "Camptothecin",
+    "Vinblastine"
+  ],
+  "matrix": [
+    {
+      "tissue": "BRCA",
+      "scores": {
+        "Cisplatin": 4.445,
+        "Paclitaxel": -2.597,
+        "5-Fluorouracil": 4.9842,
+        "Gemcitabine": 0.9609,
+        "Docetaxel": -4.3963,
+        "Methotrexate": 0.7152,
+        "Olaparib": 4.7992,
+        "Erlotinib": 3.4299,
+        "Gefitinib": 3.4783,
+        "Tamoxifen": 4.1031,
+        "Bortezomib": -4.7754,
+        "Vorinostat": 1.5669,
+        "Trametinib": 1.1125,
+        "Camptothecin": -1.4669,
+        "Vinblastine": -3.4952
+      }
+    },
+    {
+      "tissue": "LUAD",
+      "scores": {
+        "Cisplatin": 4.0923,
+        "Paclitaxel": -2.4114,
+        "5-Fluorouracil": 4.974,
+        "Gemcitabine": -0.2508,
+        "Docetaxel": -4.3154,
+        "Methotrexate": 0.4694,
+        "Olaparib": 4.818,
+        "Erlotinib": 2.6766,
+        "Gefitinib": 2.8708,
+        "Tamoxifen": 4.5891,
+        "Bortezomib": -4.5626,
+        "Vorinostat": 1.9988,
+        "Trametinib": -0.3082,
+        "Camptothecin": -1.789,
+        "Vinblastine": -3.4992
+      }
+    },
+    {
+      "tissue": "SKCM",
+      "scores": {
+        "Cisplatin": 3.6074,
+        "Paclitaxel": -2.6521,
+        "5-Fluorouracil": 4.9095,
+        "Gemcitabine": -0.4631,
+        "Docetaxel": -4.4265,
+        "Methotrexate": 0.669,
+        "Olaparib": 4.8001,
+        "Erlotinib": 3.7924,
+        "Gefitinib": 3.7656,
+        "Tamoxifen": 4.6501,
+        "Bortezomib": -4.8059,
+        "Vorinostat": 1.5408,
+        "Trametinib": -1.9376,
+        "Camptothecin": -1.9419,
+        "Vinblastine": -3.653
+      }
+    },
+    {
+      "tissue": "COREAD",
+      "scores": {
+        "Cisplatin": 4.0637,
+        "Paclitaxel": -2.3577,
+        "5-Fluorouracil": 4.5392,
+        "Gemcitabine": -0.3483,
+        "Docetaxel": -4.333,
+        "Methotrexate": 0.1629,
+        "Olaparib": 4.8389,
+        "Erlotinib": 2.9124,
+        "Gefitinib": 3.3832,
+        "Tamoxifen": 4.1063,
+        "Bortezomib": -4.7754,
+        "Vorinostat": 1.5142,
+        "Trametinib": -1.5353,
+        "Camptothecin": -1.7042,
+        "Vinblastine": -3.7491
+      }
+    },
+    {
+      "tissue": "PAAD",
+      "scores": {
+        "Cisplatin": 4.7994,
+        "Paclitaxel": -2.0541,
+        "5-Fluorouracil": 5.3936,
+        "Gemcitabine": 0.0055,
+        "Docetaxel": -3.8815,
+        "Methotrexate": 0.5203,
+        "Olaparib": 5.3032,
+        "Erlotinib": 4.2714,
+        "Gefitinib": 4.0017,
+        "Tamoxifen": 4.8567,
+        "Bortezomib": -4.3044,
+        "Vorinostat": 2.6301,
+        "Trametinib": 0.4298,
+        "Camptothecin": -1.2615,
+        "Vinblastine": -2.8108
+      }
+    },
+    {
+      "tissue": "OV",
+      "scores": {
+        "Cisplatin": 3.8361,
+        "Paclitaxel": -2.4293,
+        "5-Fluorouracil": 5.1234,
+        "Gemcitabine": -0.2876,
+        "Docetaxel": -4.2514,
+        "Methotrexate": 0.6899,
+        "Olaparib": 5.0109,
+        "Erlotinib": 2.9624,
+        "Gefitinib": 3.3192,
+        "Tamoxifen": 4.866,
+        "Bortezomib": -4.4986,
+        "Vorinostat": 2.1857,
+        "Trametinib": 0.3442,
+        "Camptothecin": -1.4733,
+        "Vinblastine": -3.255
+      }
+    },
+    {
+      "tissue": "GBM",
+      "scores": {
+        "Cisplatin": 3.5443,
+        "Paclitaxel": -2.5633,
+        "5-Fluorouracil": 4.9109,
+        "Gemcitabine": -0.9086,
+        "Docetaxel": -4.5597,
+        "Methotrexate": 0.8726,
+        "Olaparib": 4.4417,
+        "Erlotinib": 3.3747,
+        "Gefitinib": 3.5911,
+        "Tamoxifen": 4.3815,
+        "Bortezomib": -4.9178,
+        "Vorinostat": 1.857,
+        "Trametinib": 0.4306,
+        "Camptothecin": -2.1054,
+        "Vinblastine": -3.5227
+      }
+    },
+    {
+      "tissue": "LAML",
+      "scores": {
+        "Cisplatin": 1.4531,
+        "Paclitaxel": -4.6748,
+        "5-Fluorouracil": 2.714,
+        "Gemcitabine": -3.3165,
+        "Docetaxel": -5.3839,
+        "Methotrexate": -1.4575,
+        "Olaparib": 3.1777,
+        "Erlotinib": 2.3066,
+        "Gefitinib": 2.5059,
+        "Tamoxifen": 3.0617,
+        "Bortezomib": -5.5515,
+        "Vorinostat": -0.1413,
+        "Trametinib": -2.2661,
+        "Camptothecin": -4.2507,
+        "Vinblastine": -5.2632
+      }
+    },
+    {
+      "tissue": "PRAD",
+      "scores": {
+        "Cisplatin": 3.539,
+        "Paclitaxel": -2.0716,
+        "5-Fluorouracil": 4.5218,
+        "Gemcitabine": 0.076,
+        "Docetaxel": -3.6276,
+        "Methotrexate": 1.2252,
+        "Olaparib": 4.3396,
+        "Erlotinib": 3.6007,
+        "Gefitinib": 3.6381,
+        "Tamoxifen": 3.9511,
+        "Bortezomib": -3.7996,
+        "Vorinostat": 2.1124,
+        "Trametinib": 1.3145,
+        "Camptothecin": -1.3462,
+        "Vinblastine": -3.029
+      }
+    },
+    {
+      "tissue": "KIRC",
+      "scores": {
+        "Cisplatin": 3.6065,
+        "Paclitaxel": -2.2461,
+        "5-Fluorouracil": 4.6087,
+        "Gemcitabine": -0.8164,
+        "Docetaxel": -4.4777,
+        "Methotrexate": 1.0818,
+        "Olaparib": 4.8173,
+        "Erlotinib": 2.6046,
+        "Gefitinib": 2.9961,
+        "Tamoxifen": 4.5662,
+        "Bortezomib": -4.7249,
+        "Vorinostat": 1.8154,
+        "Trametinib": 0.4494,
+        "Camptothecin": -1.9862,
+        "Vinblastine": -3.1911
+      }
+    }
+  ]
+}

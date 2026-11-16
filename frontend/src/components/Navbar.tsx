@@ -12,7 +12,6 @@ import {
   ChevronRight,
   ShieldCheck
 } from 'lucide-react';
-import { SampleTypeBadge } from './SampleTypeBadge';
 
 interface NavbarProps {
   currentPageTitle: string;
@@ -28,62 +27,48 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ 
   currentPageTitle, 
-  activeSample,
   onOpenSearch
 }) => {
   const [showSpecs, setShowSpecs] = useState(false);
 
   return (
     <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-6 flex items-center justify-between sticky top-0 z-30 shadow-subtle">
-      {/* Breadcrumbs & Active Profile */}
+      {/* Breadcrumbs */}
       <div className="flex items-center space-x-3 min-w-0 pr-4">
-        <div className="flex items-center space-x-1.5 text-xs text-slate-400 font-medium">
+        <div className="flex items-center space-x-2 text-xs text-slate-400 font-medium">
           <span className="hover:text-slate-600 transition-colors">OncoMatch</span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
           <h1 className="text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
             {currentPageTitle}
           </h1>
         </div>
-
-        {activeSample && (
-          <div className="hidden lg:flex items-center space-x-2 pl-3 border-l border-slate-200/80 text-xs shrink-0">
-            <span className="text-slate-400 font-medium">Active Lineage:</span>
-            <span className="font-bold text-slate-800 font-mono">
-              {activeSample.cell_line_name || activeSample.name}
-            </span>
-            <span className="text-slate-300">•</span>
-            <span className="text-teal-800 font-mono font-bold bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200/80 text-[10px] tracking-wide">
-              {activeSample.tcga_desc}
-            </span>
-            <SampleTypeBadge type={activeSample.sample_type} />
-          </div>
-        )}
       </div>
 
       {/* Action Controls */}
-      <div className="flex items-center space-x-2.5 shrink-0 relative">
+      <div className="flex items-center space-x-3 shrink-0 relative">
         {/* Global Quick Search Button */}
         {onOpenSearch && (
           <button
             onClick={onOpenSearch}
             className="flex items-center space-x-2 text-xs text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-100 border border-slate-200/80 px-3 py-1.5 rounded-xl transition-all shadow-subtle group cursor-pointer"
-            title="Search drugs, cell lines, pages (Ctrl+K)"
+            title="Search therapeutics, cell lines, workflows (⌘K)"
           >
-            <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 transition-colors" />
+            <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 transition-colors shrink-0" />
             <span className="hidden md:inline font-medium">Search therapeutics or lines...</span>
-            <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-400 bg-white border border-slate-200 rounded-md">
+            <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-white border border-slate-200 rounded-md shrink-0 ml-1">
               ⌘K
             </span>
           </button>
         )}
 
         {/* Real-time Engine Health Indicator */}
-        <div className="hidden xl:flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/70 text-[11px] text-emerald-800 font-medium">
-          <span className="relative flex h-2 w-2">
+        <div className="hidden xl:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-[11px] text-emerald-800 font-medium">
+          <span className="relative flex h-2 w-2 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span>Engine: HistGradientBoosting (30ms)</span>
+          <span className="font-semibold">Engine: HistGradientBoosting</span>
+          <span className="text-emerald-600/70 font-mono text-[10px]">(30ms)</span>
         </div>
 
         {/* Model Specs Drawer Toggle Button */}

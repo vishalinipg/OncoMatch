@@ -18,9 +18,9 @@ import { Sample } from '../types';
 interface SidebarProps {
   currentPage: string;
   onPageChange: (page: string) => void;
-  selectedSampleId: string;
-  samples: Sample[];
-  onSampleChange: (id: string) => void;
+  selectedSampleId?: string;
+  samples?: Sample[];
+  onSampleChange?: (id: string) => void;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
 }
@@ -43,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside 
       className={`bg-white border-r border-slate-200/80 flex flex-col h-screen sticky top-0 select-none z-30 shadow-subtle shrink-0 transition-all duration-200 ${
-        isCollapsed ? 'w-18' : 'w-64'
+        isCollapsed ? 'w-18' : 'w-72'
       }`}
     >
       {/* Brand Header */}
@@ -56,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="min-w-0 truncate">
               <div className="flex items-center space-x-1.5">
                 <span className="text-base font-extrabold tracking-tight text-slate-900 truncate">OncoMatch</span>
-                <span className="text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200/90 px-1 py-0.2 rounded-full">
+                <span className="text-[10px] font-bold bg-teal-50 text-teal-800 border border-teal-200/90 px-1.5 py-0.5 rounded-full">
                   v1.0
                 </span>
               </div>

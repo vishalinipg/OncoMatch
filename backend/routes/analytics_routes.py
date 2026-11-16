@@ -123,6 +123,12 @@ def get_heatmap_matrix(top_n_drugs: int = Query(15, ge=5, le=50)):
     if top_n_drugs in _heatmap_cache:
         return _heatmap_cache[top_n_drugs]
 
+    if top_n_drugs == 15:
+        precomputed = ml_service.get_heatmap_matrix()
+        if precomputed:
+            _heatmap_cache[15] = precomputed
+            return precomputed
+
     target_drugs = [
         "Cisplatin", "Paclitaxel", "5-Fluorouracil", "Gemcitabine", 
         "Docetaxel", "Methotrexate", "Olaparib", "Erlotinib", 

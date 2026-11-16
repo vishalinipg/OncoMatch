@@ -48,7 +48,7 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
               value={selectedSampleId}
               onChange={(e) => onSampleChange(e.target.value)}
               title={activeSample ? `${activeSample.name} (${activeSample.tcga_desc})` : ''}
-              className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold rounded-lg pl-2.5 pr-7 py-1 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer transition-colors max-w-[200px] sm:max-w-[280px] truncate"
+              className="appearance-none bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold rounded-lg pl-2.5 pr-6 py-1 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer transition-colors w-auto max-w-[240px] truncate"
             >
               {samples.map((s) => (
                 <option key={s.sample_id} value={s.sample_id}>
@@ -56,7 +56,7 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
                 </option>
               ))}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-1.5 pointer-events-none" />
           </div>
 
           {activeSample && (
@@ -66,7 +66,7 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
               </span>
               <SampleTypeBadge type={activeSample.sample_type} />
               {activeSample.cosmic_id && (
-                <span className="font-mono text-[10px] text-slate-400">
+                <span className="font-mono text-[10px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">
                   COSMIC {activeSample.cosmic_id}
                 </span>
               )}

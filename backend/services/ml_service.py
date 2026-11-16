@@ -110,6 +110,14 @@ class MLService:
         else:
             self.pca_data = {}
 
+        # 7. Load precomputed Heatmap matrix (10 tissues x 15 drugs)
+        heatmap_file = self.artifacts_path / "heatmap_matrix.json"
+        if heatmap_file.exists():
+            with open(heatmap_file, "r", encoding="utf-8") as f:
+                self.heatmap_matrix = json.load(f)
+        else:
+            self.heatmap_matrix = None
+
         self.tissues = self.meta["tissues"]
         self.median_threshold = self.meta["train_median_ln_ic50"]
 
@@ -335,3 +343,6 @@ class MLService:
 
     def get_pca_landscape(self) -> Dict[str, Any]:
         return self.pca_data
+
+    def get_heatmap_matrix(self) -> Optional[Dict[str, Any]]:
+        return self.heatmap_matrix
