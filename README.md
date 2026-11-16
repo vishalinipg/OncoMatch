@@ -1,16 +1,15 @@
-# OncoMatch — Personalized Chemotherapy Drug Response Prediction
+# OncoMatch: Personalized Chemotherapy Drug Response Prediction
 
 <div align="center">
 
 ```
-  ██████╗ ███╗   ██╗ ██████╗ ██████╗ ███╗   ███╗ █████╗ ████████╗ ██████╗██╗  ██╗
- ██╔═══██╗████╗  ██║██╔════╝██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝██╔════╝██║  ██║
- ██║   ██║██╔██╗ ██║██║     ██║   ██║██╔████╔██║███████║   ██║   ██║     ███████║
- ██║   ██║██║╚██╗██║██║     ██║   ██║██║╚██╔╝██║██╔══██║   ██║   ██║     ██╔══██║
- ╚██████╔╝██║ ╚████║╚██████╗╚██████╔╝██║ ╚═╝ ██║██║  ██║   ██║   ╚██████╗██║  ██║
-  ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝
+       ____                    __  ___      __       __  
+      / __ \____  _________   /  |/  /___ _/ /______/ /_ 
+     / / / / __ \/ ___/ __ \ / /|_/ / __ `/ __/ ___/ __ \
+    / /_/ / / / / /__/ /_/ // /  / / /_/ / /_/ /__/ / / /
+    \____/_/ /_/\___/\____//_/  /_/\__,_/\__/\___/_/ /_/ 
 
-          Precision Oncology AI & Pharmacogenomic Sensitivity Platform
+Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 ```
 
 [![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Passing-success?logo=githubactions&logoColor=white)](.github/workflows/ci_cd.yml)
