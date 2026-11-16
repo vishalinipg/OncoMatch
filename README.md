@@ -51,7 +51,7 @@ Precision Oncology AI & Pharmacogenomic Sensitivity Platform
 
 **OncoMatch** bridges the translational gap between genomic characterization and precision chemotherapy selection. Trained on the Sanger Institute's authoritative **Genomics of Drug Sensitivity in Cancer (GDSC2)** corpus (242,036 fitted dose-response curves across 969 cancer cell lines and 295 anticancer compounds), OncoMatch delivers real-time sensitivity predictions, four-parameter logistic (4PL) dose-response curves, confidence intervals, and vector research reports.
 
-Traditional pharmacogenomic models frequently suffer from **target leakage** by ingesting post-exposure curve statistics ($Z$-score, area under the curve $[AUC]$, or dose-response $RMSE$) as model features. OncoMatch enforces a **strict leakage barrier**: predictions are synthesized solely from pre-exposure chemical descriptors, drug putative pathways, and patient/cell-line tissue lineage origins.
+Traditional pharmacogenomic models frequently suffer from **target leakage** by ingesting post-exposure curve statistics (`Z-score`, area under the curve [`AUC`], or dose-response `RMSE`) as model features. OncoMatch enforces a **strict leakage barrier**: predictions are synthesized solely from pre-exposure chemical descriptors, drug putative pathways, and patient/cell-line tissue lineage origins.
 
 ```
 +---------------------------------------------------------------------------------------------------+
@@ -65,12 +65,12 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 
 ## ⚡ Key Innovations & Research Value <a id="-key-innovations--research-value"></a><a id="key-innovations-research-value"></a>
 
-* **Zero-Leakage Gradient-Boosted Featurization**: Custom `DrugResponseFeaturizer` incorporates empirical Bayes target encoding ($k=10$ smoothing) on training folds while utilizing global shrinkage priors on unseen holdout cell lines.
-* **4-Parameter Logistic (4PL) Dose-Response Simulation**: Derives synthetic sigmoidal survival profiles across micromolar concentration bounds $[\text{MIN\_CONC}, \text{MAX\_CONC}]$ with modeled $80\%$ confidence bands.
+* **Zero-Leakage Gradient-Boosted Featurization**: Custom `DrugResponseFeaturizer` incorporates empirical Bayes target encoding (`k = 10` smoothing) on training folds while utilizing global shrinkage priors on unseen holdout cell lines.
+* **4-Parameter Logistic (4PL) Dose-Response Simulation**: Derives synthetic sigmoidal survival profiles across micromolar concentration bounds `[MIN_CONC, MAX_CONC]` with modeled `80%` confidence bands.
 * **Split-Pane Master-Detail Workspace**: Viewport-locked master catalogue with sticky search, mechanism filter pills, and instantaneous inspector updates that preserve user scroll position.
-* **Ambient Instant Sensitivity Filtering**: Classifies all 295 regimens into empirical GDSC2 tertiles (**Sensitive** $\ln(\text{IC}_{50}) < 2.19$, **Intermediate** $2.19 \le \ln(\text{IC}_{50}) \le 4.22$, **Resistant** $\ln(\text{IC}_{50}) > 4.22$) with client/server dual-tier caching ($<1\text{ ms}$ response).
+* **Ambient Instant Sensitivity Filtering**: Classifies all 295 regimens into empirical GDSC2 tertiles (**Sensitive** `ln(IC₅₀) < 2.19`, **Intermediate** `2.19 ≤ ln(IC₅₀) ≤ 4.22`, **Resistant** `ln(IC₅₀) > 4.22`) with client/server dual-tier caching (`< 1 ms` response).
 * **Multi-Compound Comparison Pinboard**: Side-by-side comparison drawer supporting up to 3 simultaneous regimens with superimposed 4PL curves (Emerald, Violet, Amber) and direct metric delta analysis.
-* **2D Pharmacogenomic PCA Landscape**: Visualizes 963 cell lines across 295 therapeutic responses ($PC_1: 38.45\%$, $PC_2: 4.40\%$) with target specimen projections.
+* **2D Pharmacogenomic PCA Landscape**: Visualizes 963 cell lines across 295 therapeutic responses (`PC₁: 38.45%`, `PC₂: 4.40%`) with target specimen projections.
 * **One-Click Vector PDF & CSV Reporting**: Compiles comprehensive clinical research dossiers complete with specimen lineage metadata, top sensitive agents, resistant liabilities, and cryptographic reproducibility stamps.
 
 ---
@@ -87,35 +87,35 @@ Traditional pharmacogenomic models frequently suffer from **target leakage** by 
 OncoMatch is engineered as an enterprise-grade, decoupled four-tier computational oncology platform. The system cleanly separates high-responsiveness client presentation from asynchronous API routing, zero-leakage machine learning inference, and immutable dataset storage. Each tier operates under strict type boundaries and unidirectional data contracts to ensure sub-millisecond interactivity, high throughput, and scientific reproducibility:
 
 ### Tier 1: Client Presentation Layer (React 18, TypeScript, Vite & Tailwind CSS)
-* **1.1 Active Profile Context**: Global specimen state manager that continuously tracks the active tumor isolate (e.g., `COSMIC 905958 | MCF7 Breast Lineage`), tissue origin, baseline $\ln(\text{IC}_{50})$, and inference engine connectivity across all application workspaces.
+* **1.1 Active Profile Context**: Global specimen state manager that continuously tracks the active tumor isolate (e.g., `COSMIC 905958 | MCF7 Breast Lineage`), tissue origin, baseline `ln(IC₅₀)`, and inference engine connectivity across all application workspaces.
 * **1.2 Master-Detail Workspace**:
   * **Compound Catalogue**: Viewport-locked master list of 295 screened therapeutics with instantaneous text search, mechanism-of-action filter pills, and ambient sensitivity tertile toggles (`Sensitive`, `Intermediate`, `Resistant`).
-  * **4PL Fitted Curve Inspector**: Interactive charting canvas rendering drug concentration ($\mu\text{M}$) versus cell viability ($0\%-100\%$) alongside empirical $80\%$ confidence bands derived from the Hill sigmoidal response model.
-* **1.3 Docked Comparison Drawer**: High-density multi-regimen analysis tray enabling side-by-side comparison of up to 3 compounds simultaneously with distinct visual encodings (**Emerald**, **Violet**, and **Amber**), metric delta analysis ($\Delta \ln(\text{IC}_{50})$, $\Delta \text{AUC}$), and superimposed multi-curve overlays.
+  * **4PL Fitted Curve Inspector**: Interactive charting canvas rendering drug concentration (`µM`) versus cell viability (`0%–100%`) alongside empirical `80%` confidence bands derived from the Hill sigmoidal response model.
+* **1.3 Docked Comparison Drawer**: High-density multi-regimen analysis tray enabling side-by-side comparison of up to 3 compounds simultaneously with distinct visual encodings (**Emerald**, **Violet**, and **Amber**), metric delta analysis (`Δln(IC₅₀)`, `ΔAUC`), and superimposed multi-curve overlays.
 * **1.4 Client-Side LRU Cache**: High-speed in-memory prediction cache storing pre-warmed batch responses across all 295 compounds upon specimen mount, enabling zero-latency filtering and instantaneous table sorting without redundant network round-trips.
 
 ### Tier 2: API Gateway & Micro-Routing Layer (FastAPI & Uvicorn ASGI)
 * **2.1 `/api/predict`**: Evaluates single-compound 4PL response, dynamic concentration scaling, and Hill equation viability simulation points across micromolar ranges.
 * **2.2 `/api/predict/all`**: High-throughput parallelized screening endpoint generating ranked sensitivity profiles across all 295 GDSC2 therapeutics backed by a server-side pre-warmed LRU cache.
 * **2.3 `/api/samples`**: Specimen manager querying 969 verified COSMIC reference cell lines across 33 TCGA lineages and registering custom patient biopsy / 3D organoid isolates.
-* **2.4 `/api/analytics`**: Dispatches precomputed 2D PCA pharmacogenomic coordinates (963 lines $\times$ 295 drugs) and 15-probe cross-lineage assay fingerprinting matrices.
+* **2.4 `/api/analytics`**: Dispatches precomputed 2D PCA pharmacogenomic coordinates (`963 lines × 295 drugs`) and 15-probe cross-lineage assay fingerprinting matrices.
 * **2.5 `/api/reports`**: High-performance report engine compiling publication-ready vector PDFs via PyMuPDF and exporting raw tabular data to RFC-4180 CSV formats.
 
 ### Tier 3: Zero-Leakage Machine Learning Engine (Scikit-Learn, NumPy & SciPy)
-* **3.1 DrugResponseFeaturizer**: Enforces an airtight pre-exposure boundary. Uses chemical descriptors, targeted pathways, and empirical Bayes target encoding ($k=10$ smoothing) on training folds while applying global shrinkage priors on unseen holdout lines. Strictly excludes post-exposure variables ($Z$-score, observed AUC, or experimental curve RMSE) to prevent target leakage.
-* **3.2 HistGradientBoostingRegressor (Tuned Production Refit v1.0 [222 KB])**: Highly compact, production-tuned gradient-boosted decision tree refit achieving test MAE $1.0270$, $R^2: 0.7585$ on unseen cell lines with sub-$3\text{ ms}$ inference latency.
-* **3.3 4PL Sigmoidal Engine**: Evaluates the standard Hill equation across experimental drug concentration bounds $[\text{MIN\_CONC}, \text{MAX\_CONC}]$ to simulate tumor viability curves and calculate absolute $\text{IC}_{50}$ and $\text{AUC}$.
+* **3.1 DrugResponseFeaturizer**: Enforces an airtight pre-exposure boundary. Uses chemical descriptors, targeted pathways, and empirical Bayes target encoding (`k = 10` smoothing) on training folds while applying global shrinkage priors on unseen holdout lines. Strictly excludes post-exposure variables (`Z-score`, observed `AUC`, or experimental curve `RMSE`) to prevent target leakage.
+* **3.2 HistGradientBoostingRegressor (Tuned Production Refit v1.0 [222 KB])**: Highly compact, production-tuned gradient-boosted decision tree refit achieving test `MAE: 1.0270`, `R²: 0.7585` on unseen cell lines with `< 3 ms` inference latency.
+* **3.3 4PL Sigmoidal Engine**: Evaluates the standard Hill equation across experimental drug concentration bounds `[MIN_CONC, MAX_CONC]` to simulate tumor viability curves and calculate absolute `IC₅₀` and `AUC`.
 
 ### Tier 4: Dataset Corpus & Cold Storage Layer
 * **4.1 Sanger GDSC2 Gold Standard**: Authoritative corpus of 242,036 fitted dose-response curves spanning 969 human cancer cell lines, 295 antineoplastic compounds, and 33 tissue lineages.
-* **4.2 Precomputed Matrices**: Dimensionality-reduced 963-cell line PCA coordinates ($PC_1: 38.45\%$, $PC_2: 4.40\%$) and cross-lineage sensitivity reference arrays.
+* **4.2 Precomputed Matrices**: Dimensionality-reduced 963-cell line PCA coordinates (`PC₁: 38.45%`, `PC₂: 4.40%`) and cross-lineage sensitivity reference arrays.
 * **4.3 Artifacts & Reports Vault**: Serialized model bundle (`oncomatch_pbl3_bundle.joblib` / `hgb_model.joblib`), vector PDF research dossiers, and session index (`reports_history.json`).
 
 ### 🔄 End-to-End Request & Prediction Dataflow
 1. **Specimen Context Binding**: When a researcher selects a cell line or enters a custom biopsy isolate in Tier 1, the **Active Profile Context (1.1)** emits an asynchronous request to `/api/predict/all` (2.2).
 2. **Feature Synthesis & Leakage Prevention**: The request is routed to the **DrugResponseFeaturizer (3.1)**, which transforms the specimen lineage and drug target priors into numerical tensors using strictly pre-exposure descriptors and empirical Bayes smoothing.
-3. **High-Speed Model Inference**: The feature matrix is ingested by the tuned **HistGradientBoostingRegressor (3.2)**, returning predicted $\ln(\text{IC}_{50})$ values in $<3\text{ ms}$.
-4. **Sigmoidal Viability Modeling**: For inspected compounds, the **4PL Sigmoidal Engine (3.3)** solves the Hill equation over the drug's empirical concentration bounds $[\text{MIN\_CONC}, \text{MAX\_CONC}]$, generating 50-point viability response curves and $80\%$ confidence bands.
+3. **High-Speed Model Inference**: The feature matrix is ingested by the tuned **HistGradientBoostingRegressor (3.2)**, returning predicted `ln(IC₅₀)` values in `< 3 ms`.
+4. **Sigmoidal Viability Modeling**: For inspected compounds, the **4PL Sigmoidal Engine (3.3)** solves the Hill equation over the drug's empirical concentration bounds `[MIN_CONC, MAX_CONC]`, generating 50-point viability response curves and `80%` confidence bands.
 5. **Client Caching & Interactive Analysis**: The API Gateway serializes results via Pydantic v2 into JSON payloads. Tier 1 populates the **Client-Side LRU Cache (1.4)**, driving the **Master-Detail Workspace (1.2)** and **Docked Comparison Drawer (1.3)** with zero-latency re-filtering and instantaneous curve overlays.
 
 ---
@@ -151,10 +151,10 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 
 ### 1. Dashboard Overview
 * **Executive Scientific Overview**: Real-time summary of the in-silico pharmacogenomic pipeline, Sanger GDSC2 dataset dimensions, pre-exposure modeling methodology, and primary action CTAs (*Predict Drug Sensitivity* and *Configure Profile & Calibrate*).
-* **Pan-Cancer Drug Sensitivity Spectrum**: Interactive distribution histogram visualizing GDSC2 baseline sensitivity ranges across all 33 cancer types, categorizing compounds from $<0.0$ (High Potency) to $>6.0$ (Refractory) with compound count and percentage tooltips.
-* **Held-Out Model Benchmark Comparison**: Multi-model evaluation table comparing Global Mean Baseline, CART Decision Tree, Ridge Regression, Random Forest (100 Trees), and production HistGradientBoosting across Holdout MAE ($1.0270$), RMSE ($1.361$), and $R^2$ ($0.7585$) with a $-51.3\%$ error reduction badge.
+* **Pan-Cancer Drug Sensitivity Spectrum**: Interactive distribution histogram visualizing GDSC2 baseline sensitivity ranges across all 33 cancer types, categorizing compounds from `< 0.0` (High Potency) to `> 6.0` (Refractory) with compound count and percentage tooltips.
+* **Held-Out Model Benchmark Comparison**: Multi-model evaluation table comparing Global Mean Baseline, CART Decision Tree, Ridge Regression, Random Forest (100 Trees), and production HistGradientBoosting across Holdout `MAE: 1.0270`, `RMSE: 1.3610`, and `R²: 0.7585` with a `-51.3%` error reduction badge.
 * **Verified GDSC2 Ground-Truth Dimensions**: Live stat metrics displaying 969 COSMIC Cancer Cell Lines, 286 Screened Compounds across 295 regimens, 33 TCGA Tissue Lineages, and 242,036 Non-Linear Mixed Effects (NLME) Hill equation dose-response fits.
-* **Global Active Specimen Sub-Bar**: Persistent top bar context tracking the active tumor model (e.g., `MCF7 BRCA`), COSMIC ID (`905958`), baseline sensitivity $\ln(\text{IC}_{50})$, and backend inference engine connectivity status.
+* **Global Active Specimen Sub-Bar**: Persistent top bar context tracking the active tumor model (e.g., `MCF7 BRCA`), COSMIC ID (`905958`), baseline sensitivity `ln(IC₅₀)`, and backend inference engine connectivity status.
 
 <div align="center">
 
@@ -165,9 +165,9 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 ### 2. Sample & Analysis Setup
 * **Dual Setup Architecture**: Seamless toggle between *Select from 969 Verified Cell Lines* (curated COSMIC catalogue) and *Configure Custom / Primary Isolate* for patient biopsies, primary cell cultures, and 3D organoids.
 * **Searchable 969 COSMIC Cell Line Directory**: Instant search by cell line name or COSMIC ID, filterable by popular tissue pills (`ALL`, `BRCA`, `LUAD`, `COREAD`, `SKCM`, `LAML`, `GBM`, `PAAD`, `OV`) or full 33-lineage dropdown.
-* **Active Target Profile Card**: Dedicated specimen inspector detailing COSMIC ID, tested therapeutic count (e.g. 283 screened), baseline $\ln(\text{IC}_{50})$, available reference probe assays (15 available), lineage subtype, and instant target activation.
+* **Active Target Profile Card**: Dedicated specimen inspector detailing COSMIC ID, tested therapeutic count (e.g. 283 screened), baseline `ln(IC₅₀)`, available reference probe assays (15 available), lineage subtype, and instant target activation.
 * **Benchmark Reference Cell Lines Quick-Switcher**: One-click quick-activation presets for established gold-standard cell lines (MCF7 Breast, 639-V Bladder, A549 Lung).
-* **Experimental Screening Concentration Calibration**: Calibrate custom testing concentration bounds ($[\text{MIN\_CONC}, \text{MAX\_CONC}]$ in $\mu\text{M}$) for any selected compound, or reset to GDSC2 empirical assay defaults with automatic propagation to the 4PL prediction simulator.
+* **Experimental Screening Concentration Calibration**: Calibrate custom testing concentration bounds (`[MIN_CONC, MAX_CONC]` in `µM`) for any selected compound, or reset to GDSC2 empirical assay defaults with automatic propagation to the 4PL prediction simulator.
 * **Custom Primary Isolate Builder**: Register custom patient tumors, select TCGA tissue lineage classification, specify cell culture subtype, and view pharmacokinetic shift warnings for clinical specimens.
 
 <div align="center">
@@ -193,13 +193,17 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 ### 4. Drug Response Prediction & 4PL Inspector
 * **Master-Detail Split Workspace**: Viewport-locked master catalogue on the left with sticky search and instantaneous sensitivity filtering, paired with an interactive 4PL curve inspector card on the right.
 * **Split Workspace vs. Full Table View Toggle**: Seamlessly switch between the split-pane inspector and an Excel-like full 295-compound matrix featuring frozen table headers, sticky columns, and full-screen data browsing.
-* **Instant Ambient Sensitivity Tertile Filtering**: Pre-warmed dual-tier caching (client-side `Map` + server-side LRU cache) enables instantaneous switching between `ALL`, `Sensitive` ($\ln(\text{IC}_{50}) < 2.19$), `Intermediate` ($2.19 \le \ln(\text{IC}_{50}) \le 4.22$), and `Resistant` ($\ln(\text{IC}_{50}) > 4.22$) without manual re-ranking.
-* **4-Parameter Logistic (4PL) Sigmoidal Curve Simulator**: Plots drug concentration ($\mu\text{M}$) against simulated cell viability ($0\%-100\%$) using the Hill equation:
-  $$\text{Viability}(C) = \text{Bottom} + \frac{\text{Top} - \text{Bottom}}{1 + 10^{(\log_{10}(\text{IC}_{50}) - \log_{10}(C)) \cdot \text{HillSlope}}}$$
-  overlaid with modeled $80\%$ holdout confidence interval bands and the $50\%$ cell kill inflection threshold.
-* **Comprehensive Potency & Viability Metrics**: Displays predicted $\ln(\text{IC}_{50})$, estimated absolute $\text{IC}_{50}$ in micromolar/nanomolar units, $80\%$ residual confidence intervals, sensitivity percentiles, and pharmacological interpretation relative to GDSC2 baselines.
-* **Batch 295 Regimen Screening**: *Re-rank 295 Regimens* action re-evaluates all GDSC2 therapeutics against the active specimen in $<3\text{ ms}$ with parallelized inference.
-* **Docked Multi-Curve Comparison Pinboard**: Pin up to 3 compounds to the persistent bottom drawer for superimposed multi-curve comparison (Emerald, Violet, Amber) with delta metric analysis ($\Delta \ln(\text{IC}_{50})$, $\Delta \text{AUC}$, fold-change potency).
+* **Instant Ambient Sensitivity Tertile Filtering**: Pre-warmed dual-tier caching (client-side `Map` + server-side LRU cache) enables instantaneous switching between `ALL`, `Sensitive` (`ln(IC₅₀) < 2.19`), `Intermediate` (`2.19 ≤ ln(IC₅₀) ≤ 4.22`), and `Resistant` (`ln(IC₅₀) > 4.22`) without manual re-ranking.
+* **4-Parameter Logistic (4PL) Sigmoidal Curve Simulator**: Plots drug concentration (`µM`) against simulated cell viability (`0%–100%`) using the standard Hill equation:
+
+```
+Viability(C) = Bottom + (Top - Bottom) / (1 + 10^((log10(IC₅₀) - log10(C)) × HillSlope))
+```
+
+  overlaid with modeled `80%` holdout confidence interval bands and the `50%` cell kill inflection threshold.
+* **Comprehensive Potency & Viability Metrics**: Displays predicted `ln(IC₅₀)`, estimated absolute `IC₅₀` in micromolar/nanomolar units, `80%` residual confidence intervals, sensitivity percentiles, and pharmacological interpretation relative to GDSC2 baselines.
+* **Batch 295 Regimen Screening**: *Re-rank 295 Regimens* action re-evaluates all GDSC2 therapeutics against the active specimen in `< 3 ms` with parallelized inference.
+* **Docked Multi-Curve Comparison Pinboard**: Pin up to 3 compounds to the persistent bottom drawer for superimposed multi-curve comparison (Emerald, Violet, Amber) with delta metric analysis (`Δln(IC₅₀)`, `ΔAUC`, fold-change potency).
 
 <div align="center">
 
@@ -209,11 +213,11 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 
 ### 5. Visual Analytics & PCA Landscape
 * **Three Specialized Analytical Sub-Views**: Tabbed interface switching effortlessly between **Sensitivity Matrix** (Heatmap), **PCA Landscape** (2D Projection), and **15 Probe Assays** (Fingerprinting).
-* **10 Tissue $\times$ 15 Chemotherapeutic Cross-Sensitivity Matrix**: Interactive heatmap displaying 150 sensitivity coordinates color-coded from emerald green (potent) to rose red (resistant) across major cancer lineages.
-* **Interactive Matrix Popover Inspector**: Clicking any cell in the heatmap launches a focused diagnostic card detailing the exact $\ln(\text{IC}_{50})$ score, tissue baseline, target mechanism, and clinical relevance.
-* **2D Pharmacogenomic PCA Scatter Landscape**: Dimensionality reduction mapping 963 human cancer cell lines across 295 therapeutic responses ($PC_1: 38.45\%$ variance representing broad sensitivity; $PC_2: 4.40\%$ representing tissue lineage specificity).
-* **Active Specimen Spatial Projection**: Coordinates of the currently selected tumor model (e.g. MCF7 BRCA: $PC_1=6.89, PC_2=1.11$) projected with a distinctive highlighted star marker against pan-cancer clusters.
-* **Top Loading Chemotherapy & Lineage Drivers**: Quantifies and ranks the highest positive and negative loading compounds driving $PC_1$ (e.g. YK-4-279, LMB-AB2, RO-3306) and $PC_2$ (e.g. Tozasertib, CCT-018159, Piperlongumine).
+* **10 Tissue × 15 Chemotherapeutic Cross-Sensitivity Matrix**: Interactive heatmap displaying 150 sensitivity coordinates color-coded from emerald green (potent) to rose red (resistant) across major cancer lineages.
+* **Interactive Matrix Popover Inspector**: Clicking any cell in the heatmap launches a focused diagnostic card detailing the exact `ln(IC₅₀)` score, tissue baseline, target mechanism, and clinical relevance.
+* **2D Pharmacogenomic PCA Scatter Landscape**: Dimensionality reduction mapping 963 human cancer cell lines across 295 therapeutic responses (`PC₁: 38.45%` variance representing broad sensitivity; `PC₂: 4.40%` representing tissue lineage specificity).
+* **Active Specimen Spatial Projection**: Coordinates of the currently selected tumor model (e.g. MCF7 BRCA: `PC₁ = 6.89`, `PC₂ = 1.11`) projected with a distinctive highlighted star marker against pan-cancer clusters.
+* **Top Loading Chemotherapy & Lineage Drivers**: Quantifies and ranks the highest positive and negative loading compounds driving `PC₁` (e.g. YK-4-279, LMB-AB2, RO-3306) and `PC₂` (e.g. Tozasertib, CCT-018159, Piperlongumine).
 * **15 Reference Probe Panel Fingerprinting**: Cross-regimen radar and distribution profiles evaluating gold-standard cytotoxic agents against tissue baseline cohorts.
 
 <div align="center">
@@ -242,25 +246,25 @@ OncoMatch provides six purpose-built clinical and translational bioinformatics w
 ## 📊 Machine Learning & Benchmark Results <a id="-machine-learning--benchmark-results"></a><a id="machine-learning-benchmark-results"></a>
 
 ### Feature Engineering & Pre-Exposure Modeling
-* **Target Metric**: Natural log of half-maximal inhibitory concentration: $\ln(\text{IC}_{50})$.
+* **Target Metric**: Natural log of half-maximal inhibitory concentration: `ln(IC₅₀)`.
 * **Sample Disjoint Split**: Evaluated using strict `GroupShuffleSplit` on cell line identifiers, guaranteeing that **no cell line in the test set was ever seen during model training**.
 * **Featurizer Columns**:
   - `DRUG_ID`, `PUTATIVE_TARGET`, `PATHWAY_NAME` (Categorical, Target Encoded)
   - `TCGA_DESC` (Lineage Categorical)
-  - $\log_{10}(\text{MAX\_CONC})$ and $\log_{10}(\text{MAX\_CONC} / \text{MIN\_CONC})$ (Continuous Scaling)
+  - `log10(MAX_CONC)` and `log10(MAX_CONC / MIN_CONC)` (Continuous Scaling)
 
 ### Benchmark Comparison on Unseen Cell Lines
 
-| Architecture | Test MAE | Test RMSE | Holdout $R^2$ | Inference Time | Parameters / Size |
+| Architecture | Test MAE | Test RMSE | Holdout R² | Inference Time | Parameters / Size |
 |:---|:---:|:---:|:---:|:---:|:---:|
-| **Mean Dummy Baseline** | 2.1084 | 2.7610 | 0.0000 | < 1 ms | 1 scalar |
-| **Linear Ridge Regression** | 1.1235 | 1.6621 | 0.6412 | < 1 ms | 480 params |
-| **Random Forest (100 Trees, Depth 12)** | 1.0620 | 1.5662 | 0.6814 | 14 ms | 18.4 MB |
-| **Multi-Model Voting Ensemble** | 1.0210 | 1.3520 | 0.7620 | 28 ms | 24.1 MB |
-| **HistGradientBoosting (Production Refit)** | **1.0270** | **1.3610** | **0.7585** | **< 3 ms** | **222 KB (Compact)** |
+| **Mean Dummy Baseline** | `2.1084` | `2.7610` | `0.0000` | `< 1 ms` | 1 scalar |
+| **Linear Ridge Regression** | `1.1235` | `1.6621` | `0.6412` | `< 1 ms` | 480 params |
+| **Random Forest (100 Trees, Depth 12)** | `1.0620` | `1.5662` | `0.6814` | `14 ms` | 18.4 MB |
+| **Multi-Model Voting Ensemble** | `1.0210` | `1.3520` | `0.7620` | `28 ms` | 24.1 MB |
+| **HistGradientBoosting (Production Refit)** | **`1.0270`** | **`1.3610`** | **`0.7585`** | **`< 3 ms`** | **`222 KB` (Compact)** |
 
 > [!TIP]
-> The tuned **HistGradientBoostingRegressor** achieves within $0.006$ MAE of the heavyweight multi-model voting ensemble while operating at **$1/100\text{th}$ of the memory footprint** ($222\text{ KB}$ vs $24.1\text{ MB}$), making it ideal for zero-cost, memory-constrained serverless or container deployment.
+> The tuned **HistGradientBoostingRegressor** achieves within `0.006 MAE` of the heavyweight multi-model voting ensemble while operating at **`1/100th` of the memory footprint** (`222 KB` vs `24.1 MB`), making it ideal for zero-cost, memory-constrained serverless or container deployment.
 
 ---
 
@@ -280,7 +284,7 @@ The backend exposes an OpenAPI 3.1 REST interface. Interactive documentation is 
 | `GET` | `/api/samples` | List reference cell lines and custom registered patient isolates. |
 | `POST` | `/api/samples` | Register a new patient biopsy or custom organoid isolate. |
 | `GET` | `/api/analytics/pca` | PCA 2D coordinates and top variance component loadings. |
-| `GET` | `/api/analytics/heatmap` | 10 tissue lineages $\times$ 15 chemotherapeutic cross-sensitivity matrix. |
+| `GET` | `/api/analytics/heatmap` | 10 tissue lineages × 15 chemotherapeutic cross-sensitivity matrix. |
 | `POST` | `/api/reports/generate` | Compile vector PDF and CSV reports for a specified specimen. |
 | `GET` | `/api/reports/download/{filename}` | Download generated report files (`.pdf` or `.csv`). |
 
