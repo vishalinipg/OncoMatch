@@ -16,13 +16,13 @@ class SampleCreateRequest(BaseModel):
     name: str
     cell_line_name: Optional[str] = None
     cosmic_id: Optional[int] = None
-    sample_type: str = "Established cancer cell line"
+    sample_type: Optional[str] = "Established cancer cell line"
     cancer_type: Optional[str] = None
     cancer_subtype: Optional[str] = "Unspecified"
-    tcga_desc: str = "BRCA"
+    tcga_desc: Optional[str] = "BRCA"
     description: Optional[str] = ""
     research_project_id: Optional[str] = "PROJ-ONCO-01"
-    expression: Dict[str, float] = Field(default_factory=dict)
+    expression: Optional[Dict[str, float]] = Field(default_factory=dict)
 
 class GenerateReportRequest(BaseModel):
     sample_id: str

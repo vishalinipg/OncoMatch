@@ -76,17 +76,19 @@ class SampleService:
         return list(self.profiles.values())
 
     def get_sample(self, sample_id: str) -> Optional[Dict[str, Any]]:
+        if not sample_id:
+            return None
         # Match by exact sample_id or cell_line_name or cosmic_id
         if sample_id in self.profiles:
             return self.profiles[sample_id]
         
         # Check if matching a COSMIC ID or cell line name from the 969 catalog
         cell_lines = self.ml_service.get_cell_lines()
-        clean_id = str(sample_id).strip().upper()
+        clean_id = str(sample_id).strip().upper() if sample_id is not None else ""
         
         matched = None
         for cl in cell_lines:
-            if str(cl.get("cosmic_id")) == clean_id or cl.get("name", "").upper() == clean_id:
+            if str(cl.get("cosmic_id")) == clean_id or str(cl.get("name", "")).upper() == clean_id:
                 matched = cl
                 break
         
@@ -120,12 +122,16 @@ class SampleService:
         """
         Create a new analysis profile (cell line or custom patient-derived model).
         """
-        name = data.get("name") or data.get("cell_line_name") or f"Analysis-{uuid.uuid4().hex[:6].upper()}"
-        tissue = data.get("tcga_desc", "UNKNOWN").upper()
+        raw_name = data.get("name") or data.get("cell_line_name")
+        name = str(raw_name).strip() if raw_name is not None else f"Analysis-{uuid.uuid4().hex[:6].upper()}"
+        
+        raw_tissue = data.get("tcga_desc") or "UNKNOWN"
+        tissue = str(raw_tissue).strip().upper() if raw_tissue is not None else "UNKNOWN"
         if tissue not in self.ml_service.tissues:
             tissue = "UNKNOWN"
 
-        sample_type = data.get("sample_type", "Established cancer cell line")
+        raw_sample_type = data.get("sample_type") or "Established cancer cell line"
+        sample_type = str(raw_sample_type).strip()
         cosmic_id = data.get("cosmic_id")
         
         # Check if cosmic_id matches an existing line to link probe assays

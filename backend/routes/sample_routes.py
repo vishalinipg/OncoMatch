@@ -32,7 +32,7 @@ def list_cell_lines(
         filtered = [cl for cl in filtered if cl.get("tcga_desc", "").upper() == t_upper]
 
     if search:
-        s_lower = search.strip().lower()
+        s_lower = str(search).strip().lower()
         filtered = [
             cl for cl in filtered 
             if s_lower in cl.get("name", "").lower() or s_lower in str(cl.get("cosmic_id", ""))

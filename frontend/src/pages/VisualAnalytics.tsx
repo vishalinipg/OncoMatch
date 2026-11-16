@@ -125,10 +125,21 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
 
     setProbeLoading(true);
     api.getProbeAssays(activeSample?.tcga_desc)
-      .then(res => setProbeData(res.probe_drugs))
-      .catch(err => console.error("Error loading probe assays:", err))
+      .then(res => {
+        if (res && Array.isArray(res.probe_drugs)) {
+          setProbeData(res.probe_drugs);
+        } else if (Array.isArray(res)) {
+          setProbeData(res);
+        } else {
+          setProbeData([]);
+        }
+      })
+      .catch(err => {
+        console.error("Error loading probe assays:", err);
+        setProbeData([]);
+      })
       .finally(() => setProbeLoading(false));
-  }, [sampleId]);
+  }, [sampleId, activeSample?.tcga_desc]);
 
   const tissueColors: Record<string, string> = {
     BRCA: '#db2777',
@@ -469,7 +480,18 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
               </div>
 
               {/* Scatter Plot */}
-              <div className="h-88 w-full pt-1">
+              <div className="h-[420px] min-h-[420px] w-full pt-1 relative">
+                {pcaLoading && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 bg-white/80 z-10">
+                    <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
+                    <span className="text-xs text-slate-500 font-medium">Computing 969-cell line PCA coordinates...</span>
+                  </div>
+                )}
+                {!pcaLoading && filteredPcaSamples.length === 0 && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 bg-white z-10 text-xs text-slate-400">
+                    <span>No cell line coordinates found for the selected filter.</span>
+                  </div>
+                )}
                 <ResponsiveContainer width="100%" height="100%">
                   <RechartsScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 10 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -607,39 +629,50 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-slate-200">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 font-mono text-[10px] text-slate-600 uppercase">
-                <tr>
-                  <th className="py-2.5 px-3">#</th>
-                  <th className="py-2.5 px-3 font-sans">Probe Compound</th>
-                  <th className="py-2.5 px-3 font-sans">Molecular Target</th>
-                  <th className="py-2.5 px-3 font-sans">Pathway</th>
-                  <th className="py-2.5 px-3 text-right">Tested Cell Lines</th>
-                  <th className="py-2.5 px-3 text-right">Pan-Cancer Mean</th>
-                  <th className="py-2.5 px-3 text-right">Active Tissue Mean</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
-                {probeData.map((pb, idx) => {
-                  const tMean = pb.tissue_mean_ln_ic50 !== undefined ? pb.tissue_mean_ln_ic50 : pb.overall_mean_ln_ic50;
-                  return (
-                    <tr key={pb.drug_id} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-2.5 px-3 text-slate-400 font-bold">{idx + 1}</td>
-                      <td className="py-2.5 px-3 font-sans font-bold text-slate-900">
-                        {pb.drug_name}
-                      </td>
-                      <td className="py-2.5 px-3 font-sans text-slate-700">{pb.putative_target}</td>
-                      <td className="py-2.5 px-3 font-sans text-slate-500">{pb.pathway_name}</td>
-                      <td className="py-2.5 px-3 text-right font-bold text-slate-800">{pb.cell_lines_tested} / 969</td>
-                      <td className="py-2.5 px-3 text-right text-slate-700">{pb.overall_mean_ln_ic50.toFixed(2)}</td>
-                      <td className="py-2.5 px-3 text-right font-bold text-teal-800">
-                        {tMean !== null ? Number(tMean).toFixed(2) : '-'}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {probeLoading ? (
+              <div className="py-16 text-center text-xs text-slate-400 flex flex-col items-center justify-center space-y-2">
+                <Loader2 className="w-5 h-5 animate-spin text-teal-600 mb-1" />
+                <span>Loading 15 probe assay benchmarks...</span>
+              </div>
+            ) : probeData.length === 0 ? (
+              <div className="py-16 text-center text-xs text-slate-400 flex flex-col items-center justify-center space-y-2">
+                <span>No probe assays found for the active tissue lineage.</span>
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-50 border-b border-slate-200 font-mono text-[10px] text-slate-600 uppercase">
+                  <tr>
+                    <th className="py-2.5 px-3">#</th>
+                    <th className="py-2.5 px-3 font-sans">Probe Compound</th>
+                    <th className="py-2.5 px-3 font-sans">Molecular Target</th>
+                    <th className="py-2.5 px-3 font-sans">Pathway</th>
+                    <th className="py-2.5 px-3 text-right">Tested Cell Lines</th>
+                    <th className="py-2.5 px-3 text-right">Pan-Cancer Mean</th>
+                    <th className="py-2.5 px-3 text-right">Active Tissue Mean</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
+                  {probeData.map((pb, idx) => {
+                    const tMean = pb.tissue_mean_ln_ic50 !== undefined ? pb.tissue_mean_ln_ic50 : pb.overall_mean_ln_ic50;
+                    return (
+                      <tr key={pb.drug_id} className="hover:bg-slate-50/70 transition-colors">
+                        <td className="py-2.5 px-3 text-slate-400 font-bold">{idx + 1}</td>
+                        <td className="py-2.5 px-3 font-sans font-bold text-slate-900">
+                          {pb.drug_name}
+                        </td>
+                        <td className="py-2.5 px-3 font-sans text-slate-700">{pb.putative_target}</td>
+                        <td className="py-2.5 px-3 font-sans text-slate-500">{pb.pathway_name}</td>
+                        <td className="py-2.5 px-3 text-right font-bold text-slate-800">{pb.cell_lines_tested} / 969</td>
+                        <td className="py-2.5 px-3 text-right text-slate-700">{pb.overall_mean_ln_ic50.toFixed(2)}</td>
+                        <td className="py-2.5 px-3 text-right font-bold text-teal-800">
+                          {tMean !== null ? Number(tMean).toFixed(2) : '-'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       )}

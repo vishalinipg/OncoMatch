@@ -21,12 +21,12 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
   const activeSample = samples.find(s => s.sample_id === selectedSampleId);
 
   return (
-    <div className="h-11 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between sticky top-16 z-20 shadow-2xs select-none">
+    <div className="h-11 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between sticky top-16 z-20 shadow-2xs select-none gap-4 overflow-hidden">
       {/* Left: Sidebar toggle + Active Profile Selector */}
-      <div className="flex items-center space-x-3 min-w-0">
+      <div className="flex items-center space-x-2.5 min-w-0 flex-1 overflow-hidden">
         <button
           onClick={onToggleSidebar}
-          className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+          className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
           title={isSidebarCollapsed ? "Expand Sidebar (240px)" : "Collapse to Icon Rail (Reclaim 180px width)"}
         >
           {isSidebarCollapsed ? (
@@ -36,7 +36,7 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
           )}
         </button>
 
-        <div className="h-4 w-px bg-slate-200 hidden sm:block" />
+        <div className="h-4 w-px bg-slate-200 hidden sm:block shrink-0" />
 
         <div className="flex items-center space-x-2 min-w-0">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 hidden md:inline-flex items-center whitespace-nowrap shrink-0">
@@ -44,12 +44,12 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
             <span>Active Profile:</span>
           </span>
 
-          <div className="relative inline-flex items-center">
+          <div className="relative inline-flex items-center shrink-0">
             <select
               value={selectedSampleId}
               onChange={(e) => onSampleChange(e.target.value)}
               title={activeSample ? `${activeSample.name} (${activeSample.tcga_desc})` : ''}
-              className="appearance-none bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold rounded-lg pl-2.5 pr-6 py-1 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer transition-colors w-auto max-w-[240px] truncate"
+              className="appearance-none bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold rounded-lg pl-2.5 pr-6 py-1 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer transition-colors max-w-[170px] sm:max-w-[210px] md:max-w-[240px] truncate"
             >
               {samples.map((s) => (
                 <option key={s.sample_id} value={s.sample_id}>
@@ -61,13 +61,15 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
           </div>
 
           {activeSample && (
-            <div className="hidden lg:flex items-center space-x-2 text-xs">
-              <span className="font-mono text-teal-900 bg-teal-50 border border-teal-200/90 px-2 py-0.5 rounded text-[11px] font-bold">
+            <div className="flex items-center space-x-2 shrink-0">
+              <span className="font-mono text-teal-900 bg-teal-50 border border-teal-200/90 px-2 py-0.5 rounded text-[11px] font-bold shrink-0 whitespace-nowrap">
                 {activeSample.tcga_desc}
               </span>
-              <SampleTypeBadge type={activeSample.sample_type} />
+              <div className="hidden xl:inline-flex shrink-0">
+                <SampleTypeBadge type={activeSample.sample_type} />
+              </div>
               {activeSample.cosmic_id && (
-                <span className="font-mono text-[10px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">
+                <span className="hidden 2xl:inline-flex font-mono text-[10px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-2xs shrink-0 whitespace-nowrap">
                   COSMIC {activeSample.cosmic_id}
                 </span>
               )}
@@ -77,18 +79,18 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
       </div>
 
       {/* Right: Refit Engine Specification Pill */}
-      <div className="flex items-center space-x-3 shrink-0 text-[11px]">
-        <div className="hidden sm:flex items-center space-x-1.5 font-mono text-slate-500">
+      <div className="flex items-center space-x-3 shrink-0 text-[11px] ml-auto">
+        <div className="hidden sm:flex items-center space-x-1.5 font-mono text-slate-500 shrink-0 whitespace-nowrap">
           <span className="text-slate-400 font-sans">Baseline ln(IC50):</span>
           <span className="font-bold text-slate-800">
             {(activeSample?.baseline_ln_ic50 || 3.255).toFixed(2)}
           </span>
         </div>
 
-        <div className="h-4 w-px bg-slate-200 hidden sm:block" />
+        <div className="h-4 w-px bg-slate-200 hidden lg:block shrink-0" />
 
-        <div className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <div className="hidden lg:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium shrink-0 whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
           <span className="font-mono font-semibold">Refit Engine:</span>
           <span className="font-mono font-bold text-emerald-800">MAE 1.027</span>
           <span className="text-slate-300">•</span>

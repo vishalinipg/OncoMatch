@@ -131,7 +131,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   const handleDrugChange = (drugIdStr: string) => {
     const id = parseInt(drugIdStr, 10);
     setSelectedDrugId(id);
-    const drug = drugs.find(d => d.DRUG_ID === id);
+    const drug = drugs.find(d => Number(d.DRUG_ID) === id);
     if (drug) {
       setMinConc(drug.MIN_CONC);
       setMaxConc(drug.MAX_CONC);
@@ -223,8 +223,9 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
 
   // Calibration helper handlers
   const handleResetCalibrationToDefaults = () => {
-    const curDrug = drugs.find(d => d.DRUG_ID === selectedDrugId);
+    const curDrug = drugs.find(d => Number(d.DRUG_ID) === Number(selectedDrugId)) || drugs[0];
     if (curDrug) {
+      setSelectedDrugId(curDrug.DRUG_ID);
       setMinConc(curDrug.MIN_CONC);
       setMaxConc(curDrug.MAX_CONC);
       setSuccessMessage(`Reset concentration bounds for ${curDrug.DRUG_NAME} to Sanger GDSC2 standard (${Number(curDrug.MIN_CONC.toFixed(4))} – ${Number(curDrug.MAX_CONC.toFixed(2))} µM).`);
@@ -232,26 +233,27 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   };
 
   const handleSaveCalibration = () => {
-    if (!selectedDrugId) return;
-    const curDrug = drugs.find(d => d.DRUG_ID === selectedDrugId);
-    if (onApplyCalibration) {
-      onApplyCalibration({
-        drugId: selectedDrugId,
-        drugName: curDrug?.DRUG_NAME,
-        minConc,
-        maxConc
-      });
+    const curDrug = drugs.find(d => Number(d.DRUG_ID) === Number(selectedDrugId)) || drugs[0];
+    if (curDrug) {
+      if (onApplyCalibration) {
+        onApplyCalibration({
+          drugId: curDrug.DRUG_ID,
+          drugName: curDrug.DRUG_NAME,
+          minConc,
+          maxConc
+        });
+      }
+      setSuccessMessage(`Screening calibration saved: ${curDrug.DRUG_NAME} (${minConc} – ${maxConc} µM) stored.`);
     }
-    setSuccessMessage(`Screening calibration saved: ${curDrug?.DRUG_NAME || 'Drug'} (${minConc} – ${maxConc} µM) stored.`);
   };
 
   const handleApplyAndPredict = async () => {
-    if (!selectedDrugId) return;
-    const curDrug = drugs.find(d => d.DRUG_ID === selectedDrugId);
+    const curDrug = drugs.find(d => Number(d.DRUG_ID) === Number(selectedDrugId)) || drugs[0];
+    if (!curDrug) return;
     if (onApplyCalibration) {
       onApplyCalibration({
-        drugId: selectedDrugId,
-        drugName: curDrug?.DRUG_NAME,
+        drugId: curDrug.DRUG_ID,
+        drugName: curDrug.DRUG_NAME,
         minConc,
         maxConc
       });
@@ -259,7 +261,9 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
     if (selectedCellLine) {
       await handleSelectCellLine(selectedCellLine);
     }
-    onNavigate('prediction');
+    if (onNavigate) {
+      onNavigate('prediction');
+    }
   };
 
   // Filtered cell lines for selection
@@ -524,8 +528,8 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-700 select-none">
                     Sample / Model Identifier *
                   </label>
                   <input
@@ -534,18 +538,18 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                     onChange={(e) => setCustomName(e.target.value)}
                     placeholder="e.g. PDX-BREAST-2024"
                     required
-                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-700 select-none">
                     TCGA Tissue Lineage Origin *
                   </label>
                   <select
                     value={customTissue}
                     onChange={(e) => setCustomTissue(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer font-medium"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer font-medium"
                   >
                     {tissues.map(t => (
                       <option key={t} value={t}>{t} Lineage</option>
@@ -555,14 +559,14 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-700 select-none">
                     Model Category
                   </label>
                   <select
                     value={customSampleType}
                     onChange={(e) => setCustomSampleType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer font-medium"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer font-medium"
                   >
                     <option value="Established cancer cell line">Established cancer cell line</option>
                     <option value="Patient-derived cell line">Patient-derived cell line</option>
@@ -572,8 +576,8 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-700 select-none">
                     Histological Subtype / Driver Mutation
                   </label>
                   <input
@@ -581,13 +585,13 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                     value={customSubtype}
                     onChange={(e) => setCustomSubtype(e.target.value)}
                     placeholder="e.g. KRAS G12D mutant, ER+/HER2-"
-                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all font-medium"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-700 select-none">
                   Research Project Notes
                 </label>
                 <textarea
@@ -646,14 +650,14 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-700 select-none">
                   Target Drug Compound
                 </label>
                 <select
-                  value={selectedDrugId || (drugs.length > 0 ? drugs[0].DRUG_ID : '')}
+                  value={selectedDrugId ?? (drugs.length > 0 ? drugs[0].DRUG_ID : '')}
                   onChange={(e) => handleDrugChange(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer font-medium"
+                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 cursor-pointer font-medium"
                 >
                   {drugs.map(d => (
                     <option key={d.DRUG_ID} value={d.DRUG_ID}>
@@ -663,8 +667,8 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                 </select>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-700 select-none">
                   Minimum Bound (µM)
                 </label>
                 <input
@@ -672,12 +676,12 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   step="0.0001"
                   value={minConc}
                   onChange={(e) => setMinConc(parseFloat(e.target.value) || 0.0001)}
-                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
+                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-700 select-none">
                   Maximum Bound (µM)
                 </label>
                 <input
@@ -685,7 +689,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   step="0.1"
                   value={maxConc}
                   onChange={(e) => setMaxConc(parseFloat(e.target.value) || 1.0)}
-                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
+                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
                 />
               </div>
             </div>

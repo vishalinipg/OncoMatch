@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Model Specs Popover Drawer */}
         {showSpecs && (
-          <div className="absolute right-0 top-12 w-88 bg-white border border-slate-200 rounded-2xl shadow-card-hover p-4 z-50 text-xs space-y-3.5 animate-slideDown">
+          <div className="absolute right-0 top-12 w-[340px] sm:w-[380px] bg-white border border-slate-200 rounded-2xl shadow-card-hover p-4 z-50 text-xs space-y-3.5 animate-slideDown">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <span className="font-bold text-slate-900 flex items-center gap-1.5">
                 <Database className="w-4 h-4 text-teal-600" /> GDSC2 Production Pipeline Architecture

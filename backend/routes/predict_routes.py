@@ -21,7 +21,7 @@ def get_drugs(search: Optional[str] = None):
     """Retrieve the full GDSC2 drug catalog (295 drugs) with targets and concentration ranges."""
     drugs = ml_service.get_drug_catalog()
     if search:
-        s = search.strip().lower()
+        s = str(search).strip().lower()
         drugs = [d for d in drugs if s in str(d["DRUG_NAME"]).lower() or s in str(d["PUTATIVE_TARGET"]).lower() or s in str(d["PATHWAY_NAME"]).lower()]
     return drugs
 
