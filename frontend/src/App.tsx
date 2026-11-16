@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
+import { ActiveSampleSubBar } from './components/ActiveSampleSubBar';
 import { CommandPalette } from './components/CommandPalette';
 import { ComparisonDrawer } from './components/ComparisonDrawer';
 import { DashboardOverview } from './pages/DashboardOverview';
@@ -171,11 +172,15 @@ export const App: React.FC = () => {
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <Navbar 
           currentPageTitle={getPageTitle(currentPage)} 
+          activeSample={activeSample}
+          onOpenSearch={() => setIsCommandPaletteOpen(true)}
+        />
+
+        {/* Sticky Top Sub-Header for Active Sample Context */}
+        <ActiveSampleSubBar
           samples={samples}
           selectedSampleId={selectedSampleId}
           onSampleChange={setSelectedSampleId}
-          activeSample={activeSample}
-          onOpenSearch={() => setIsCommandPaletteOpen(true)}
           isSidebarCollapsed={isSidebarCollapsed}
           onToggleSidebar={() => setIsSidebarCollapsed(prev => !prev)}
         />

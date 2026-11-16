@@ -7,170 +7,83 @@ import {
   ChevronDown, 
   CheckCircle2, 
   Search,
+  Sparkles,
   Layers,
   ChevronRight,
-  ShieldCheck,
-  PanelLeftClose,
-  PanelLeftOpen,
-  FlaskConical
+  ShieldCheck
 } from 'lucide-react';
-import { Sample } from '../types';
-import { SampleTypeBadge } from './SampleTypeBadge';
 
 interface NavbarProps {
   currentPageTitle: string;
-  samples?: Sample[];
-  selectedSampleId?: string;
-  onSampleChange?: (id: string) => void;
-  activeSample?: Sample;
+  activeSample?: {
+    sample_id: string;
+    name: string;
+    cell_line_name?: string;
+    sample_type: string;
+    tcga_desc: string;
+  };
   onOpenSearch?: () => void;
-  isSidebarCollapsed?: boolean;
-  onToggleSidebar?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ 
   currentPageTitle, 
-  samples,
-  selectedSampleId,
-  onSampleChange,
-  activeSample,
-  onOpenSearch,
-  isSidebarCollapsed,
-  onToggleSidebar
+  onOpenSearch
 }) => {
   const [showSpecs, setShowSpecs] = useState(false);
 
   return (
-    <header className="h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-subtle select-none">
-      {/* Left Block: Sidebar Toggle + Brand/Page Title + Active Profile Selector (ALL ON SAME LINE) */}
-      <div className="flex items-center space-x-3 min-w-0 pr-3">
-        {onToggleSidebar && (
-          <button
-            onClick={onToggleSidebar}
-            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
-            title={isSidebarCollapsed ? "Expand Sidebar (⌘B)" : "Collapse Sidebar (⌘B)"}
-          >
-            {isSidebarCollapsed ? (
-              <PanelLeftOpen className="w-4 h-4 text-teal-600" />
-            ) : (
-              <PanelLeftClose className="w-4 h-4 text-slate-500" />
-            )}
-          </button>
-        )}
-
-        {/* When sidebar is collapsed, display the logo icon and OncoMatch name here */}
-        {isSidebarCollapsed && (
-          <div className="flex items-center space-x-2 shrink-0">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-teal-600 via-teal-500 to-emerald-500 flex items-center justify-center shadow-xs">
-              <FlaskConical className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="font-extrabold text-sm text-slate-900 tracking-tight">OncoMatch</span>
-          </div>
-        )}
-
-        {/* Breadcrumb Page Title */}
-        <div className="flex items-center space-x-1.5 text-xs text-slate-500 shrink-0">
-          {!isSidebarCollapsed && (
-            <>
-              <span className="font-semibold text-slate-400 hover:text-slate-600 transition-colors hidden sm:inline">OncoMatch</span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-300 hidden sm:inline" />
-            </>
-          )}
+    <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-6 flex items-center justify-between sticky top-0 z-30 shadow-subtle">
+      {/* Breadcrumbs */}
+      <div className="flex items-center space-x-3 min-w-0 pr-4">
+        <div className="flex items-center space-x-2 text-xs text-slate-400 font-medium">
+          <span className="hover:text-slate-600 transition-colors">OncoMatch</span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
           <h1 className="text-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">
             {currentPageTitle}
           </h1>
         </div>
-
-        <div className="h-4 w-px bg-slate-200 shrink-0 hidden sm:block" />
-
-        {/* ACTIVE PROFILE SELECTOR (Placed on the SAME line as Logo & Navigation) */}
-        {samples && selectedSampleId && onSampleChange && (
-          <div className="flex items-center space-x-2 min-w-0">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 hidden xl:inline-flex items-center shrink-0">
-              <Layers className="w-3.5 h-3.5 mr-1 text-teal-600" /> Active Profile:
-            </span>
-
-            <div className="relative inline-flex items-center">
-              <select
-                value={selectedSampleId}
-                onChange={(e) => onSampleChange(e.target.value)}
-                title={activeSample ? `${activeSample.name} (${activeSample.tcga_desc})` : ''}
-                className="appearance-none bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold rounded-lg pl-2.5 pr-6 py-1 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer transition-colors w-auto max-w-[190px] sm:max-w-[230px] truncate"
-              >
-                {samples.map((s) => (
-                  <option key={s.sample_id} value={s.sample_id}>
-                    {s.cell_line_name ? `${s.cell_line_name} (${s.tcga_desc})` : s.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-1.5 pointer-events-none" />
-            </div>
-
-            {activeSample && (
-              <div className="hidden lg:flex items-center space-x-1.5 text-xs shrink-0">
-                <span className="font-mono text-teal-900 bg-teal-50 border border-teal-200/90 px-2 py-0.5 rounded text-[11px] font-bold">
-                  {activeSample.tcga_desc}
-                </span>
-                <SampleTypeBadge type={activeSample.sample_type} />
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* Right Block: Global Search + Engine Status + Specs + Sanger */}
-      <div className="flex items-center space-x-2 sm:space-x-2.5 shrink-0 relative">
+      {/* Action Controls */}
+      <div className="flex items-center space-x-3 shrink-0 relative">
+        {/* Global Quick Search Button */}
         {onOpenSearch && (
           <button
             onClick={onOpenSearch}
-            className="flex items-center space-x-2 text-xs text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-100 border border-slate-200/80 px-2.5 py-1.5 rounded-xl transition-all shadow-subtle group cursor-pointer"
+            className="flex items-center space-x-2 text-xs text-slate-500 hover:text-slate-800 bg-slate-100/80 hover:bg-slate-100 border border-slate-200/80 px-3 py-1.5 rounded-xl transition-all shadow-subtle group cursor-pointer"
             title="Search therapeutics, cell lines, workflows (⌘K)"
           >
             <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 transition-colors shrink-0" />
-            <span className="hidden xl:inline font-medium">Search therapeutics...</span>
+            <span className="hidden md:inline font-medium">Search therapeutics or lines...</span>
             <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-white border border-slate-200 rounded-md shrink-0 ml-1">
               ⌘K
             </span>
           </button>
         )}
 
-        {/* Refit Engine Status & Metrics */}
-        <div className="hidden md:flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-[11px] text-emerald-900 font-medium shrink-0">
+        {/* Real-time Engine Health Indicator */}
+        <div className="hidden xl:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-[11px] text-emerald-800 font-medium">
           <span className="relative flex h-2 w-2 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="font-semibold hidden lg:inline">HistGB Refit:</span>
-          <span className="font-mono font-bold text-emerald-800">MAE 1.027</span>
-          <span className="text-slate-300">•</span>
-          <span className="font-mono font-bold text-teal-800">R² 0.759</span>
+          <span className="font-semibold">Engine: HistGradientBoosting</span>
+          <span className="text-emerald-600/70 font-mono text-[10px]">(30ms)</span>
         </div>
 
-        {/* Model Specs Drawer Toggle */}
+        {/* Model Specs Drawer Toggle Button */}
         <button
           onClick={() => setShowSpecs(!showSpecs)}
-          className={`flex items-center space-x-1.5 text-xs border px-2.5 py-1.5 rounded-xl transition-all font-semibold cursor-pointer ${
+          className={`flex items-center space-x-1.5 text-xs border px-3 py-1.5 rounded-xl transition-all shadow-subtle font-semibold cursor-pointer ${
             showSpecs 
               ? 'bg-teal-50 border-teal-300 text-teal-900 ring-2 ring-teal-500/20' 
-              : 'text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border-slate-200 shadow-2xs'
+              : 'text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border-slate-200'
           }`}
         >
           <Cpu className="w-3.5 h-3.5 text-teal-600" />
-          <span className="hidden sm:inline">Model Specs</span>
+          <span>Model Specs</span>
           <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${showSpecs ? 'rotate-180 text-teal-600' : ''}`} />
         </button>
-
-        {/* External Sanger GDSC2 link */}
-        <a
-          href="https://www.cancerrxgene.org/"
-          target="_blank"
-          rel="noreferrer"
-          className="hidden sm:flex items-center space-x-1 text-xs text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-xl transition-all shadow-subtle font-medium shrink-0"
-          title="Sanger Genomics of Drug Sensitivity in Cancer"
-        >
-          <span>GDSC2</span>
-          <ExternalLink className="w-3 h-3 text-slate-400" />
-        </a>
 
         {/* Model Specs Popover Drawer */}
         {showSpecs && (
@@ -219,6 +132,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
         )}
+
+        <a
+          href="https://www.cancerrxgene.org/"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center space-x-1.5 text-xs text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl transition-all shadow-subtle font-medium"
+          title="Sanger Genomics of Drug Sensitivity in Cancer"
+        >
+          <span className="hidden sm:inline">Sanger GDSC2</span>
+          <ExternalLink className="w-3 h-3 text-slate-400" />
+        </a>
       </div>
     </header>
   );

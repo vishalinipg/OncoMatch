@@ -39,8 +39,9 @@ export const ActiveSampleSubBar: React.FC<ActiveSampleSubBarProps> = ({
         <div className="h-4 w-px bg-slate-200 hidden sm:block" />
 
         <div className="flex items-center space-x-2 min-w-0">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 hidden md:inline flex items-center">
-            <Layers className="w-3.5 h-3.5 mr-1 text-teal-600" /> Active Profile:
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 hidden md:inline-flex items-center whitespace-nowrap shrink-0">
+            <Layers className="w-3.5 h-3.5 mr-1.5 text-teal-600 shrink-0" />
+            <span>Active Profile:</span>
           </span>
 
           <div className="relative inline-flex items-center">
