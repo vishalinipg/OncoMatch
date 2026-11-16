@@ -209,6 +209,23 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
     return points;
   }, [singleResult]);
 
+  // Discrete logarithmic ticks for dose-response curve to prevent X-axis collisions
+  const curveTicks = useMemo(() => {
+    if (!singleResult) return [];
+    const minC = singleResult.min_conc_uM || 0.001;
+    const maxC = singleResult.max_conc_uM || 10.0;
+    const ic50 = singleResult.predicted_ic50_uM || 1.0;
+    const mid1 = Math.sqrt(minC * ic50);
+    const mid2 = Math.sqrt(ic50 * maxC);
+    return [
+      Number(minC.toFixed(3)),
+      Number(mid1.toFixed(3)),
+      Number(ic50.toFixed(2)),
+      Number(mid2.toFixed(2)),
+      Number(maxC.toFixed(2))
+    ].filter((v, i, a) => a.indexOf(v) === i);
+  }, [singleResult]);
+
   // Export ranked table directly to CSV
   const handleExportCSV = () => {
     if (!batchResults.length) return;
@@ -519,42 +536,55 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                 </div>
 
                 {/* Fitted 4PL Sigmoidal Curve (Large & Non-clipping) */}
-                <div className="bg-slate-50/60 p-4 rounded-2xl border border-slate-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
-                      <Activity className="w-4 h-4 mr-1.5 text-teal-600" /> Fitted 4PL Sigmoidal Dose-Response Curve
+                <div className="bg-slate-50/70 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center shrink-0">
+                      <Activity className="w-4 h-4 mr-1.5 text-teal-600" /> Fitted 4PL Sigmoidal Curve
                     </span>
-                    <span className="font-mono text-[11px] font-bold text-teal-800 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs">
-                      IC50: {singleResult.predicted_ic50_uM.toFixed(3)} µM
+                    <span className="font-mono text-[11px] font-bold text-teal-800 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full shadow-2xs shrink-0">
+                      IC50: {formatConc(singleResult.predicted_ic50_uM)}
                     </span>
                   </div>
 
-                  <div className="h-56 w-full bg-white p-2.5 rounded-xl border border-slate-200">
+                  <div className="h-56 w-full bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={doseResponseCurveData} margin={{ top: 10, right: 15, left: -20, bottom: 15 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                         <XAxis 
                           dataKey="conc" 
-                          stroke="#94a3b8" 
+                          ticks={curveTicks}
+                          stroke="#64748b" 
                           fontSize={9} 
                           tickFormatter={(v) => formatConc(v, false)}
                           tickLine={false}
-                          label={{ value: 'Screening Concentration (µM)', position: 'insideBottom', offset: -10, fontSize: 9, fill: '#64748b' }}
+                          label={{ value: 'Screening Concentration (µM)', position: 'insideBottom', offset: -10, fontSize: 9, fill: '#475569' }}
                         />
                         <YAxis 
                           domain={[0, 100]} 
                           ticks={[0, 25, 50, 75, 100]} 
-                          stroke="#94a3b8" 
+                          stroke="#64748b" 
                           fontSize={9} 
                           tickLine={false}
-                          label={{ value: '% Viability', angle: -90, position: 'insideLeft', offset: 15, fontSize: 9, fill: '#64748b' }}
+                          label={{ value: '% Viability', angle: -90, position: 'insideLeft', offset: 15, fontSize: 9, fill: '#475569' }}
                         />
                         <Tooltip 
-                          contentStyle={{ backgroundColor: '#ffffff', borderColor: '#cbd5e1', borderRadius: '8px', fontSize: '11px', color: '#0f172a' }}
-                          formatter={(val: any) => [`${val}%`, 'Cell Viability']}
-                          labelFormatter={(lbl: any) => `Conc: ${lbl} µM`}
+                          contentStyle={{ backgroundColor: '#ffffff', borderColor: '#94a3b8', borderRadius: '10px', fontSize: '11px', color: '#0f172a', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+                          formatter={(val: any) => [`${val}% Viability`, 'Predicted Kill']}
+                          labelFormatter={(lbl: any) => `Concentration: ${lbl} µM`}
                         />
-                        <ReferenceLine y={50} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: '50% Kill', fill: '#d97706', fontSize: 9, position: 'insideTopLeft' }} />
+                        <ReferenceLine 
+                          y={50} 
+                          stroke="#d97706" 
+                          strokeWidth={1.5} 
+                          strokeDasharray="4 4" 
+                          label={{ value: '50% Kill', fill: '#b45309', fontSize: 9, position: 'insideTopLeft' }} 
+                        />
+                        <ReferenceLine 
+                          x={singleResult.predicted_ic50_uM} 
+                          stroke="#0d9488" 
+                          strokeDasharray="2 2" 
+                          strokeWidth={1}
+                        />
                         <Line 
                           type="monotone" 
                           dataKey="viability" 
@@ -565,9 +595,9 @@ export const DrugResponsePrediction: React.FC<DrugResponsePredictionProps> = ({
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono px-1">
+                  <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-600 font-mono px-1 pt-0.5">
                     <span>Bounds: {formatConc(singleResult.min_conc_uM)} – {formatConc(singleResult.max_conc_uM)}</span>
-                    <span className="text-teal-800 font-semibold font-sans">Hill inflection point: 50% cell kill @ IC50</span>
+                    <span className="text-teal-800 font-semibold font-sans">50% cell kill inflection point @ IC50</span>
                   </div>
                 </div>
 

@@ -75,23 +75,23 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
               Personalized Chemotherapy Drug Response Prediction
             </h1>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-normal">
-              Analyze in-silico chemotherapy sensitivity across <strong className="text-slate-900 font-semibold">969 cancer cell lines</strong>, <strong className="text-slate-900 font-semibold">286 anticancer therapeutics</strong>, and <strong className="text-slate-900 font-semibold">33 TCGA lineages</strong>. Powered by an authoritative HistGradientBoosting regression pipeline trained on <strong className="text-slate-900 font-semibold">242,036 fitted dose-response curves</strong> from the Wellcome Sanger Institute GDSC2 release.
+            <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-normal">
+              In-silico pharmacogenomic sensitivity modeling powered by an authoritative HistGradientBoosting regression pipeline refitted on the Wellcome Sanger Institute GDSC2 release. Evaluates pharmacological potency and fitted <code className="px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-teal-800 font-mono font-semibold">ln(IC50)</code> values without requiring synthetic or fabricated patient omics.
             </p>
           </div>
 
           {/* Scientific Scope Notice */}
-          <div className="p-3.5 bg-slate-50/90 border border-teal-200/70 rounded-2xl text-xs text-slate-700 flex items-start space-x-3 shadow-2xs">
+          <div className="p-3.5 bg-slate-50 border border-teal-200/80 rounded-2xl text-xs text-slate-700 flex items-start space-x-3 shadow-2xs">
             <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
             <div className="space-y-0.5">
               <strong className="text-slate-900 font-semibold">Pre-Exposure In-Silico Pipeline:</strong>
-              <p className="text-slate-600 leading-relaxed">
-                Predicts fitted <code className="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-teal-800 font-mono font-semibold">ln(IC50)</code> using chemical descriptors, putative targets, screening bounds, and lineage tissue origin. Strictly operates without fabricating synthetic patient omics.
+              <p className="text-slate-700 leading-relaxed">
+                Predicts fitted logarithmic half-maximal inhibitory concentration using verified chemical descriptors, putative targets, screening concentration bounds, and TCGA lineage origin.
               </p>
             </div>
           </div>
 
-          {/* Prominent CTA Hierarchy */}
+          {/* Prominent CTA Hierarchy: 1 Primary + 1 Secondary (Sidebar redundant duplicates removed) */}
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               onClick={() => onNavigate('prediction')}
@@ -103,24 +103,10 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             </button>
             <button
               onClick={() => onNavigate('setup')}
-              className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold transition-all shadow-subtle hover:border-slate-300 cursor-pointer"
+              className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-semibold transition-all shadow-subtle hover:border-slate-400 cursor-pointer"
             >
               <Settings2 className="w-4 h-4 text-teal-600" />
-              <span>Sample & Analysis Setup</span>
-            </button>
-            <button
-              onClick={() => onNavigate('explorer')}
-              className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold transition-all shadow-subtle hover:border-slate-300 cursor-pointer"
-            >
-              <FlaskConical className="w-4 h-4 text-indigo-600" />
-              <span>Drug & Tissue Explorer</span>
-            </button>
-            <button
-              onClick={() => onNavigate('analytics')}
-              className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold transition-all shadow-subtle hover:border-slate-300 cursor-pointer"
-            >
-              <BarChart3 className="w-4 h-4 text-emerald-600" />
-              <span>Visual Analytics</span>
+              <span>Configure Profile & Calibrate</span>
             </button>
           </div>
         </div>
@@ -220,15 +206,15 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             Evaluated on held-out cancer cell lines. Once out-of-fold target encodings are added (<code className="text-slate-800 font-mono">k=10</code> smoothing), HistGradientBoosting achieves high predictive power without leaky curve parameters.
           </p>
 
-          <div className="overflow-x-auto max-h-72 overflow-y-auto rounded-xl border border-slate-200">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-2xs">
             <table className="w-full text-xs text-left border-collapse">
-              <thead className="sticky top-0 z-20 bg-slate-100 shadow-2xs">
-                <tr className="border-b border-slate-200 text-slate-700 text-[11px]">
-                  <th className="py-2.5 px-3 font-semibold bg-slate-100 sticky left-0 z-30">Model Architecture</th>
-                  <th className="py-2.5 px-3 font-semibold bg-slate-100">Scenario</th>
-                  <th className="py-2.5 px-3 font-semibold text-right min-w-[95px] bg-slate-100">Holdout MAE</th>
-                  <th className="py-2.5 px-3 font-semibold text-right min-w-[85px] bg-slate-100">RMSE</th>
-                  <th className="py-2.5 px-3 font-semibold text-right min-w-[85px] bg-slate-100">R² Score</th>
+              <thead className="bg-slate-100/90 text-slate-800 text-[11px] font-bold border-b border-slate-200">
+                <tr>
+                  <th className="py-3 px-3.5 font-bold">Model Architecture</th>
+                  <th className="py-3 px-3 font-semibold text-slate-600">Scenario</th>
+                  <th className="py-3 px-3 font-semibold text-right min-w-[95px]">Holdout MAE</th>
+                  <th className="py-3 px-3 font-semibold text-right min-w-[85px] text-slate-600">RMSE</th>
+                  <th className="py-3 px-3 font-semibold text-right min-w-[85px] text-teal-900">R² Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono">
@@ -237,32 +223,32 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
                     key={idx} 
                     className={`transition-colors ${
                       m.highlight 
-                        ? 'bg-teal-50/80 font-bold text-teal-950 hover:bg-teal-50' 
-                        : 'text-slate-700 hover:bg-slate-50/60'
+                        ? 'bg-teal-50/90 font-bold text-teal-950' 
+                        : 'text-slate-800 hover:bg-slate-50/70'
                     }`}
                   >
-                    <td className={`py-2.5 px-3 font-sans flex items-center sticky left-0 z-10 ${m.highlight ? 'bg-teal-50/90' : 'bg-white'}`}>
+                    <td className="py-3 px-3.5 font-sans flex items-center">
                       {m.highlight && (
                         <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-teal-600 shrink-0" />
                       )}
                       <span>{m.name}</span>
                     </td>
-                    <td className="py-2.5 px-3 text-slate-500 font-sans text-[11px]">{m.status}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums">{m.testMae}</td>
-                    <td className="py-2.5 px-3 text-right text-slate-500 tabular-nums">{m.rmse}</td>
-                    <td className="py-2.5 px-3 text-right tabular-nums font-bold text-slate-900">{m.r2}</td>
+                    <td className="py-3 px-3 text-slate-600 font-sans text-[11px]">{m.status}</td>
+                    <td className="py-3 px-3 text-right tabular-nums font-semibold">{m.testMae}</td>
+                    <td className="py-3 px-3 text-right text-slate-600 tabular-nums">{m.rmse}</td>
+                    <td className="py-3 px-3 text-right tabular-nums font-bold text-slate-900">{m.r2}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-xl text-[11px] text-slate-600 space-y-1 border border-slate-100">
+          <div className="p-3 bg-slate-50 rounded-xl text-[11px] text-slate-700 space-y-1 border border-slate-200/80">
             <div className="font-semibold text-slate-800 flex items-center">
               <Info className="w-3.5 h-3.5 text-teal-600 mr-1.5" /> Production Refit Configuration:
             </div>
-            <div className="leading-relaxed pl-5">
-              Refitted across all 242,036 screening measurements using 5-fold grouped out-of-fold target encodings. 80% holdout residual interval: <strong className="text-slate-800 font-mono">[-1.43, +1.48] ln(IC50)</strong>.
+            <div className="leading-relaxed pl-5 text-slate-600">
+              Refitted across all 242,036 screening measurements using 5-fold grouped out-of-fold target encodings. 80% holdout residual interval: <strong className="text-slate-900 font-mono">[-1.43, +1.48] ln(IC50)</strong>.
             </div>
           </div>
         </div>
@@ -277,7 +263,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
                 <p className="text-[11px] text-slate-500">Distribution of Fitted ln(IC50) Values</p>
               </div>
             </div>
-            <span className="text-[11px] text-slate-500 font-medium bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">
+            <span className="text-[11px] text-slate-700 font-semibold bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
               286 Compounds
             </span>
           </div>
@@ -286,22 +272,22 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             Distribution of screening responses across GDSC2 therapeutics. Lower values signify higher pharmacological potency and lower concentration required for 50% cell growth inhibition.
           </p>
 
-          <div className="h-56 w-full pt-1">
+          <div className="h-64 w-full pt-1">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={sensitivityDistribution} margin={{ top: 15, right: 15, left: -10, bottom: 35 }}>
+              <BarChart data={sensitivityDistribution} margin={{ top: 15, right: 15, left: -10, bottom: 50 }}>
                 <XAxis 
                   dataKey="bin" 
-                  tick={{ fontSize: 10, fill: '#64748b' }} 
+                  tick={{ fontSize: 10, fill: '#475569' }} 
                   interval={0}
-                  angle={-15}
+                  angle={-18}
                   textAnchor="end"
                 />
-                <YAxis tick={{ fontSize: 10, fill: '#64748b' }} />
+                <YAxis tick={{ fontSize: 10, fill: '#475569' }} />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: '#ffffff', 
                     borderRadius: '0.85rem', 
-                    borderColor: '#e2e8f0', 
+                    borderColor: '#cbd5e1', 
                     fontSize: '11px',
                     boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'
                   }} 
@@ -319,7 +305,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
             </ResponsiveContainer>
           </div>
 
-          <div className="flex items-center justify-between text-[11px] pt-3 border-t border-slate-100 text-slate-600">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] pt-3 border-t border-slate-100 text-slate-700">
             <span className="flex items-center font-medium">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 mr-1.5"></span>
               Sensitive: &lt; 2.19 (Lower Tertile)
@@ -336,98 +322,134 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
         </div>
       </div>
 
-      {/* Six-Page Platform Workflow Map */}
+      {/* Five-Page Platform Workflow Map & Architecture */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-subtle space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-slate-900 text-sm flex items-center">
-            <Layers className="w-4 h-4 mr-2 text-teal-600" /> Platform Architecture & Guided Workflow
-          </h3>
-          <span className="text-xs text-slate-400">Step-by-step oncology research workflow</span>
+          <div>
+            <h3 className="font-bold text-slate-900 text-sm flex items-center">
+              <Layers className="w-4 h-4 mr-2 text-teal-600" /> Platform Architecture & Guided Workflow
+            </h3>
+            <p className="text-xs text-slate-500">Step-by-step oncology research workflow from sample setup to clinical report</p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
           <div 
             onClick={() => onNavigate('setup')}
-            className="p-4 rounded-2xl border border-slate-200 hover:border-teal-300 hover:bg-teal-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect"
+            className="p-4 rounded-2xl border border-slate-200 hover:border-teal-300 hover:bg-teal-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-teal-950 flex items-center">
-                <Settings2 className="w-4 h-4 mr-2 text-teal-600" /> 1. Sample & Analysis Setup
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all" />
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                  Step 1
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all" />
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 flex items-center">
+                <Settings2 className="w-3.5 h-3.5 mr-1.5 text-teal-600" /> Setup & Isolates
+              </h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                Select from 969 GDSC2 cell lines or configure custom isolates with tissue origin.
+              </p>
             </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              Select from 969 verified COSMIC cell lines or configure custom isolates with tissue lineage origin and baseline parameters.
-            </p>
           </div>
 
           <div 
             onClick={() => onNavigate('explorer')}
-            className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect"
+            className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-indigo-950 flex items-center">
-                <FlaskConical className="w-4 h-4 mr-2 text-indigo-600" /> 2. Drug & Tissue Explorer
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                  Step 2
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all" />
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 flex items-center">
+                <FlaskConical className="w-3.5 h-3.5 mr-1.5 text-indigo-600" /> Drug Explorer
+              </h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                Browse 286 anticancer therapeutics, molecular targets, and screening bounds.
+              </p>
             </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              Browse the complete 286-drug catalogue, putative molecular targets, target signaling pathways, and screening concentration ranges.
-            </p>
           </div>
 
           <div 
             onClick={() => onNavigate('prediction')}
-            className="p-4 rounded-2xl border border-slate-200 hover:border-teal-300 hover:bg-teal-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect"
+            className="p-4 rounded-2xl border border-slate-200 hover:border-teal-300 hover:bg-teal-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-teal-950 flex items-center">
-                <Pill className="w-4 h-4 mr-2 text-teal-600" /> 3. Drug Response Prediction
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all" />
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                  Step 3
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all" />
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 flex items-center">
+                <Pill className="w-3.5 h-3.5 mr-1.5 text-teal-600" /> Response Modeling
+              </h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                Run inference for single compounds with 4PL curves or pan-cancer batch ranking.
+              </p>
             </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              Run inference for single compounds with 4PL sigmoidal curves or score all 286 drugs for pan-cancer ranking.
-            </p>
           </div>
 
           <div 
             onClick={() => onNavigate('analytics')}
-            className="p-4 rounded-2xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect"
+            className="p-4 rounded-2xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/20 transition-all cursor-pointer space-y-2 group card-hover-effect flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-emerald-950 flex items-center">
-                <BarChart3 className="w-4 h-4 mr-2 text-emerald-600" /> 4. Visual Analytics
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  Step 4
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 flex items-center">
+                <BarChart3 className="w-3.5 h-3.5 mr-1.5 text-emerald-600" /> Visual Analytics
+              </h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                Explore pharmacogenomic PCA coordinates and cross-tissue sensitivity matrix.
+              </p>
             </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              Explore pharmacogenomic PCA across 969 cell lines, cross-tissue heatmaps, and the 15 probe-drug benchmark assay panel.
-            </p>
           </div>
 
           <div 
             onClick={() => onNavigate('reports')}
-            className="p-4 rounded-2xl border border-slate-200 hover:border-slate-400 hover:bg-slate-50/50 transition-all cursor-pointer space-y-2 group card-hover-effect"
+            className="p-4 rounded-2xl border border-slate-200 hover:border-slate-400 hover:bg-slate-50/50 transition-all cursor-pointer space-y-2 group card-hover-effect flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-900 flex items-center">
-                <FileText className="w-4 h-4 mr-2 text-slate-700" /> 5. Personalized Reports
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-300">
+                  Step 5
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
+              </div>
+              <h4 className="text-xs font-bold text-slate-900 flex items-center">
+                <FileText className="w-3.5 h-3.5 mr-1.5 text-slate-700" /> Patient Reports
+              </h4>
+              <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                Generate clinical vector PDF dossiers and companion CSV exports for oncology.
+              </p>
             </div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              Generate publication-ready vector PDF dossiers and complete companion CSV exports for downstream bioinformatics analysis.
-            </p>
           </div>
+        </div>
 
-          <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/80 flex flex-col justify-center space-y-1 text-[11px] text-slate-600">
-            <span className="font-bold text-slate-900 flex items-center">
-              <ShieldCheck className="w-4 h-4 mr-1.5 text-teal-600" /> Rigorous Scientific Validation
-            </span>
-            <span className="text-slate-500 leading-relaxed">
-              Strict grouped cross-validation, target encoding smoothing, zero omics assumptions, and full transparency.
-            </span>
+        {/* Full-width Scientific Validation Callout */}
+        <div className="p-4 rounded-2xl border border-teal-200/80 bg-gradient-to-r from-teal-50/50 via-slate-50 to-emerald-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <strong className="text-slate-900 font-bold block">Rigorous Scientific Validation</strong>
+              <p className="text-slate-600 text-[11px] leading-relaxed">
+                Strict grouped cross-validation, out-of-fold target encoding smoothing (k=10), zero synthetic omics assumptions, and full reproducibility.
+              </p>
+            </div>
+          </div>
+          <div className="font-mono text-[10px] text-slate-500 shrink-0">
+            Holdout MAE: <strong className="text-slate-800">1.0270</strong> • R²: <strong className="text-slate-800">0.7585</strong>
           </div>
         </div>
       </div>

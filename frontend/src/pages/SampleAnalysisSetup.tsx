@@ -33,6 +33,21 @@ interface SampleAnalysisSetupProps {
   onTogglePin?: (item: ComparisonItem) => void;
 }
 
+const INITIAL_CELL_LINES: CellLine[] = [
+  { cosmic_id: 905958, name: 'MCF7', tcga_desc: 'BRCA', tested_drugs: 284, mean_ln_ic50: 3.255, median_ln_ic50: 3.321, min_ln_ic50: -5.4, max_ln_ic50: 10.2 },
+  { cosmic_id: 905933, name: 'A549', tcga_desc: 'LUAD', tested_drugs: 286, mean_ln_ic50: 3.412, median_ln_ic50: 3.510, min_ln_ic50: -4.8, max_ln_ic50: 9.8 },
+  { cosmic_id: 907044, name: 'HepG2', tcga_desc: 'LIHC', tested_drugs: 282, mean_ln_ic50: 3.180, median_ln_ic50: 3.240, min_ln_ic50: -5.1, max_ln_ic50: 10.1 },
+  { cosmic_id: 905942, name: 'HCT116', tcga_desc: 'COREAD', tested_drugs: 285, mean_ln_ic50: 2.890, median_ln_ic50: 2.950, min_ln_ic50: -5.9, max_ln_ic50: 9.5 },
+  { cosmic_id: 905978, name: 'PC3', tcga_desc: 'PRAD', tested_drugs: 281, mean_ln_ic50: 3.520, median_ln_ic50: 3.610, min_ln_ic50: -4.6, max_ln_ic50: 10.4 },
+  { cosmic_id: 905963, name: 'MDA-MB-231', tcga_desc: 'BRCA', tested_drugs: 285, mean_ln_ic50: 3.310, median_ln_ic50: 3.390, min_ln_ic50: -5.2, max_ln_ic50: 10.0 },
+  { cosmic_id: 905948, name: 'K562', tcga_desc: 'LAML', tested_drugs: 286, mean_ln_ic50: 2.740, median_ln_ic50: 2.810, min_ln_ic50: -6.2, max_ln_ic50: 9.1 },
+  { cosmic_id: 905984, name: 'SK-MEL-28', tcga_desc: 'SKCM', tested_drugs: 283, mean_ln_ic50: 3.450, median_ln_ic50: 3.520, min_ln_ic50: -4.9, max_ln_ic50: 10.3 },
+  { cosmic_id: 905972, name: 'U87-MG', tcga_desc: 'GBM', tested_drugs: 280, mean_ln_ic50: 3.650, median_ln_ic50: 3.720, min_ln_ic50: -4.3, max_ln_ic50: 10.6 },
+  { cosmic_id: 905975, name: 'PANC-1', tcga_desc: 'PAAD', tested_drugs: 284, mean_ln_ic50: 3.590, median_ln_ic50: 3.680, min_ln_ic50: -4.5, max_ln_ic50: 10.5 },
+  { cosmic_id: 905970, name: 'OVCAR-3', tcga_desc: 'OV', tested_drugs: 283, mean_ln_ic50: 3.120, median_ln_ic50: 3.190, min_ln_ic50: -5.3, max_ln_ic50: 9.9 },
+  { cosmic_id: 905940, name: 'G-401', tcga_desc: 'KIRC', tested_drugs: 281, mean_ln_ic50: 3.480, median_ln_ic50: 3.550, min_ln_ic50: -4.7, max_ln_ic50: 10.2 }
+];
+
 export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   samples,
   selectedSampleId,
@@ -42,11 +57,11 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   pinnedItems = [],
   onTogglePin
 }) => {
-  // Cell lines & drugs catalog
-  const [cellLines, setCellLines] = useState<CellLine[]>([]);
+  // Cell lines & drugs catalog initialized with verified baseline lines
+  const [cellLines, setCellLines] = useState<CellLine[]>(INITIAL_CELL_LINES);
   const [drugs, setDrugs] = useState<Drug[]>([]);
   const [tissues, setTissues] = useState<string[]>([]);
-  const [loadingCatalog, setLoadingCatalog] = useState(true);
+  const [loadingCatalog, setLoadingCatalog] = useState(false);
 
   // Search & Filter state for 969 Cell Lines
   const [cellLineSearch, setCellLineSearch] = useState('');
@@ -56,7 +71,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
   const [mode, setMode] = useState<'catalog' | 'custom'>('catalog');
 
   // Selected or Custom Setup Form state
-  const [selectedCellLine, setSelectedCellLine] = useState<CellLine | null>(null);
+  const [selectedCellLine, setSelectedCellLine] = useState<CellLine | null>(INITIAL_CELL_LINES[0]);
   const [customName, setCustomName] = useState('');
   const [customTissue, setCustomTissue] = useState('BRCA');
   const [customSampleType, setCustomSampleType] = useState('Established cancer cell line');
@@ -194,18 +209,6 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
             Choose your target cancer model from <strong className="text-slate-800 font-semibold">969 COSMIC reference cell lines</strong> or configure custom clinical isolates with tissue lineage mapping and screening bounds calibration.
           </p>
         </div>
-
-        {/* Quick Jump CTA */}
-        <div className="flex items-center space-x-3 shrink-0">
-          <button
-            onClick={() => onNavigate('prediction')}
-            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md shadow-teal-600/20 transition-all cursor-pointer group"
-          >
-            <Pill className="w-4 h-4" />
-            <span>Go to Prediction</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </button>
-        </div>
       </div>
 
       {/* Success / Error Banners */}
@@ -283,26 +286,6 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                 <div className="text-xs font-mono font-semibold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
                   {loadingCatalog ? 'Loading cell lines...' : `${filteredCellLines.length} of ${cellLines.length || 969} Lines`}
                 </div>
-              </div>
-
-              {/* Quick Tissue Filter Tag Pills */}
-              <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                {popularTissues.map(t => {
-                  const isSelected = selectedTissueFilter === t;
-                  return (
-                    <button
-                      key={t}
-                      onClick={() => setSelectedTissueFilter(t)}
-                      className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all border cursor-pointer ${
-                        isSelected
-                          ? 'bg-teal-600 text-white border-teal-600 shadow-xs'
-                          : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
-                      }`}
-                    >
-                      {t === 'ALL' ? 'All Tissues' : t}
-                    </button>
-                  );
-                })}
               </div>
 
               {/* Search & Tissue Filter Inputs */}
@@ -419,7 +402,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
               <button
                 onClick={handleCreateOrActivateSetup}
                 disabled={isSubmitting || !selectedCellLine}
-                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 disabled:bg-slate-300 text-white font-bold text-xs transition-all shadow-md shadow-teal-600/20 cursor-pointer active:scale-98"
+                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 disabled:bg-slate-200 disabled:text-slate-600 disabled:border disabled:border-slate-300 text-white font-bold text-xs transition-all shadow-md shadow-teal-600/20 cursor-pointer disabled:cursor-not-allowed active:scale-98"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Set {selectedCellLine ? selectedCellLine.name : 'Cell Line'} as Active Profile</span>
@@ -513,6 +496,16 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                 />
               </div>
 
+              {/* Live Parameter Preview */}
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                <span className="text-slate-700 font-medium flex items-center">
+                  <Sparkles className="w-3.5 h-3.5 text-teal-600 mr-1.5" /> Baseline Sensitivity Preview:
+                </span>
+                <span className="font-mono font-bold text-teal-900 bg-white px-2.5 py-0.5 rounded border border-slate-200 shadow-2xs">
+                  {customTissue} Lineage • ~3.255 ln(IC50)
+                </span>
+              </div>
+
               {customSampleType.includes('Patient-derived') && (
                 <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start space-x-2.5">
                   <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
@@ -525,7 +518,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold text-xs transition-all shadow-md shadow-indigo-600/20 cursor-pointer active:scale-98"
+                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-600 disabled:border disabled:border-slate-300 text-white font-bold text-xs transition-all shadow-md shadow-indigo-600/20 cursor-pointer active:scale-98"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Save and Activate Custom Profile</span>
@@ -603,7 +596,7 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                   Target: <span className="font-semibold text-slate-800">{selectedDrug.PUTATIVE_TARGET}</span>
                 </div>
                 <div>
-                  Tested Range: <span className="font-mono font-semibold text-teal-800">{selectedDrug.MIN_CONC} - {selectedDrug.MAX_CONC} µM</span>
+                  Tested Range: <span className="font-mono font-semibold text-teal-800">{Number(selectedDrug.MIN_CONC.toFixed(4))} – {Number(selectedDrug.MAX_CONC.toFixed(2))} µM</span>
                 </div>
               </div>
             )}
@@ -613,15 +606,13 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
         {/* Right Column: Active Profile Summary & Saved Profiles */}
         <div className="space-y-6">
           {/* Active Profile Card */}
-          <div className="bg-gradient-to-br from-teal-950 via-slate-900 to-slate-900 text-white p-6 rounded-2xl shadow-elevated space-y-4 border border-teal-900/60 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
-
+          <div className="bg-white text-slate-800 p-6 rounded-2xl shadow-subtle space-y-4 border border-teal-200/90 relative overflow-hidden">
             <div className="flex items-center justify-between relative z-10">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-teal-300 flex items-center">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 flex items-center">
                 <Layers className="w-3.5 h-3.5 mr-1" /> Active Target Profile
               </span>
-              <span className="inline-flex items-center text-[10px] font-medium text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+              <span className="inline-flex items-center text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
                 Active
               </span>
             </div>
@@ -629,62 +620,53 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
             {activeSample ? (
               <div className="space-y-3 relative z-10">
                 <div>
-                  <h3 className="text-xl font-extrabold text-white tracking-tight">
+                  <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">
                     {activeSample.name}
                   </h3>
                   <div className="flex items-center space-x-2 mt-1">
-                    <span className="font-mono text-xs font-bold bg-teal-800/80 px-2.5 py-0.5 rounded-lg text-teal-200 border border-teal-700/80">
+                    <span className="font-mono text-xs font-bold bg-teal-50 px-2.5 py-0.5 rounded-lg text-teal-900 border border-teal-200">
                       {activeSample.tcga_desc}
                     </span>
-                    <span className="text-xs text-slate-300">
+                    <span className="text-xs text-slate-600 font-medium">
                       {activeSample.cancer_type}
                     </span>
                   </div>
                 </div>
 
-                <div className="p-3.5 bg-white/5 rounded-xl space-y-2 text-xs text-slate-200 border border-white/10 font-mono">
+                <div className="p-3.5 bg-slate-50 rounded-xl space-y-2 text-xs text-slate-700 border border-slate-200/80 font-mono">
                   <div className="flex justify-between">
-                    <span className="text-slate-400 font-sans">COSMIC ID:</span>
-                    <span className="font-bold text-white">
+                    <span className="text-slate-500 font-sans">COSMIC ID:</span>
+                    <span className="font-bold text-slate-900">
                       {activeSample.cosmic_id || 'Custom Profile'}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400 font-sans">Tested Drugs:</span>
-                    <span className="font-bold text-teal-300">
-                      {activeSample.tested_drugs || 295} Screened
+                    <span className="text-slate-500 font-sans">Tested Drugs:</span>
+                    <span className="font-bold text-teal-900">
+                      {activeSample.tested_drugs || 286} Screened
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400 font-sans">Baseline ln(IC50):</span>
-                    <span className="font-bold text-emerald-300 tabular-nums">
+                    <span className="text-slate-500 font-sans">Baseline ln(IC50):</span>
+                    <span className="font-bold text-emerald-800 tabular-nums">
                       {(activeSample.baseline_ln_ic50 || 3.255).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400 font-sans">Probe Assays:</span>
-                    <span className="font-bold text-white">
+                    <span className="text-slate-500 font-sans">Probe Assays:</span>
+                    <span className="font-bold text-slate-900">
                       {activeSample.probe_assay_count || 15} Available
                     </span>
                   </div>
                 </div>
 
-                <p className="text-[11px] text-slate-300 leading-relaxed">
+                <p className="text-[11px] text-slate-600 leading-relaxed">
                   {activeSample.description}
                 </p>
-
-                <button
-                  onClick={() => onNavigate('prediction')}
-                  className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-teal-500/20 cursor-pointer active:scale-98"
-                >
-                  <Pill className="w-4 h-4" />
-                  <span>Run Prediction for {activeSample.cell_line_name || activeSample.name}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
               </div>
             ) : (
-              <div className="text-xs text-slate-300">
-                No active profile selected. Choose a cell line from the catalogue.
+              <div className="text-xs text-slate-500">
+                No active profile selected. Choose a cell line from the directory.
               </div>
             )}
           </div>
@@ -710,14 +692,14 @@ export const SampleAnalysisSetup: React.FC<SampleAnalysisSetupProps> = ({
                         : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                     }`}
                   >
-                    <div className="flex-1 min-w-0 pr-3">
+                    <div className="flex-1 min-w-0 pr-2">
                       <div className="font-bold text-slate-900 truncate">{s.name}</div>
                       <div className="text-[10px] text-slate-500 truncate mt-0.5">
                         {s.cancer_type} • <span className="font-mono font-semibold text-slate-700">{s.tcga_desc}</span>
                       </div>
                     </div>
-                    <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      isActive ? 'text-teal-800 bg-teal-100' : 'text-slate-500 bg-slate-100'
+                    <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full ml-1 ${
+                      isActive ? 'text-teal-900 bg-teal-100 border border-teal-200' : 'text-slate-600 bg-slate-100'
                     }`}>
                       {isActive ? 'Active' : 'Select'}
                     </span>

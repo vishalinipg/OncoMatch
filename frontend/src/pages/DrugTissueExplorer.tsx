@@ -28,22 +28,33 @@ interface DrugTissueExplorerProps {
   onTogglePin?: (item: ComparisonItem) => void;
 }
 
+const PROBE_IDS_DEFAULT = [1862, 1003, 1034, 1047, 1053, 1054, 1073, 1060, 1179, 1049, 1058, 1017, 1011, 1089, 1007];
+
+const INITIAL_DRUGS: Drug[] = [
+  { DRUG_ID: 1011, DRUG_NAME: 'Cisplatin', PUTATIVE_TARGET: 'DNA crosslinker', PATHWAY_NAME: 'DNA replication', MIN_CONC: 0.0039, MAX_CONC: 1.0 },
+  { DRUG_ID: 1034, DRUG_NAME: 'Paclitaxel', PUTATIVE_TARGET: 'Microtubules', PATHWAY_NAME: 'Mitosis', MIN_CONC: 0.0001, MAX_CONC: 0.1 },
+  { DRUG_ID: 1047, DRUG_NAME: '5-Fluorouracil', PUTATIVE_TARGET: 'Antimetabolite', PATHWAY_NAME: 'DNA replication', MIN_CONC: 0.0039, MAX_CONC: 1.0 },
+  { DRUG_ID: 1017, DRUG_NAME: 'Olaparib', PUTATIVE_TARGET: 'PARP1, PARP2', PATHWAY_NAME: 'Genome integrity', MIN_CONC: 0.0039, MAX_CONC: 1.0 },
+  { DRUG_ID: 1003, DRUG_NAME: 'Camptothecin', PUTATIVE_TARGET: 'TOP1', PATHWAY_NAME: 'DNA replication', MIN_CONC: 0.0001, MAX_CONC: 1.0 },
+  { DRUG_ID: 1007, DRUG_NAME: 'Docetaxel', PUTATIVE_TARGET: 'Microtubules', PATHWAY_NAME: 'Mitosis', MIN_CONC: 0.0001, MAX_CONC: 1.0 }
+];
+
 export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
   onNavigate,
   activeSample,
   pinnedItems = [],
   onTogglePin
 }) => {
-  const [drugs, setDrugs] = useState<Drug[]>([]);
+  const [drugs, setDrugs] = useState<Drug[]>(INITIAL_DRUGS);
   const [tissues, setTissues] = useState<string[]>([]);
-  const [probeIds, setProbeIds] = useState<number[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [probeIds, setProbeIds] = useState<number[]>(PROBE_IDS_DEFAULT);
+  const [loading, setLoading] = useState(false);
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPathway, setSelectedPathway] = useState('ALL');
   const [probeFilterOnly, setProbeFilterOnly] = useState(false);
-  const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
+  const [selectedDrug, setSelectedDrug] = useState<Drug | null>(INITIAL_DRUGS[0]);
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
   useEffect(() => {
@@ -136,27 +147,6 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
 
       {/* Filter and Search Bar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-subtle space-y-3">
-        {/* Quick Pathway Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-2">Top Pathways:</span>
-          {topPathways.map(pw => {
-            const isSelected = selectedPathway === pw;
-            return (
-              <button
-                key={pw}
-                onClick={() => setSelectedPathway(pw)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all border cursor-pointer ${
-                  isSelected
-                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
-                }`}
-              >
-                {pw === 'ALL' ? 'All Pathways' : pw}
-              </button>
-            );
-          })}
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
           {/* Search Box (6 cols) */}
           <div className="md:col-span-5 relative">
@@ -252,12 +242,12 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                 <table className="w-full text-left text-xs border-collapse min-w-[650px]">
                   <thead className="sticky top-0 z-20 bg-slate-100 shadow-2xs text-slate-700 font-semibold text-[11px]">
                     <tr>
-                      <th className="py-3 px-4 bg-slate-100 sticky top-0 left-0 z-30 min-w-[150px] shadow-sm">
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 left-0 z-30 min-w-[200px] shadow-sm font-bold text-slate-900">
                         Drug Compound
                       </th>
-                      <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[140px]">Putative Target</th>
-                      <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[120px]">Signaling Pathway</th>
-                      <th className="py-3 px-4 text-right bg-slate-100 sticky top-0 min-w-[110px]">Tested Bounds (µM)</th>
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[150px]">Putative Target</th>
+                      <th className="py-3 px-4 bg-slate-100 sticky top-0 min-w-[130px]">Signaling Pathway</th>
+                      <th className="py-3 px-4 text-right bg-slate-100 sticky top-0 min-w-[130px]">Tested Bounds (µM)</th>
                       <th className="py-3 px-4 text-center bg-slate-100 sticky top-0 w-20">Type</th>
                       <th className="py-3 px-4 text-center bg-slate-100 sticky top-0 w-20">Compare</th>
                     </tr>
@@ -282,17 +272,17 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
                               isSelected ? 'bg-indigo-50/80 font-semibold' : 'hover:bg-slate-50/80'
                             }`}
                           >
-                            <td className="py-3 px-4 font-bold text-slate-900 font-sans sticky left-0 z-10 bg-white group-hover:bg-slate-50 truncate max-w-[150px] flex items-center space-x-2">
+                            <td className="py-3 px-4 font-bold text-slate-900 font-sans sticky left-0 z-10 bg-white group-hover:bg-slate-50 min-w-[200px] flex items-center space-x-2">
                               <Pill className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                              <span className="truncate">{d.DRUG_NAME}</span>
-                              <span className="font-mono text-[10px] text-slate-400 font-normal">
+                              <span className="font-bold text-slate-900">{d.DRUG_NAME}</span>
+                              <span className="font-mono text-[10px] text-slate-500 font-normal shrink-0">
                                 #{d.DRUG_ID}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-slate-700 font-sans font-medium truncate max-w-[140px]">
+                            <td className="py-3 px-4 text-slate-800 font-sans font-medium min-w-[150px]">
                               {d.PUTATIVE_TARGET || 'Unspecified'}
                             </td>
-                            <td className="py-3 px-4 text-slate-500 font-sans text-[11px] truncate max-w-[120px]">
+                            <td className="py-3 px-4 text-slate-600 font-sans text-[11px] min-w-[130px]">
                               {d.PATHWAY_NAME || 'Unclassified'}
                             </td>
                             <td className="py-3 px-4 text-right font-mono text-slate-700 tabular-nums">

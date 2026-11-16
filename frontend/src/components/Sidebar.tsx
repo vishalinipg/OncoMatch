@@ -107,15 +107,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }`}>
                   <Icon className="w-3.5 h-3.5" />
                 </div>
-                {!isCollapsed && <span className="truncate">{item.label}</span>}
+                {!isCollapsed && <span className="font-semibold tracking-tight truncate">{item.label}</span>}
               </div>
-              {!isCollapsed && (
-                <span className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded ${
-                  isActive ? 'text-teal-700 bg-teal-100/60' : 'text-slate-400 group-hover:text-slate-600'
-                }`}>
-                  ⌘{item.shortcut}
-                </span>
-              )}
             </button>
           );
         })}

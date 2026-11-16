@@ -202,25 +202,25 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-[11px]">
               <div className="p-2.5 bg-white rounded-xl border border-slate-200">
-                <div className="text-slate-400 font-sans text-[10px]">TARGET SPECIMEN</div>
+                <div className="text-slate-700 font-bold font-sans text-[10px] uppercase tracking-wider">TARGET SPECIMEN</div>
                 <div className="font-bold text-slate-900 truncate mt-0.5">{activeSample.name}</div>
               </div>
               <div className="p-2.5 bg-white rounded-xl border border-slate-200">
-                <div className="text-slate-400 font-sans text-[10px]">TCGA LINEAGE</div>
+                <div className="text-slate-700 font-bold font-sans text-[10px] uppercase tracking-wider">TCGA LINEAGE</div>
                 <div className="font-bold text-teal-800 mt-0.5">{activeSample.tcga_desc}</div>
               </div>
               <div className="p-2.5 bg-white rounded-xl border border-slate-200">
-                <div className="text-slate-400 font-sans text-[10px]">COSMIC ID</div>
+                <div className="text-slate-700 font-bold font-sans text-[10px] uppercase tracking-wider">COSMIC ID</div>
                 <div className="font-bold text-slate-900 mt-0.5">{activeSample.cosmic_id || 'Primary Isolate'}</div>
               </div>
               <div className="p-2.5 bg-white rounded-xl border border-slate-200">
-                <div className="text-slate-400 font-sans text-[10px]">MODEL ARCHITECTURE</div>
+                <div className="text-slate-700 font-bold font-sans text-[10px] uppercase tracking-wider">MODEL ARCHITECTURE</div>
                 <div className="font-bold text-emerald-800 mt-0.5">HistGB (R² 0.7585)</div>
               </div>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1 text-slate-600 text-[11px] leading-relaxed">
-              <strong className="text-slate-900">Validation Statement:</strong> Model evaluated with strict GroupShuffleSplit cross-validation on held-out cancer cell lines (Zero line overlap, Holdout MAE: 1.0270). Operates purely on pre-exposure chemical and lineage features.
+            <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1 text-slate-700 text-[11px] leading-relaxed break-words whitespace-normal">
+              <strong className="text-slate-900 font-bold">Validation Statement:</strong> Model evaluated with strict GroupShuffleSplit cross-validation on held-out cancer cell lines (Zero line overlap, Holdout MAE: 1.0270). Operates purely on verified pre-exposure chemical and lineage features.
             </div>
           </div>
         </div>
@@ -239,17 +239,49 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
             </span>
           </div>
 
-          {/* Quick Search on Reports Table */}
+          {/* Quick Search & Bulk Actions on Reports Table */}
           {history.length > 0 && (
-            <div className="relative w-full sm:w-64">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Filter by ID, compound or date..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 font-medium"
-              />
+            <div className="flex flex-wrap items-center gap-2.5">
+              <div className="relative w-full sm:w-60">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Filter by ID, compound or date..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 font-medium"
+                />
+              </div>
+
+              <button
+                onClick={() => {
+                  if (filteredHistory.length === 0) return;
+                  const csvRows = [
+                    ["Report ID", "Sample Name", "Tissue", "Top Sensitive Agent", "Timestamp", "Total Drugs Predicted"],
+                    ...filteredHistory.map(r => [
+                      r.report_id,
+                      `"${r.sample_name}"`,
+                      r.tissue,
+                      r.top_sensitive_drug,
+                      r.timestamp,
+                      r.total_drugs_predicted
+                    ])
+                  ];
+                  const csvContent = "data:text/csv;charset=utf-8," + csvRows.map(e => e.join(",")).join("\n");
+                  const encodedUri = encodeURI(csvContent);
+                  const link = document.createElement("a");
+                  link.setAttribute("href", encodedUri);
+                  link.setAttribute("download", `OncoMatch_Reports_Archive_${new Date().toISOString().slice(0, 10)}.csv`);
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-colors cursor-pointer shrink-0"
+                title="Export entire report history index as CSV"
+              >
+                <Download className="w-3.5 h-3.5 text-slate-600" />
+                <span>Export Index ({filteredHistory.length})</span>
+              </button>
             </div>
           )}
         </div>
@@ -273,9 +305,9 @@ export const PersonalizedReports: React.FC<PersonalizedReportsProps> = ({
                       {rep.report_id}
                     </td>
                     <td className="py-3.5 px-4 font-sans border-r border-slate-100">
-                      <div className="flex flex-col items-start gap-1">
+                      <div className="flex items-center space-x-2">
                         <span className="font-semibold text-slate-900">{rep.sample_name}</span>
-                        <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-teal-50 text-teal-800 border border-teal-200">
+                        <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-teal-50 text-teal-800 border border-teal-200 shrink-0">
                           {rep.tissue}
                         </span>
                       </div>

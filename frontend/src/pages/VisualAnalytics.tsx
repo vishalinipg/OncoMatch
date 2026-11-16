@@ -292,10 +292,10 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                         {heatmapData.drugs.map((d) => (
                           <th 
                             key={d} 
-                            className="py-2.5 px-1 font-sans font-semibold truncate max-w-[65px] border-r border-slate-200 last:border-r-0"
+                            className="py-2.5 px-2 font-sans font-bold text-[10px] text-slate-800 min-w-[85px] border-r border-slate-200 last:border-r-0 whitespace-nowrap"
                             title={d}
                           >
-                            {d.slice(0, 7)}
+                            {d}
                           </th>
                         ))}
                       </tr>
@@ -303,7 +303,7 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                     <tbody className="divide-y divide-slate-100">
                       {heatmapData.matrix.map((row) => (
                         <tr key={row.tissue}>
-                          <td className="py-2 px-2 text-left font-sans font-bold text-slate-900 bg-slate-50 sticky left-0 z-10 border-r border-slate-200 flex items-center space-x-1">
+                          <td className="py-2 px-2 text-left font-sans font-bold text-slate-900 bg-slate-50 sticky left-0 z-10 border-r border-slate-200 flex items-center space-x-1 min-w-[70px]">
                             <span 
                               className="w-2 h-2 rounded-full shrink-0" 
                               style={{ backgroundColor: tissueColors[row.tissue] || '#64748b' }}
@@ -325,12 +325,12 @@ export const VisualAnalytics: React.FC<VisualAnalyticsProps> = ({
                                     });
                                   }
                                 }}
-                                className={`py-1.5 px-0.5 cursor-pointer transition-all border-r border-slate-200/50 last:border-r-0 ${getHeatmapColor(val)} ${
+                                className={`py-2 px-1 cursor-pointer transition-all border-r border-slate-200/60 last:border-r-0 min-w-[85px] tabular-nums ${getHeatmapColor(val)} ${
                                   isInspected ? 'ring-2 ring-teal-600 z-10 font-extrabold shadow-sm scale-105' : ''
                                 }`}
                                 title={`${drugName} in ${row.tissue}: ln(IC50) = ${val?.toFixed(2)}`}
                               >
-                                {val !== undefined ? val.toFixed(1) : '-'}
+                                {val !== undefined ? val.toFixed(2) : '-'}
                               </td>
                             );
                           })}
