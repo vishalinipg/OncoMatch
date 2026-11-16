@@ -11,7 +11,10 @@ import {
   Sliders, 
   Database,
   ExternalLink,
-  Tag
+  Tag,
+  LayoutGrid,
+  List,
+  CheckCircle2
 } from 'lucide-react';
 import { api } from '../services/api';
 import { Drug, Sample } from '../types';
@@ -35,6 +38,7 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
   const [selectedPathway, setSelectedPathway] = useState('ALL');
   const [probeFilterOnly, setProbeFilterOnly] = useState(false);
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
   useEffect(() => {
     Promise.all([
@@ -62,6 +66,8 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
   const pathways = useMemo(() => {
     return Array.from(new Set(drugs.map(d => d.PATHWAY_NAME).filter(Boolean))).sort();
   }, [drugs]);
+
+  const topPathways = ['ALL', 'DNA replication', 'RTK signaling', 'Cell cycle', 'Apoptosis', 'Chromatin histone', 'PI3K/MTOR'];
 
   const probeSet = useMemo(() => new Set(probeIds.map(Number)), [probeIds]);
 
@@ -91,19 +97,19 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
   }, [drugs, searchQuery, selectedPathway, probeFilterOnly, probeSet]);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 animate-fadeIn">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
         <div>
-          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-semibold mb-2">
+          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-semibold mb-2 shadow-2xs">
             <FlaskConical className="w-3.5 h-3.5 text-indigo-600 mr-1" />
-            <span>Comprehensive GDSC2 Catalogue</span>
+            <span>Workflow Stage 2 — Comprehensive GDSC2 Pharmacopeia</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             Drug & Tissue Lineage Explorer
           </h1>
-          <p className="text-slate-600 text-xs sm:text-sm mt-1">
-            Explore 286 unique anticancer compounds across 295 screening regimens with putative molecular targets, signaling pathways, screening concentration ranges, and 15 benchmark probe assays across 33 TCGA tissue lineages.
+          <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-3xl">
+            Explore 286 unique anticancer therapeutics across 295 screening regimens. Inspect putative molecular targets, signaling pathways, screening concentration ranges, and 15 benchmark probe assays.
           </p>
         </div>
 
@@ -111,36 +117,57 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
         <div className="flex items-center space-x-3 shrink-0">
           <button
             onClick={() => onNavigate('prediction')}
-            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md shadow-teal-600/20 transition-all cursor-pointer group"
           >
             <Pill className="w-4 h-4" />
             <span>Predict Sensitivity</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {/* Search Box */}
-          <div className="relative">
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-subtle space-y-4">
+        {/* Quick Pathway Filter Pills */}
+        <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100">
+          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-2">Top Pathways:</span>
+          {topPathways.map(pw => {
+            const isSelected = selectedPathway === pw;
+            return (
+              <button
+                key={pw}
+                onClick={() => setSelectedPathway(pw)}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all border cursor-pointer ${
+                  isSelected
+                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
+                }`}
+              >
+                {pw === 'ALL' ? 'All Pathways' : pw}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+          {/* Search Box (6 cols) */}
+          <div className="md:col-span-5 relative">
             <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search drug name (e.g. Cisplatin), target, or ID..."
-              className="w-full bg-slate-50 border border-slate-200 text-xs rounded-lg pl-9 pr-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
+              className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl pl-9 pr-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 font-medium transition-all"
             />
           </div>
 
-          {/* Pathway Dropdown */}
-          <div>
+          {/* Pathway Dropdown (4 cols) */}
+          <div className="md:col-span-4">
             <select
               value={selectedPathway}
               onChange={(e) => setSelectedPathway(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 text-xs rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer"
+              className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 cursor-pointer font-medium"
             >
               <option value="ALL">All Signaling Pathways ({pathways.length})</option>
               {pathways.map(pw => (
@@ -149,198 +176,268 @@ export const DrugTissueExplorer: React.FC<DrugTissueExplorerProps> = ({
             </select>
           </div>
 
-          {/* 15 Probe Drug Toggle */}
-          <div className="flex items-center">
+          {/* 15 Probe Drug Toggle (3 cols) */}
+          <div className="md:col-span-3 flex items-center">
             <button
               onClick={() => setProbeFilterOnly(!probeFilterOnly)}
-              className={`w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
+              className={`w-full flex items-center justify-center space-x-1.5 py-2 px-3 rounded-xl text-xs font-semibold transition-all border cursor-pointer ${
                 probeFilterOnly
-                  ? 'bg-amber-50 text-amber-900 border-amber-300 shadow-2xs font-bold'
+                  ? 'bg-amber-50 text-amber-950 border-amber-300 shadow-2xs font-bold'
                   : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>15 Reference Probe Panel Only</span>
-              {probeFilterOnly && <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-1.5 py-0.5 rounded ml-1">Active</span>}
+              <span>15 Reference Probe Panel</span>
+              {probeFilterOnly && <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-1.5 py-0.2 rounded-full ml-1">Active</span>}
             </button>
           </div>
         </div>
 
-        {/* Catalog Summary Counter */}
+        {/* Catalog Summary Counter & View Switcher */}
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <div>
-            Showing <strong className="text-slate-900">{filteredDrugs.length}</strong> of {drugs.length} regimens (286 unique compounds)
+            Showing <strong className="text-slate-900 font-semibold">{filteredDrugs.length}</strong> of {drugs.length} regimens (286 unique compounds)
           </div>
-          <div className="flex items-center space-x-2 font-mono text-[11px]">
-            <span className="text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
-              15 Probe Compounds
-            </span>
-            <span className="text-teal-800 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded">
-              33 TCGA Tissues
-            </span>
+          <div className="flex items-center space-x-3">
+            {/* View Mode Switcher */}
+            <div className="flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200">
+              <button
+                onClick={() => setViewMode('table')}
+                className={`p-1.5 rounded-md transition-all ${
+                  viewMode === 'table' ? 'bg-white shadow-2xs text-slate-900' : 'text-slate-400 hover:text-slate-600'
+                }`}
+                title="Table View"
+              >
+                <List className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setViewMode('cards')}
+                className={`p-1.5 rounded-md transition-all ${
+                  viewMode === 'cards' ? 'bg-white shadow-2xs text-slate-900' : 'text-slate-400 hover:text-slate-600'
+                }`}
+                title="Card Grid View"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="hidden sm:flex items-center space-x-2 font-mono text-[11px]">
+              <span className="text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-semibold">
+                15 Probes
+              </span>
+              <span className="text-teal-800 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded-full font-semibold">
+                33 Lineages
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content Grid: Drug Table & Selected Drug Inspector */}
+      {/* Main Content Grid: Drug Table / Cards & Selected Drug Inspector */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Table of Drugs */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[11px]">
-                <tr>
-                  <th className="py-3 px-4">Drug Compound</th>
-                  <th className="py-3 px-4">Putative Target</th>
-                  <th className="py-3 px-4">Signaling Pathway</th>
-                  <th className="py-3 px-4 text-right">Tested Bounds (µM)</th>
-                  <th className="py-3 px-4 text-center">Type</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredDrugs.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-12 text-center text-slate-500">
-                      No chemotherapy compounds found matching your filter criteria.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredDrugs.slice(0, 50).map(d => {
-                    const isProbe = probeSet.has(Number(d.DRUG_ID));
-                    const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
-                    return (
-                      <tr
-                        key={d.DRUG_ID}
-                        onClick={() => setSelectedDrug(d)}
-                        className={`transition-colors cursor-pointer ${
-                          isSelected ? 'bg-indigo-50/70 font-semibold' : 'hover:bg-slate-50/80'
-                        }`}
-                      >
-                        <td className="py-3 px-4 font-bold text-slate-900 flex items-center space-x-2">
-                          <Pill className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                          <span>{d.DRUG_NAME}</span>
-                          <span className="font-mono text-[10px] text-slate-400 font-normal">
-                            #{d.DRUG_ID}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-slate-700 font-medium">
-                          {d.PUTATIVE_TARGET || 'Unspecified'}
-                        </td>
-                        <td className="py-3 px-4 text-slate-500 text-[11px]">
-                          {d.PATHWAY_NAME || 'Unclassified'}
-                        </td>
-                        <td className="py-3 px-4 text-right font-mono text-slate-700 text-[11px]">
-                          {formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM
-                        </td>
-                        <td className="py-3 px-4 text-center">
-                          {isProbe ? (
-                            <span className="inline-flex items-center text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
-                              Probe
-                            </span>
-                          ) : (
-                            <span className="text-[10px] text-slate-400">Screen</span>
-                          )}
+        {/* Left 2 Cols: Table or Cards */}
+        <div className="lg:col-span-2">
+          {viewMode === 'table' ? (
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-subtle overflow-hidden flex flex-col">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 border-b border-slate-200/80 text-slate-600 font-semibold text-[11px]">
+                    <tr>
+                      <th className="py-3 px-4">Drug Compound</th>
+                      <th className="py-3 px-4">Putative Target</th>
+                      <th className="py-3 px-4">Signaling Pathway</th>
+                      <th className="py-3 px-4 text-right">Tested Bounds (µM)</th>
+                      <th className="py-3 px-4 text-center">Type</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {filteredDrugs.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-12 text-center text-slate-500">
+                          No chemotherapy compounds found matching your filter criteria.
                         </td>
                       </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                    ) : (
+                      filteredDrugs.slice(0, 50).map(d => {
+                        const isProbe = probeSet.has(Number(d.DRUG_ID));
+                        const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
+                        return (
+                          <tr
+                            key={d.DRUG_ID}
+                            onClick={() => setSelectedDrug(d)}
+                            className={`transition-colors cursor-pointer ${
+                              isSelected ? 'bg-indigo-50/70 font-semibold' : 'hover:bg-slate-50/80'
+                            }`}
+                          >
+                            <td className="py-3 px-4 font-bold text-slate-900 flex items-center space-x-2">
+                              <Pill className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                              <span>{d.DRUG_NAME}</span>
+                              <span className="font-mono text-[10px] text-slate-400 font-normal">
+                                #{d.DRUG_ID}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-slate-700 font-medium">
+                              {d.PUTATIVE_TARGET || 'Unspecified'}
+                            </td>
+                            <td className="py-3 px-4 text-slate-500 text-[11px]">
+                              {d.PATHWAY_NAME || 'Unclassified'}
+                            </td>
+                            <td className="py-3 px-4 text-right font-mono text-slate-700 text-[11px] tabular-nums">
+                              {formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              {isProbe ? (
+                                <span className="inline-flex items-center text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                                  Probe
+                                </span>
+                              ) : (
+                                <span className="text-[10px] text-slate-400 font-mono">Screen</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-          {filteredDrugs.length > 50 && (
-            <div className="p-3 text-center text-xs text-slate-500 border-t border-slate-100 bg-slate-50/50">
-              Showing first 50 results. Use the search box above to narrow down results.
+              {filteredDrugs.length > 50 && (
+                <div className="p-3 text-center text-[11px] text-slate-500 bg-slate-50/60 border-t border-slate-100">
+                  Showing top 50 of {filteredDrugs.length} matched therapeutics. Use search to refine.
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Cards View */
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {filteredDrugs.slice(0, 30).map(d => {
+                const isProbe = probeSet.has(Number(d.DRUG_ID));
+                const isSelected = selectedDrug?.DRUG_ID === d.DRUG_ID;
+                return (
+                  <div
+                    key={d.DRUG_ID}
+                    onClick={() => setSelectedDrug(d)}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 card-hover-effect ${
+                      isSelected
+                        ? 'bg-indigo-50/80 border-indigo-300 shadow-subtle ring-2 ring-indigo-500/20'
+                        : 'bg-white border-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="font-bold text-slate-900 text-sm flex items-center space-x-1.5">
+                        <Pill className="w-4 h-4 text-teal-600" />
+                        <span>{d.DRUG_NAME}</span>
+                      </div>
+                      {isProbe && (
+                        <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                          Probe
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="text-xs text-slate-600 space-y-1">
+                      <div>Target: <strong className="text-slate-800">{d.PUTATIVE_TARGET || 'Cytotoxic'}</strong></div>
+                      <div>Pathway: <span className="text-slate-500">{d.PATHWAY_NAME}</span></div>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                      <span>ID #{d.DRUG_ID}</span>
+                      <span className="text-teal-800 font-semibold">{formatConcVal(d.MIN_CONC)} – {formatConcVal(d.MAX_CONC)} µM</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
 
-        {/* Selected Drug Inspection Panel */}
+        {/* Right Column: Selected Drug Pharmacological Inspector */}
         <div className="space-y-6">
-          {selectedDrug ? (
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-5 sticky top-24">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
-                  Compound Specification
-                </span>
-                {probeSet.has(Number(selectedDrug.DRUG_ID)) && (
-                  <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded flex items-center">
-                    <Sparkles className="w-3 h-3 mr-1 text-amber-600" /> Scenario C Probe
-                  </span>
-                )}
-              </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-subtle space-y-5 sticky top-20">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center">
+                <Tag className="w-3.5 h-3.5 mr-1.5 text-indigo-600" /> Pharmacological Profile
+              </span>
+              <span className="text-xs font-mono font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                #{selectedDrug?.DRUG_ID}
+              </span>
+            </div>
 
-              <div>
-                <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">
-                  {selectedDrug.DRUG_NAME}
-                </h3>
-                <div className="text-xs text-slate-500 font-mono mt-0.5">
-                  GDSC2 DRUG_ID: #{selectedDrug.DRUG_ID}
-                </div>
-              </div>
-
-              <div className="space-y-3 text-xs divide-y divide-slate-100">
-                <div className="pt-2">
-                  <div className="text-slate-500 font-medium text-[11px]">Putative Molecular Target</div>
-                  <div className="font-bold text-slate-900 mt-0.5 text-sm">
-                    {selectedDrug.PUTATIVE_TARGET || 'Unspecified'}
+            {selectedDrug ? (
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">
+                    {selectedDrug.DRUG_NAME}
+                  </h3>
+                  <div className="text-xs text-slate-500 mt-1 flex items-center space-x-2">
+                    <span>Target Pathway:</span>
+                    <span className="font-semibold text-slate-800">{selectedDrug.PATHWAY_NAME || 'Unclassified'}</span>
                   </div>
                 </div>
 
-                <div className="pt-2">
-                  <div className="text-slate-500 font-medium text-[11px]">Target Signaling Pathway</div>
-                  <div className="font-semibold text-indigo-900 mt-0.5">
-                    {selectedDrug.PATHWAY_NAME || 'Unclassified'}
+                <div className="space-y-2 font-mono text-xs">
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1 border border-slate-100">
+                    <span className="text-[10px] text-slate-500 uppercase font-sans font-semibold">Putative Molecular Target</span>
+                    <div className="font-bold text-slate-900 text-sm font-sans">{selectedDrug.PUTATIVE_TARGET || 'Broad Cytotoxic Mechanism'}</div>
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1 border border-slate-100">
+                    <span className="text-[10px] text-slate-500 uppercase font-sans font-semibold">Tested Concentration Bounds</span>
+                    <div className="font-bold text-teal-800 text-sm">
+                      {formatConcVal(selectedDrug.MIN_CONC)} µM – {formatConcVal(selectedDrug.MAX_CONC)} µM
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1 border border-slate-100">
+                    <span className="text-[10px] text-slate-500 uppercase font-sans font-semibold">Sanger Screening Classification</span>
+                    <div className="font-semibold text-slate-700 font-sans">
+                      {probeSet.has(Number(selectedDrug.DRUG_ID)) ? (
+                        <span className="text-amber-800 font-bold flex items-center">
+                          <Sparkles className="w-3.5 h-3.5 mr-1" /> 15 Reference Probe Panel Assay
+                        </span>
+                      ) : (
+                        'Standard GDSC2 Screening Regimen'
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="pt-2">
-                  <div className="text-slate-500 font-medium text-[11px]">Screening Concentration Bounds</div>
-                  <div className="font-mono text-slate-800 mt-0.5">
-                    Min: <strong>{formatConcVal(selectedDrug.MIN_CONC)} µM</strong> — Max: <strong>{formatConcVal(selectedDrug.MAX_CONC)} µM</strong>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <div className="text-slate-500 font-medium text-[11px]">Active Target Lineage</div>
-                  <div className="font-semibold text-slate-900 mt-0.5 flex items-center space-x-1.5">
-                    <span className="font-mono text-teal-800 bg-teal-50 border border-teal-200 px-1.5 py-0.2 rounded text-[11px]">
-                      {activeSample ? activeSample.tcga_desc : 'PANCAN'}
-                    </span>
-                    <span>{activeSample ? activeSample.name : 'Pan-Cancer Target'}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="space-y-2 pt-2">
+                {/* Direct Action: Predict for this Drug */}
                 <button
                   onClick={() => onNavigate('prediction')}
-                  className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-colors shadow-xs cursor-pointer"
+                  className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold text-xs transition-all shadow-md shadow-teal-600/20 cursor-pointer active:scale-98"
                 >
                   <Pill className="w-4 h-4" />
                   <span>Predict Response for {selectedDrug.DRUG_NAME}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
-                <button
-                  onClick={() => onNavigate('analytics')}
-                  className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors cursor-pointer"
-                >
-                  <span>Compare Cross-Tissue Sensitivity</span>
-                </button>
-              </div>
 
-              {/* Informational Callout */}
-              <div className="p-3 bg-slate-50 rounded-xl text-[11px] text-slate-600 leading-relaxed border border-slate-100">
-                <strong>Pre-Exposure Modeling:</strong> Response is estimated through target encoding of compound ID, molecular target, pathway, and concentration range against GDSC2 cell line responses.
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <a
+                    href={`https://www.cancerrxgene.org/translation/Drug/${selectedDrug.DRUG_ID}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-indigo-600 flex items-center space-x-1 font-medium"
+                  >
+                    <span>Sanger Entry</span>
+                    <ExternalLink className="w-3 h-3 text-slate-400" />
+                  </a>
+                  <a
+                    href={`https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(selectedDrug.DRUG_NAME)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-indigo-600 flex items-center space-x-1 font-medium"
+                  >
+                    <span>PubChem Database</span>
+                    <ExternalLink className="w-3 h-3 text-slate-400" />
+                  </a>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center text-xs text-slate-500">
-              Select a drug from the table to view its mechanisms and screening parameters.
-            </div>
-          )}
+            ) : (
+              <div className="text-xs text-slate-500">Select a drug to view details.</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
